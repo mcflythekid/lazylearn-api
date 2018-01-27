@@ -44,21 +44,29 @@ public class AppExceptionHandler extends ResponseEntityExceptionHandler {
         return getExceptionOutDto(e, response);
     }
 
-    private ExceptionOutDto getExceptionOutDto(Exception e, HttpServletResponse response){
+    private ExceptionOutDto getExceptionOutDto(Exception e, HttpServletResponse response) {
         String id = authService.getRamdomId();
-        final String defaultMsg ="An error has occurred";
+        final String defaultMsg = "An error has occurred";
         logger.error(String.format("[ERROR-ID:%s] %s", id, e.getMessage()), e);
 
-        if (e instanceof AppForbiddenException ){
+        if (e instanceof AppConflictException) {
+            if (response != null) response.setStatus(HttpServletResponse.SC_CONFLICT);
+            return new ExceptionOutDto(id, e.getMessage());
+        } else if (e instanceof AppForbiddenException) {
             if (response != null) response.setStatus(HttpServletResponse.SC_FORBIDDEN);
             return new ExceptionOutDto(id, e.getMessage());
-        }else if (e instanceof AppNotFoundException ){
+        } else if (e instanceof AppNotFoundException) {
             if (response != null) response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+            return new ExceptionOutDto(id, e.getMessage());
+        } else if (e instanceof AppUnauthorizedException) {
+            if (response != null) response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             return new ExceptionOutDto(id, e.getMessage());
         } else if (e instanceof AppException ){
             if (response != null) response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             return new ExceptionOutDto(id, e.getMessage());
-        } else if (e instanceof MethodArgumentNotValidException){
+        }
+
+        if (e instanceof MethodArgumentNotValidException){
             if (response != null) response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             String msg = null;
             try{
@@ -69,6 +77,7 @@ public class AppExceptionHandler extends ResponseEntityExceptionHandler {
             }
             return new ExceptionOutDto(id, msg);
         }
+
         if (response != null) response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         return new ExceptionOutDto(id, defaultMsg);
     }
