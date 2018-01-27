@@ -28,8 +28,7 @@ public class UserService {
         userRepo.save(user);
         return new UserRegisterOutDto(user);
     }
-
-    @PutMapping
+    
     public JSON changePassword(String userId, UserChangePasswordInDto userChangePasswordInDto){
         User user = userRepo.findOne(userId);
         if (user == null) throw new AppNotFoundException("User not found");
