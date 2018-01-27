@@ -13,15 +13,13 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * @author McFly the Kid
  */
 @Component
 public class AppUserDetailsService implements UserDetailsService {
-
-    @Autowired
-    private UserRepo userRepo;
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
@@ -39,4 +37,7 @@ public class AppUserDetailsService implements UserDetailsService {
 
         return userDetails;
     }
+
+    @Autowired
+    private UserRepo userRepo;
 }

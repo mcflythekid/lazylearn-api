@@ -6,6 +6,8 @@ import com.mcflythekid.lazylearncore.Const;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -20,6 +22,10 @@ public class User implements Serializable{
     private String id;
 
     private String email;
+
+    @Transient
+    private String password;
+
     private String hashedPassword;
 
     @JsonFormat(pattern = Const.PARAM_JSON_DATETIMEFORMAT, timezone = Const.PARAM_JSON_TIMEZONE)
@@ -27,6 +33,16 @@ public class User implements Serializable{
 
     @JsonFormat(pattern = Const.PARAM_JSON_DATETIMEFORMAT, timezone = Const.PARAM_JSON_TIMEZONE)
     private Date updatedOn;
+
+    private String registerIpAddress;
+
+    public String getRegisterIpAddress() {
+        return registerIpAddress;
+    }
+
+    public void setRegisterIpAddress(String registerIpAddress) {
+        this.registerIpAddress = registerIpAddress;
+    }
 
     public String getId() {
         return id;
@@ -66,5 +82,13 @@ public class User implements Serializable{
 
     public void setUpdatedOn(Date updatedOn) {
         this.updatedOn = updatedOn;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }
