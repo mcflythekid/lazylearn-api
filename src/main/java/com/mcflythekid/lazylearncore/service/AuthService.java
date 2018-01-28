@@ -4,6 +4,7 @@ import com.mcflythekid.lazylearncore.entity.User;
 import com.mcflythekid.lazylearncore.exception.AppForbiddenException;
 import com.mcflythekid.lazylearncore.exception.AppUnauthorizedException;
 import com.mcflythekid.lazylearncore.indto.AuthLoginInDto;
+import com.mcflythekid.lazylearncore.outdto.AuthLoginOutDto;
 import com.mcflythekid.lazylearncore.outdto.OAuthOutDto;
 import com.mcflythekid.lazylearncore.repo.UserRepo;
 import org.apache.commons.codec.binary.Base64;
@@ -43,15 +44,17 @@ public class AuthService {
         return passwordEncoder.encodePassword(password, null);
     }
 
-    public String login(AuthLoginInDto authLoginInDto){
+    public AuthLoginOutDto login(AuthLoginInDto authLoginInDto){
         try {
+            User user = userRepo.findByEmail(authLoginInDto.getEmail());
+
             MultiValueMap<String, String> body = new LinkedMultiValueMap<String, String>();
             body.add("grant_type", "password");
             body.add("username", authLoginInDto.getEmail());
             body.add("password", authLoginInDto.getPassword());
             HttpEntity<?> request = new HttpEntity<>(body, getLoginHeaders());
-            OAuthOutDto x = new RestTemplate().postForObject(appOAuthTokenChecker, request, OAuthOutDto.class);
-            return x.getAccessToken();
+            OAuthOutDto oAuthOutDto = new RestTemplate().postForObject(appOAuthTokenChecker, request, OAuthOutDto.class);
+            return new AuthLoginOutDto(oAuthOutDto.getAccessToken(), user.getId(), user.getEmail());
         } catch (Exception e){
             throw new AppUnauthorizedException("Login failure", e);
         }
@@ -77,7 +80,10 @@ public class AuthService {
 
     @Value("${app.oauth-token-checker}")
     private String appOAuthTokenChecker;
-    
+
     @Autowired
     private ShaPasswordEncoder passwordEncoder;
+
+    @Autowired
+    private UserRepo userRepo;
 }

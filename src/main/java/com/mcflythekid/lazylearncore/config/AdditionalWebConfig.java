@@ -13,6 +13,7 @@ import org.springframework.web.filter.CorsFilter;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -21,6 +22,7 @@ import java.util.List;
 @EnableWebMvc
 @Configuration
 public class AdditionalWebConfig extends WebMvcConfigurerAdapter {
+
     /**
      * Allowing all origins, headers and methods here is only intended to keep this example simple.
      * This is not a default recommended configuration. Make adjustments as
@@ -28,17 +30,17 @@ public class AdditionalWebConfig extends WebMvcConfigurerAdapter {
      *
      */
     @Bean
-    public FilterRegistrationBean corsFilter() {
+    public CorsFilter corsFilter() {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowCredentials(true);
-        config.addAllowedOrigin("*");
-        config.addAllowedHeader("*");
-        config.addAllowedMethod("*");
-        source.registerCorsConfiguration("/**", config);
-        FilterRegistrationBean bean = new FilterRegistrationBean(new CorsFilter(source));
-        bean.setOrder(0);
-        return bean;
+        config.setAllowedOrigins(Arrays.asList("*"));
+        config.setAllowedHeaders(Arrays.asList("*"));
+        config.setAllowedMethods(Arrays.asList("*"));
+        if (config.getAllowedOrigins() != null && !config.getAllowedOrigins().isEmpty()) {
+            source.registerCorsConfiguration("/**", config);
+        }
+        return new CorsFilter(source);
     }
 
     @Bean

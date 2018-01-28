@@ -28,11 +28,10 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
     public void configure(HttpSecurity http) throws Exception {
         http
         .requestMatchers()
-        .and()
+        .and().cors().and()
         .authorizeRequests()
         .antMatchers("/actuator/**", "/api-docs/**").permitAll()
-        .antMatchers("/user").permitAll()
-        .antMatchers("/springjwt/**" ).authenticated()
-        .anyRequest().permitAll();
+        .antMatchers("/login", "/user").permitAll()
+        .anyRequest().authenticated();
     }
 }
