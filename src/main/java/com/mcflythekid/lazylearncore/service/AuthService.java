@@ -1,8 +1,11 @@
 package com.mcflythekid.lazylearncore.service;
 
 import com.mcflythekid.lazylearncore.entity.User;
+import com.mcflythekid.lazylearncore.exception.AppForbiddenException;
+import com.mcflythekid.lazylearncore.exception.AppUnauthorizedException;
 import com.mcflythekid.lazylearncore.indto.AuthLoginInDto;
 import com.mcflythekid.lazylearncore.outdto.OAuthOutDto;
+import com.mcflythekid.lazylearncore.repo.UserRepo;
 import org.apache.commons.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -41,15 +44,17 @@ public class AuthService {
     }
 
     public String login(AuthLoginInDto authLoginInDto){
-
-        MultiValueMap<String, String> body = new LinkedMultiValueMap<String, String>();
-        body.add("grant_type", "password");
-        body.add("username", authLoginInDto.getEmail());
-        body.add("password", authLoginInDto.getPassword());
-        HttpEntity<?> request = new HttpEntity<>(body, getLoginHeaders());
-
-        OAuthOutDto x = new RestTemplate().postForObject(appOAuthTokenChecker, request, OAuthOutDto.class);
-        return x.getAccessToken();
+        try {
+            MultiValueMap<String, String> body = new LinkedMultiValueMap<String, String>();
+            body.add("grant_type", "password");
+            body.add("username", authLoginInDto.getEmail());
+            body.add("password", authLoginInDto.getPassword());
+            HttpEntity<?> request = new HttpEntity<>(body, getLoginHeaders());
+            OAuthOutDto x = new RestTemplate().postForObject(appOAuthTokenChecker, request, OAuthOutDto.class);
+            return x.getAccessToken();
+        } catch (Exception e){
+            throw new AppUnauthorizedException("Login failure", e);
+        }
     }
 
     private HttpHeaders getLoginHeaders(){
@@ -72,7 +77,7 @@ public class AuthService {
 
     @Value("${app.oauth-token-checker}")
     private String appOAuthTokenChecker;
-
+    
     @Autowired
     private ShaPasswordEncoder passwordEncoder;
 }

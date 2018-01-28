@@ -15,4 +15,8 @@ public class AppUnauthorizedException extends AppException{
     public AppUnauthorizedException(String message) {
         super(message);
     }
+
+    public AppUnauthorizedException(String message, Throwable cause) {
+        super(message, cause);
+    }
 }
