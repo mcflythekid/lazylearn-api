@@ -1,5 +1,6 @@
 package com.mcflythekid.lazylearncore.controller;
 
+import com.mcflythekid.lazylearncore.indto.UserResetPasswordInDto;
 import com.mcflythekid.lazylearncore.indto.UserChangePasswordInDto;
 import com.mcflythekid.lazylearncore.indto.UserRegisterInDto;
 import com.mcflythekid.lazylearncore.outdto.JSON;
@@ -30,6 +31,13 @@ public class UserController {
             @PathVariable("userId") String userId,
             @Valid @RequestBody UserChangePasswordInDto userChangePasswordInDto){
         return userService.changePassword(userId, userChangePasswordInDto);
+    }
+
+    @PutMapping("/by-forget-password/{forgetPasswordId}")
+    public JSON resetPassword(
+            @PathVariable("forgetPasswordId") String forgetPasswordId,
+            @Valid @RequestBody UserResetPasswordInDto userResetPasswordInDto){
+        return userService.resetPassword(forgetPasswordId, userResetPasswordInDto);
     }
 
     @Autowired

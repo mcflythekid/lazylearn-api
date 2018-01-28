@@ -14,4 +14,8 @@ public final class Const {
 
     public static final String RET_OK = "ok";
     public static final String RET_ERROR = "error";
+
+    public static final Integer FORGETPASSWORD_STATUS_NEW = 0;
+    public static final Integer FORGETPASSWORD_STATUS_USED = 1;
+    public static final Integer FORGETPASSWORD_EXPIRED_DAYS = 10;
 }

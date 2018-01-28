@@ -14,6 +14,8 @@ import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.encoding.ShaPasswordEncoder;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
@@ -70,6 +72,11 @@ public class AuthService {
         headers.add("Authorization", "Basic " + base64Creds);
         headers.add("Content-Type", "application/x-www-form-urlencoded");
         return headers;
+    }
+
+    public String getCurrentUserEmail(){
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        return auth.getName();
     }
 
     @Value("${security.jwt.client-id}")
