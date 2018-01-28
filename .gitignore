@@ -20,3 +20,4 @@ target/
 .factorypath
 rebel.xml
 /bin/
+node_modules/
