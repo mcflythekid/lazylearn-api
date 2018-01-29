@@ -44,8 +44,6 @@ public class UserService {
     }
 
     public JSON changePassword(UserChangePasswordInDto userChangePasswordInDto, User user){
-        if (!authService.isPasswordValid(userChangePasswordInDto.getOldPassword(), user))
-            throw new AppUnauthorizedException("Old password is wrong");
         user.setHashedPassword(authService.hashPassword(userChangePasswordInDto.getNewPassword()));
         user.setUpdatedOn(new Date());
         userRepo.save(user);

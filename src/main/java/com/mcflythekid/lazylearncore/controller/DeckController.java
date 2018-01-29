@@ -1,16 +1,16 @@
 package com.mcflythekid.lazylearncore.controller;
 
 import com.mcflythekid.lazylearncore.entity.User;
+import com.mcflythekid.lazylearncore.indto.BootstrapTableInDto;
 import com.mcflythekid.lazylearncore.indto.DeckCreateInDto;
+import com.mcflythekid.lazylearncore.indto.DeckSearchInDto;
+import com.mcflythekid.lazylearncore.outdto.BootstrapTableOutDto;
 import com.mcflythekid.lazylearncore.outdto.JSON;
 import com.mcflythekid.lazylearncore.service.AuthService;
 import com.mcflythekid.lazylearncore.service.DeckService;
 import com.mcflythekid.lazylearncore.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
@@ -26,6 +26,17 @@ public class DeckController {
         User user = userService.findOne(userId);
         authService.checkOwner(user);
         return deckService.create(deckCreateInDto, user);
+    }
+
+    @GetMapping("/user/{userId}/deck/by-search")
+    public BootstrapTableOutDto listDeck(@PathVariable("userId") String userId, @RequestParam(name = "search", defaultValue = "") String search,
+                                         @RequestParam("sort") String sort, @RequestParam("order") String order,
+                                         @RequestParam("limit") Integer limit,  @RequestParam("offset") Integer offset){
+        User user = userService.findOne(userId);
+        authService.checkOwner(user);
+        DeckSearchInDto deckSearchInDto = new DeckSearchInDto(order, sort, limit, offset);
+        deckSearchInDto.setSearch(search);
+        return deckService.listByUserAndSearch(user, deckSearchInDto);
     }
 
     @Autowired

@@ -11,6 +11,7 @@ import com.mcflythekid.lazylearncore.repo.ForgetPasswordRepo;
 import com.mcflythekid.lazylearncore.repo.UserRepo;
 import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -46,7 +47,7 @@ public class ForgetPasswordService {
         emailDto.setFromPerson("Lazylearn Team");
         emailDto.setFrom("support@lazylearn.com");
         emailDto.setSubject("Reset your password");
-        emailDto.setBody("Test");
+        emailDto.setBody(String.format("<a href='%s%s'>Please click here</a>", appResetPasswordUrl, forgetPassword.getId()));
         return emailDto;
     }
 
@@ -61,4 +62,8 @@ public class ForgetPasswordService {
 
     @Autowired
     private EmailService emailService;
+
+    @Value("${app.reset-password-url}")
+    private String appResetPasswordUrl;
+
 }
