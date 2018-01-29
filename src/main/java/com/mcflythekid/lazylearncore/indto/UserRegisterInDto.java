@@ -2,18 +2,18 @@ package com.mcflythekid.lazylearncore.indto;
 
 import com.mcflythekid.lazylearncore.entity.User;
 import org.hibernate.validator.constraints.Email;
-import org.hibernate.validator.constraints.NotEmpty;
+import org.hibernate.validator.constraints.NotBlank;
 
 /**
  * @author McFly the Kid
  */
 public class UserRegisterInDto {
 
-    @NotEmpty
+    @NotBlank
     @Email
     private String email;
 
-    @NotEmpty
+    @NotBlank
     private String password;
 
     private String registerIpAddress;

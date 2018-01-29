@@ -1,14 +1,13 @@
 package com.mcflythekid.lazylearncore.indto;
 
-import org.hibernate.validator.constraints.Email;
-import org.hibernate.validator.constraints.NotEmpty;
+import org.hibernate.validator.constraints.NotBlank;
 
 /**
  * @author McFly the Kid
  */
 public class UserChangePasswordInDto {
 
-    @NotEmpty
+    @NotBlank
     private String newPassword;
 
     public String getNewPassword() {

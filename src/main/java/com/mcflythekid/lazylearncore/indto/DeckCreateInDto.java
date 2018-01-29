@@ -1,13 +1,13 @@
 package com.mcflythekid.lazylearncore.indto;
 
-import org.hibernate.validator.constraints.NotEmpty;
+import org.hibernate.validator.constraints.NotBlank;
 
 /**
  * @author McFly the Kid
  */
 public class DeckCreateInDto {
 
-    @NotEmpty
+    @NotBlank
     private String name;
 
     public String getName() {
