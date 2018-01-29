@@ -1,7 +1,9 @@
 package com.mcflythekid.lazylearncore.service;
 
+import com.mcflythekid.lazylearncore.entity.Deck;
 import com.mcflythekid.lazylearncore.entity.User;
 import com.mcflythekid.lazylearncore.exception.AppForbiddenException;
+import com.mcflythekid.lazylearncore.exception.AppNotFoundException;
 import com.mcflythekid.lazylearncore.exception.AppUnauthorizedException;
 import com.mcflythekid.lazylearncore.indto.AuthLoginInDto;
 import com.mcflythekid.lazylearncore.outdto.AuthLoginOutDto;
@@ -62,6 +64,21 @@ public class AuthService {
         }
     }
 
+    public void checkOwner(Object object){
+        if (object == null){
+            throw new AppNotFoundException();
+        }
+        if (object instanceof User){
+            if (!((User)object).getId().equals(getCurrentUserId())){
+                throw new AppForbiddenException("It's not you");
+            }
+        } else if (object instanceof Deck){
+            if (!((Deck)object).getUserId().equals(getCurrentUserId())){
+                throw new AppForbiddenException("It's not you");
+            }
+        }
+    }
+
     private HttpHeaders getLoginHeaders(){
         String plainCreds = clientId + ":" + clientSecret;
         byte[] plainCredsBytes = plainCreds.getBytes();
@@ -74,7 +91,7 @@ public class AuthService {
         return headers;
     }
 
-    public String getCurrentUserEmail(){
+    public String getCurrentUserId(){
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         return auth.getName();
     }

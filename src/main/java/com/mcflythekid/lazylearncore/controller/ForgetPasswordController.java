@@ -1,14 +1,13 @@
 package com.mcflythekid.lazylearncore.controller;
 
 import com.mcflythekid.lazylearncore.indto.ForgetPasswordCreateInDto;
+import com.mcflythekid.lazylearncore.indto.UserResetPasswordInDto;
 import com.mcflythekid.lazylearncore.outdto.JSON;
 import com.mcflythekid.lazylearncore.service.ForgetPasswordService;
 import com.mcflythekid.lazylearncore.service.RequestService;
+import com.mcflythekid.lazylearncore.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
@@ -16,13 +15,19 @@ import javax.validation.Valid;
  * @author McFly the Kid
  */
 @RestController
-@RequestMapping("/forget-password")
 public class ForgetPasswordController {
 
-    @PostMapping
-    public JSON create(@Valid @RequestBody ForgetPasswordCreateInDto forgetPasswordCreateInDto){
+    @PostMapping("/forget-password")
+    public JSON create(@Valid @RequestBody ForgetPasswordCreateInDto forgetPasswordCreateInDto) {
         forgetPasswordCreateInDto.setIpAddress(requestService.getIpAddress());
         return forgetPasswordService.create(forgetPasswordCreateInDto);
+    }
+
+    @PutMapping("/user/by-forget-password/{forgetPasswordId}/password")
+    public JSON resetPassword(
+            @PathVariable("forgetPasswordId") String forgetPasswordId,
+            @Valid @RequestBody UserResetPasswordInDto userResetPasswordInDto) {
+        return userService.resetPassword(forgetPasswordId, userResetPasswordInDto);
     }
 
     @Autowired
@@ -30,4 +35,8 @@ public class ForgetPasswordController {
 
     @Autowired
     private RequestService requestService;
+
+    @Autowired
+    private UserService userService;
 }
+

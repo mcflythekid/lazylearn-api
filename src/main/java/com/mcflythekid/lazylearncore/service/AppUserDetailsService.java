@@ -33,7 +33,7 @@ public class AppUserDetailsService implements UserDetailsService {
         authorities.add(new SimpleGrantedAuthority(Const.ROLE_DEFAULT));
 
         UserDetails userDetails = new org.springframework.security.core.userdetails.
-                User(user.getEmail(), user.getHashedPassword(), authorities);
+                User(user.getId(), user.getHashedPassword(), authorities);
 
         return userDetails;
     }

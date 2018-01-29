@@ -27,6 +27,10 @@ import java.util.Date;
 @Service
 public class UserService {
 
+    public User findOne(String userId){
+        return userRepo.findOne(userId);
+    }
+
     public UserRegisterOutDto register(UserRegisterInDto userRegisterInDto){
         if (userRepo.findByEmail(userRegisterInDto.getEmail()) != null)
             throw new AppConflictException("Email address already exists");
@@ -39,13 +43,7 @@ public class UserService {
         return new UserRegisterOutDto(user);
     }
 
-    public JSON changePassword(String userId, UserChangePasswordInDto userChangePasswordInDto){
-        User user = userRepo.findOne(userId);
-        if (user == null) throw new AppNotFoundException("User not found");
-
-        if(!user.getEmail().equals(authService.getCurrentUserEmail()))
-            throw new AppForbiddenException("Fuck it, fuck your mom");
-
+    public JSON changePassword(UserChangePasswordInDto userChangePasswordInDto, User user){
         if (!authService.isPasswordValid(userChangePasswordInDto.getOldPassword(), user))
             throw new AppUnauthorizedException("Old password is wrong");
         user.setHashedPassword(authService.hashPassword(userChangePasswordInDto.getNewPassword()));
