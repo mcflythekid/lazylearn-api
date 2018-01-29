@@ -1,6 +1,7 @@
 package com.mcflythekid.lazylearncore.service;
 
 import com.mcflythekid.lazylearncore.Const;
+import com.mcflythekid.lazylearncore.dto.EmailDto;
 import com.mcflythekid.lazylearncore.entity.ForgetPassword;
 import com.mcflythekid.lazylearncore.entity.User;
 import com.mcflythekid.lazylearncore.exception.AppNotFoundException;
@@ -34,7 +35,19 @@ public class ForgetPasswordService {
         forgetPassword.setExpiredOn(DateUtils.addDays(new Date(), Const.FORGETPASSWORD_EXPIRED_DAYS));
         forgetPasswordRepo.save(forgetPassword);
 
+        emailService.sendHtml(getForgetPasswordEmail(forgetPassword));
+
         return JSON.ok();
+    }
+
+    private EmailDto getForgetPasswordEmail(ForgetPassword forgetPassword){
+        EmailDto emailDto = new EmailDto();
+        emailDto.setTo(forgetPassword.getCurrentEmail());
+        emailDto.setFromPerson("Lazylearn Team");
+        emailDto.setFrom("support@lazylearn.com");
+        emailDto.setSubject("Reset your password");
+        emailDto.setBody("Test");
+        return emailDto;
     }
 
     @Autowired
@@ -45,4 +58,7 @@ public class ForgetPasswordService {
 
     @Autowired
     private AuthService authService;
+
+    @Autowired
+    private EmailService emailService;
 }
