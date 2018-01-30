@@ -5,6 +5,7 @@ import com.mcflythekid.lazylearncore.entity.User;
 import com.mcflythekid.lazylearncore.exception.AppNotFoundException;
 import com.mcflythekid.lazylearncore.indto.BootstrapTableInDto;
 import com.mcflythekid.lazylearncore.indto.DeckCreateInDto;
+import com.mcflythekid.lazylearncore.indto.DeckEditInDto;
 import com.mcflythekid.lazylearncore.indto.DeckSearchInDto;
 import com.mcflythekid.lazylearncore.outdto.BootstrapTableOutDto;
 import com.mcflythekid.lazylearncore.outdto.JSON;
@@ -24,6 +25,22 @@ import java.util.List;
  */
 @Service
 public class DeckService {
+
+    public Deck findOne(String deckId) {
+        return deckRepo.findOne(deckId);
+    }
+
+    public JSON editDeck(Deck deck, DeckEditInDto deckEditInDto) {
+        deck.setUpdatedOn(new Date());
+        deck.setName(deckEditInDto.getName());
+        deckRepo.save(deck);
+        return JSON.ok();
+    }
+
+    public JSON deleteDeck(Deck deck) {
+        deckRepo.delete(deck);
+        return JSON.ok();
+    }
 
     public BootstrapTableOutDto listByUserAndSearch(User user, DeckSearchInDto deckSearchInDto){
         List<Deck> rows = deckRepo.findAllByUserIdAndNameContaining(user.getId(), deckSearchInDto.getSearch(), deckSearchInDto.getPageable());

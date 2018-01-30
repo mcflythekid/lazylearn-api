@@ -1,8 +1,10 @@
 package com.mcflythekid.lazylearncore.controller;
 
+import com.mcflythekid.lazylearncore.entity.Deck;
 import com.mcflythekid.lazylearncore.entity.User;
 import com.mcflythekid.lazylearncore.indto.BootstrapTableInDto;
 import com.mcflythekid.lazylearncore.indto.DeckCreateInDto;
+import com.mcflythekid.lazylearncore.indto.DeckEditInDto;
 import com.mcflythekid.lazylearncore.indto.DeckSearchInDto;
 import com.mcflythekid.lazylearncore.outdto.BootstrapTableOutDto;
 import com.mcflythekid.lazylearncore.outdto.JSON;
@@ -37,6 +39,25 @@ public class DeckController {
         DeckSearchInDto deckSearchInDto = new DeckSearchInDto(order, sort, limit, offset);
         deckSearchInDto.setSearch(search);
         return deckService.listByUserAndSearch(user, deckSearchInDto);
+    }
+
+    @PutMapping("/user/{userId}/deck/{deckId}")
+    public JSON editDeck(@PathVariable("userId") String userId, @PathVariable("deckId") String deckId,
+                                         @RequestBody DeckEditInDto deckEditInDto){
+        User user = userService.findOne(userId);
+        Deck deck = deckService.findOne(deckId);
+        authService.checkOwner(user);
+        authService.checkOwner(deck);
+        return deckService.editDeck(deck, deckEditInDto);
+    }
+
+    @DeleteMapping("/user/{userId}/deck/{deckId}")
+    public JSON deleteDeck(@PathVariable("userId") String userId, @PathVariable("deckId") String deckId){
+        User user = userService.findOne(userId);
+        Deck deck = deckService.findOne(deckId);
+        authService.checkOwner(user);
+        authService.checkOwner(deck);
+        return deckService.deleteDeck(deck);
     }
 
     @Autowired
