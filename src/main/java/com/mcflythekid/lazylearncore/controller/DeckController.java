@@ -2,7 +2,6 @@ package com.mcflythekid.lazylearncore.controller;
 
 import com.mcflythekid.lazylearncore.entity.Deck;
 import com.mcflythekid.lazylearncore.entity.User;
-import com.mcflythekid.lazylearncore.indto.BootstrapTableInDto;
 import com.mcflythekid.lazylearncore.indto.DeckCreateInDto;
 import com.mcflythekid.lazylearncore.indto.DeckEditInDto;
 import com.mcflythekid.lazylearncore.indto.DeckSearchInDto;
@@ -58,6 +57,15 @@ public class DeckController {
         authService.checkOwner(user);
         authService.checkOwner(deck);
         return deckService.deleteDeck(deck);
+    }
+
+    @GetMapping("/user/{userId}/deck/{deckId}")
+    public Deck getDeck(@PathVariable("userId") String userId, @PathVariable("deckId") String deckId){
+        User user = userService.findOne(userId);
+        Deck deck = deckService.findOne(deckId);
+        authService.checkOwner(user);
+        authService.checkOwner(deck);
+        return deck;
     }
 
     @Autowired

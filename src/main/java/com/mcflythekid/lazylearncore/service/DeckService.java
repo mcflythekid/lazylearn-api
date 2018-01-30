@@ -2,19 +2,13 @@ package com.mcflythekid.lazylearncore.service;
 
 import com.mcflythekid.lazylearncore.entity.Deck;
 import com.mcflythekid.lazylearncore.entity.User;
-import com.mcflythekid.lazylearncore.exception.AppNotFoundException;
-import com.mcflythekid.lazylearncore.indto.BootstrapTableInDto;
 import com.mcflythekid.lazylearncore.indto.DeckCreateInDto;
 import com.mcflythekid.lazylearncore.indto.DeckEditInDto;
 import com.mcflythekid.lazylearncore.indto.DeckSearchInDto;
 import com.mcflythekid.lazylearncore.outdto.BootstrapTableOutDto;
 import com.mcflythekid.lazylearncore.outdto.JSON;
 import com.mcflythekid.lazylearncore.repo.DeckRepo;
-import com.mcflythekid.lazylearncore.repo.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -63,4 +57,7 @@ public class DeckService {
 
     @Autowired
     private AuthService authService;
+
+    @Autowired
+    private CardService cardService;
 }
