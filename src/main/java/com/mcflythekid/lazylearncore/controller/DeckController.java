@@ -1,10 +1,9 @@
 package com.mcflythekid.lazylearncore.controller;
 
 import com.mcflythekid.lazylearncore.entity.Deck;
-import com.mcflythekid.lazylearncore.entity.User;
-import com.mcflythekid.lazylearncore.indto.DeckCreateInDto;
-import com.mcflythekid.lazylearncore.indto.DeckEditInDto;
-import com.mcflythekid.lazylearncore.indto.DeckSearchInDto;
+import com.mcflythekid.lazylearncore.indto.CreateDeckInDto;
+import com.mcflythekid.lazylearncore.indto.UpdateDeckInDto;
+import com.mcflythekid.lazylearncore.indto.SearchDeckInDto;
 import com.mcflythekid.lazylearncore.outdto.BootstrapTableOutDto;
 import com.mcflythekid.lazylearncore.outdto.JSON;
 import com.mcflythekid.lazylearncore.service.AuthService;
@@ -19,61 +18,51 @@ import javax.validation.Valid;
  * @author McFly the Kid
  */
 @RestController
-public class DeckController {
-
-    @PostMapping("/user/{userId}/deck")
-    public JSON createDeck(@Valid @RequestBody DeckCreateInDto deckCreateInDto,
-                           @PathVariable("userId") String userId){
-        User user = userService.findOne(userId);
-        authService.checkOwner(user);
-        return deckService.create(deckCreateInDto, user);
-    }
-
-    @GetMapping("/user/{userId}/deck/by-search")
-    public BootstrapTableOutDto listDeck(@PathVariable("userId") String userId, @RequestParam(name = "search", defaultValue = "") String search,
-                                         @RequestParam("sort") String sort, @RequestParam("order") String order,
-                                         @RequestParam("limit") Integer limit,  @RequestParam("offset") Integer offset){
-        User user = userService.findOne(userId);
-        authService.checkOwner(user);
-        DeckSearchInDto deckSearchInDto = new DeckSearchInDto(order, sort, limit, offset);
-        deckSearchInDto.setSearch(search);
-        return deckService.listByUserAndSearch(user, deckSearchInDto);
-    }
-
-    @PutMapping("/user/{userId}/deck/{deckId}")
-    public JSON editDeck(@PathVariable("userId") String userId, @PathVariable("deckId") String deckId,
-                                         @RequestBody DeckEditInDto deckEditInDto){
-        User user = userService.findOne(userId);
-        Deck deck = deckService.findOne(deckId);
-        authService.checkOwner(user);
-        authService.checkOwner(deck);
-        return deckService.editDeck(deck, deckEditInDto);
-    }
-
-    @DeleteMapping("/user/{userId}/deck/{deckId}")
-    public JSON deleteDeck(@PathVariable("userId") String userId, @PathVariable("deckId") String deckId){
-        User user = userService.findOne(userId);
-        Deck deck = deckService.findOne(deckId);
-        authService.checkOwner(user);
-        authService.checkOwner(deck);
-        return deckService.deleteDeck(deck);
-    }
-
-    @GetMapping("/user/{userId}/deck/{deckId}")
-    public Deck getDeck(@PathVariable("userId") String userId, @PathVariable("deckId") String deckId){
-        User user = userService.findOne(userId);
-        Deck deck = deckService.findOne(deckId);
-        authService.checkOwner(user);
-        authService.checkOwner(deck);
-        return deck;
-    }
-
-    @Autowired
-    private UserService userService;
-
-    @Autowired
-    private AuthService authService;
+public class DeckController extends BaseController{
 
     @Autowired
     private DeckService deckService;
+
+    @PostMapping("/user/{userId}/deck")
+    public JSON create(@PathVariable("userId") String userId, @Valid @RequestBody CreateDeckInDto createDeckInDto){
+        authorizeUser(userId);
+
+        createDeckInDto.setUserId(userId);
+        return deckService.create(createDeckInDto);
+    }
+
+    @PutMapping("/deck/{deckId}")
+    public JSON update(@PathVariable("deckId") String deckId, @RequestBody UpdateDeckInDto updateDeckInDto){
+        authorizeDeck(deckId);
+
+        updateDeckInDto.setDeckId(deckId);
+        return deckService.update(updateDeckInDto);
+    }
+
+    @DeleteMapping("/deck/{deckId}")
+    public JSON delete(@PathVariable("deckId") String deckId){
+        authorizeDeck(deckId);
+
+        return deckService.delete(deckId);
+    }
+
+    @GetMapping("/deck/{deckId}")
+    public Deck get(@PathVariable("deckId") String deckId){
+        Deck deck = authorizeDeck(deckId);
+
+        return deck;
+    }
+
+    @GetMapping("/user/{userId}/deck/by-search")
+    public BootstrapTableOutDto search(@PathVariable("userId") String userId,
+                                       @RequestParam(name = "search", defaultValue = "") String search,
+                                       @RequestParam("sort") String sort, @RequestParam("order") String order,
+                                       @RequestParam("limit") Integer limit,  @RequestParam("offset") Integer offset){
+        authorizeUser(userId);
+        
+        SearchDeckInDto searchDeckInDto = new SearchDeckInDto(order, sort, limit, offset);
+        searchDeckInDto.setSearch(search);
+        searchDeckInDto.setUserId(userId);
+        return deckService.search(searchDeckInDto);
+    }
 }

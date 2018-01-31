@@ -1,5 +1,6 @@
 package com.mcflythekid.lazylearncore.service;
 
+import com.mcflythekid.lazylearncore.entity.Card;
 import com.mcflythekid.lazylearncore.entity.Deck;
 import com.mcflythekid.lazylearncore.entity.User;
 import com.mcflythekid.lazylearncore.exception.AppForbiddenException;
@@ -8,6 +9,8 @@ import com.mcflythekid.lazylearncore.exception.AppUnauthorizedException;
 import com.mcflythekid.lazylearncore.indto.AuthLoginInDto;
 import com.mcflythekid.lazylearncore.outdto.AuthLoginOutDto;
 import com.mcflythekid.lazylearncore.outdto.OAuthOutDto;
+import com.mcflythekid.lazylearncore.repo.CardRepo;
+import com.mcflythekid.lazylearncore.repo.DeckRepo;
 import com.mcflythekid.lazylearncore.repo.UserRepo;
 import org.apache.commons.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +35,23 @@ import java.util.UUID;
  */
 @Service
 public class AuthService {
+
+    @Value("${security.jwt.client-id}")
+    private String clientId;
+
+    @Value("${security.jwt.client-secret}")
+    private String clientSecret;
+
+    @Value("${app.oauth-token-checker}")
+    private String appOAuthTokenChecker;
+
+    @Autowired
+    private ShaPasswordEncoder passwordEncoder;
+
+    @Autowired
+    private UserRepo userRepo;
+
+
 
     /**
      * @return 32 chars string
@@ -79,6 +99,11 @@ public class AuthService {
         }
     }
 
+    public String getCurrentUserId(){
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        return auth.getName();
+    }
+
     private HttpHeaders getLoginHeaders(){
         String plainCreds = clientId + ":" + clientSecret;
         byte[] plainCredsBytes = plainCreds.getBytes();
@@ -91,23 +116,5 @@ public class AuthService {
         return headers;
     }
 
-    public String getCurrentUserId(){
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        return auth.getName();
-    }
 
-    @Value("${security.jwt.client-id}")
-    private String clientId;
-
-    @Value("${security.jwt.client-secret}")
-    private String clientSecret;
-
-    @Value("${app.oauth-token-checker}")
-    private String appOAuthTokenChecker;
-
-    @Autowired
-    private ShaPasswordEncoder passwordEncoder;
-
-    @Autowired
-    private UserRepo userRepo;
 }

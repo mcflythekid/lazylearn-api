@@ -43,7 +43,8 @@ public class UserService {
         return new UserRegisterOutDto(user);
     }
 
-    public JSON changePassword(UserChangePasswordInDto userChangePasswordInDto, User user){
+    public JSON changePassword(UserChangePasswordInDto userChangePasswordInDto){
+        User user = userRepo.findOne(userChangePasswordInDto.getUserId());
         user.setHashedPassword(authService.hashPassword(userChangePasswordInDto.getNewPassword()));
         user.setUpdatedOn(new Date());
         userRepo.save(user);
