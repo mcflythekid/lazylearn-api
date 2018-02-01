@@ -18,4 +18,6 @@ public final class Const {
     public static final Integer FORGETPASSWORD_STATUS_NEW = 0;
     public static final Integer FORGETPASSWORD_STATUS_USED = 1;
     public static final Integer FORGETPASSWORD_EXPIRED_DAYS = 10;
+
+    public static final Integer CARD_STEP_FRESH = -1;
 }

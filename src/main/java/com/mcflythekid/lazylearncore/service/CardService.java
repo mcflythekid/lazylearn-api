@@ -1,6 +1,7 @@
 package com.mcflythekid.lazylearncore.service;
 import java.util.Date;
 
+import com.mcflythekid.lazylearncore.Const;
 import com.mcflythekid.lazylearncore.entity.Card;
 import com.mcflythekid.lazylearncore.indto.CreateCardInDto;
 import com.mcflythekid.lazylearncore.indto.SearchCardInDto;
@@ -42,6 +43,7 @@ public class CardService {
         card.setCreatedOn(new Date());
         card.setDeckId(createCardInDto.getDeckId());
         card.setUserId(createCardInDto.getUserId());
+        card.setStep(Const.CARD_STEP_FRESH);
         cardRepo.save(card);
         return JSON.ok();
     }
