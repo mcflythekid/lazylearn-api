@@ -7,9 +7,11 @@ import com.mcflythekid.lazylearncore.indto.UpdateDeckInDto;
 import com.mcflythekid.lazylearncore.indto.SearchDeckInDto;
 import com.mcflythekid.lazylearncore.outdto.BootstrapTableOutDto;
 import com.mcflythekid.lazylearncore.outdto.JSON;
+import com.mcflythekid.lazylearncore.repo.CardRepo;
 import com.mcflythekid.lazylearncore.repo.DeckRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
@@ -18,10 +20,14 @@ import java.util.List;
  * @author McFly the Kid
  */
 @Service
+@Transactional
 public class DeckService {
 
     @Autowired
     private DeckRepo deckRepo;
+
+    @Autowired
+    private CardRepo cardRepo;
 
     @Autowired
     private AuthService authService;
@@ -50,6 +56,7 @@ public class DeckService {
 
     public JSON delete(String deckId) {
         deckRepo.delete(deckId);
+        cardRepo.deleteAllByDeckId(deckId);
         return JSON.ok();
     }
 

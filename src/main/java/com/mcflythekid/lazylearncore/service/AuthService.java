@@ -22,6 +22,7 @@ import org.springframework.security.authentication.encoding.ShaPasswordEncoder;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
@@ -50,8 +51,6 @@ public class AuthService {
 
     @Autowired
     private UserRepo userRepo;
-
-
 
     /**
      * @return 32 chars string

@@ -13,6 +13,7 @@ import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 
@@ -20,6 +21,7 @@ import java.util.Date;
  * @author McFly the Kid
  */
 @Service
+@Transactional
 public class ForgetPasswordService {
 
     public JSON create(ForgetPasswordCreateInDto forgetPasswordCreateInDto) {

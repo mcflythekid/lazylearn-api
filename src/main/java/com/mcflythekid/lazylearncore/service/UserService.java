@@ -16,6 +16,7 @@ import com.mcflythekid.lazylearncore.repo.ForgetPasswordRepo;
 import com.mcflythekid.lazylearncore.repo.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PutMapping;
 
 import javax.swing.*;
@@ -25,6 +26,7 @@ import java.util.Date;
  * @author McFly the Kid
  */
 @Service
+@Transactional
 public class UserService {
 
     public User findOne(String userId){

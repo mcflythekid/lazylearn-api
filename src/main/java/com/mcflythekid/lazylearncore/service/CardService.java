@@ -10,6 +10,7 @@ import com.mcflythekid.lazylearncore.outdto.JSON;
 import com.mcflythekid.lazylearncore.repo.CardRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -17,6 +18,7 @@ import java.util.List;
  * @author McFly the Kid
  */
 @Service
+@Transactional
 public class CardService {
 
     @Autowired
@@ -26,10 +28,9 @@ public class CardService {
     private CardRepo cardRepo;
 
     public BootstrapTableOutDto search(SearchCardInDto searchCardInDto) {
-        List<Card> rows = cardRepo.findAllByFrontContainingOrBackContainingAndDeckId(searchCardInDto.getSearch(),
-                searchCardInDto.getSearch(), searchCardInDto.getDeckId(), searchCardInDto.getPageable());
-        Long total = cardRepo.countByFrontContainingOrBackContainingAndDeckId(searchCardInDto.getSearch(),
-                searchCardInDto.getSearch(), searchCardInDto.getDeckId());
+        List<Card> rows = cardRepo.findAllByDeckIdAndSearch(searchCardInDto.getDeckId(),  searchCardInDto.getSearch(),
+                searchCardInDto.getPageable());
+        Long total = cardRepo.countByDeckIdAndSearch(searchCardInDto.getDeckId(), searchCardInDto.getSearch());
         return new BootstrapTableOutDto(rows, total);
     }
 
