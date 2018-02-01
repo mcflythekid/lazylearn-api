@@ -17,13 +17,13 @@ import java.util.List;
 @Repository
 public interface CardRepo extends JpaRepository<Card, String> {
 
-    @Query("SELECT c FROM Card c WHERE c.deckId = :deckId " +
-            " AND (c.front LIKE %:search% OR c.back LIKE %:search%)")
+    @Query("SELECT c FROM Card c WHERE c.deckId = :deckId AND" +
+            " (LOWER(c.front) LIKE LOWER(CONCAT('%', :search, '%')) OR LOWER(c.back) LIKE LOWER(CONCAT('%', :search, '%')))")
     List<Card> findAllByDeckIdAndSearch(@Param("deckId") String deckId, @Param("search") String search,
                                         Pageable pageable);
 
-    @Query("SELECT COUNT(c) FROM Card c WHERE c.deckId = :deckId " +
-            " AND (c.front LIKE %:search% OR c.back LIKE %:search%)")
+    @Query("SELECT COUNT(c) FROM Card c WHERE c.deckId = :deckId AND" +
+            " (LOWER(c.front) LIKE LOWER(CONCAT('%', :search, '%')) OR LOWER(c.back) LIKE LOWER(CONCAT('%', :search, '%')))")
     Long countByDeckIdAndSearch(@Param("deckId") String deckId, @Param("search") String search);
 
     @Modifying

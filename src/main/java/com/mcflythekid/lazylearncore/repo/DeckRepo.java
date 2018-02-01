@@ -15,6 +15,6 @@ import java.util.List;
  */
 @Repository
 public interface DeckRepo extends JpaRepository<Deck, String> {
-    List<Deck> findAllByUserIdAndNameContaining(String userId, String name, Pageable pageable);
-    Long countByUserIdAndNameContaining(String userId, String name);
+    List<Deck> findAllByUserIdAndNameContainingIgnoreCase(String userId, String name, Pageable pageable);
+    Long countByUserIdAndNameContainingIgnoreCase(String userId, String name);
 }

@@ -1,7 +1,6 @@
 package com.mcflythekid.lazylearncore.service;
 
 import com.mcflythekid.lazylearncore.entity.Deck;
-import com.mcflythekid.lazylearncore.entity.User;
 import com.mcflythekid.lazylearncore.indto.CreateDeckInDto;
 import com.mcflythekid.lazylearncore.indto.UpdateDeckInDto;
 import com.mcflythekid.lazylearncore.indto.SearchDeckInDto;
@@ -61,9 +60,9 @@ public class DeckService {
     }
 
     public BootstrapTableOutDto search(SearchDeckInDto searchDeckInDto){
-        List<Deck> rows = deckRepo.findAllByUserIdAndNameContaining(searchDeckInDto.getUserId(),
+        List<Deck> rows = deckRepo.findAllByUserIdAndNameContainingIgnoreCase(searchDeckInDto.getUserId(),
                 searchDeckInDto.getSearch(), searchDeckInDto.getPageable());
-        Long total = deckRepo.countByUserIdAndNameContaining(searchDeckInDto.getUserId(), searchDeckInDto.getSearch());
+        Long total = deckRepo.countByUserIdAndNameContainingIgnoreCase(searchDeckInDto.getUserId(), searchDeckInDto.getSearch());
         return new BootstrapTableOutDto(rows, total);
     }
 }
