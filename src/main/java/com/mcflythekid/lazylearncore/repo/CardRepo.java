@@ -9,6 +9,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -29,4 +30,8 @@ public interface CardRepo extends JpaRepository<Card, String> {
     @Modifying
     @Query("DELETE FROM Card c WHERE c.deckId = :deckId")
     void deleteAllByDeckId(@Param("deckId") String deckId);
+
+    List<Card> findAllByDeckId(String deckId);
+
+    List<Card> findAllByDeckIdAndWakeupOnBefore(String deckId, Date wakeupOn);
 }
