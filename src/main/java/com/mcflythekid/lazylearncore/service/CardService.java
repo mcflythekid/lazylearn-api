@@ -41,6 +41,7 @@ public class CardService {
         card.setFront(createCardInDto.getFront());
         card.setBack(createCardInDto.getBack());
         card.setCreatedOn(new Date());
+        card.setWakeupOn(new Date());
         card.setDeckId(createCardInDto.getDeckId());
         card.setUserId(createCardInDto.getUserId());
         card.setStep(Const.CARD_STEP_FRESH);
