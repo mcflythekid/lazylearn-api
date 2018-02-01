@@ -26,9 +26,10 @@ public class CardService {
     private CardRepo cardRepo;
 
     public BootstrapTableOutDto search(SearchCardInDto searchCardInDto) {
-        List<Card> rows = cardRepo.findAllByDeckIdAndFrontContaining(searchCardInDto.getDeckId(),
-                searchCardInDto.getSearch(), searchCardInDto.getPageable());
-        Long total = cardRepo.countByDeckIdAndFrontContaining(searchCardInDto.getDeckId(), searchCardInDto.getSearch());
+        List<Card> rows = cardRepo.findAllByFrontContainingOrBackContainingAndDeckId(searchCardInDto.getSearch(),
+                searchCardInDto.getSearch(), searchCardInDto.getDeckId(), searchCardInDto.getPageable());
+        Long total = cardRepo.countByFrontContainingOrBackContainingAndDeckId(searchCardInDto.getSearch(),
+                searchCardInDto.getSearch(), searchCardInDto.getDeckId());
         return new BootstrapTableOutDto(rows, total);
     }
 
