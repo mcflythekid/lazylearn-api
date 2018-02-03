@@ -77,6 +77,8 @@ public class CardService {
         } else {
             card.setWakeupOn(getWakeupOn(card.getStep()));
         }
+        
+        cardRepo.save(card);
         return JSON.ok();
     }
 
