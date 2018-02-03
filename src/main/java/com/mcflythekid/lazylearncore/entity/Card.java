@@ -25,6 +25,9 @@ public class Card implements Serializable{
 
     @JsonIgnore
     public void increaseStep(){
+        if (step == Const.CARD_STEP_FRESH){
+            step = 0;
+        }
         step++;
     }
 
