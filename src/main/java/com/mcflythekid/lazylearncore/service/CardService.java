@@ -9,6 +9,7 @@ import com.mcflythekid.lazylearncore.indto.UpdateCardInDto;
 import com.mcflythekid.lazylearncore.outdto.BootstrapTableOutDto;
 import com.mcflythekid.lazylearncore.outdto.JSON;
 import com.mcflythekid.lazylearncore.repo.CardRepo;
+import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -63,18 +64,26 @@ public class CardService {
         return JSON.ok();
     }
 
+    private Date getWakeupOn(Integer step){
+        return DateUtils.addDays(new Date(), Const.CARD_STEP_MAP.get(step));
+    }
+
     public JSON correct(Card card) {
-        card.setUpdatedOn(new Date());
-        card.setWakeupOn(card.getUpdatedOn());
-        card.setStep(card.getStep() + 1);
-        cardRepo.save(card);
+        card.increaseStep();
+        card.setLearnedOn(new Date());
+
+        if (card.isReadyToArchive()){
+            card.setWakeupOn(null);
+        } else {
+            card.setWakeupOn(getWakeupOn(card.getStep()));
+        }
         return JSON.ok();
     }
 
     public JSON incorrect(Card card) {
-        card.setUpdatedOn(new Date());
-        card.setWakeupOn(card.getUpdatedOn());
-        card.setStep(Const.CARD_STEP_WRONG);
+        card.setLearnedOn(new Date());
+        card.setWakeupOn(new Date());
+        card.resetStep();
         cardRepo.save(card);
         return JSON.ok();
     }

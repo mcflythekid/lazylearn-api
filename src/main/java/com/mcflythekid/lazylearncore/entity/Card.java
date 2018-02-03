@@ -1,6 +1,7 @@
 package com.mcflythekid.lazylearncore.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.mcflythekid.lazylearncore.Const;
 
 import javax.persistence.Entity;
@@ -16,6 +17,21 @@ import java.util.Date;
 @Entity
 @Table(name="card")
 public class Card implements Serializable{
+
+    @JsonIgnore
+    public boolean isReadyToArchive(){
+        return step >= Const.CARD_STEP_ARCHIVE;
+    }
+
+    @JsonIgnore
+    public void increaseStep(){
+        step++;
+    }
+
+    @JsonIgnore
+    public void resetStep(){
+        step = Const.CARD_STEP_WRONG;
+    }
 
     @Id
     private String id;
@@ -34,6 +50,9 @@ public class Card implements Serializable{
 
     @JsonFormat(pattern = Const.PARAM_JSON_DATETIMEFORMAT, timezone = Const.PARAM_JSON_TIMEZONE)
     private Date wakeupOn;
+
+    @JsonFormat(pattern = Const.PARAM_JSON_DATETIMEFORMAT, timezone = Const.PARAM_JSON_TIMEZONE)
+    private Date learnedOn;
 
     private String deckId;
     private String userId;
@@ -109,5 +128,13 @@ public class Card implements Serializable{
 
     public void setUserId(String userId) {
         this.userId = userId;
+    }
+
+    public Date getLearnedOn() {
+        return learnedOn;
+    }
+
+    public void setLearnedOn(Date learnedOn) {
+        this.learnedOn = learnedOn;
     }
 }

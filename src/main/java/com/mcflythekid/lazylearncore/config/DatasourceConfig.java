@@ -73,7 +73,7 @@ public class DatasourceConfig {
         Properties props = new Properties();
         props.put("hibernate.dialect", "org.hibernate.dialect.MySQLDialect");
         props.put("hibernate.hbm2ddl.auto", "validate");
-        props.put("show-sql", false);
+        props.put("show-sql", true);
         return props;
     }
 
