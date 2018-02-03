@@ -14,6 +14,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.provider.token.DefaultTokenServices;
 import org.springframework.security.oauth2.provider.token.TokenStore;
@@ -31,9 +32,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	@Value("${security.signing-key}")
 	private String signingKey;
 
-	@Value("${security.encoding-strength}")
-	private Integer encodingStrength;
-
 	@Value("${security.security-realm}")
 	private String securityRealm;
 
@@ -47,8 +45,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	}
 
     @Bean
-    public ShaPasswordEncoder passwordEncoder() {
-        return new ShaPasswordEncoder(encodingStrength);
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
     }
 
 	@Override

@@ -1,6 +1,7 @@
 package com.mcflythekid.lazylearncore;
 
 import java.lang.reflect.Field;
+import java.util.Random;
 
 /**
  * @author McFly the Kid
@@ -15,5 +16,16 @@ public final class Utils {
         } catch (Exception e){
             return null;
         }
+    }
+
+    public static String randomString(Integer length){
+        final String SALTCHARS = "ABCDEFGHJKLMNOPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz";
+        StringBuilder salt = new StringBuilder();
+        Random rnd = new Random();
+        while (salt.length() < length) { // length of the random string.
+            int index = (int) (rnd.nextFloat() * SALTCHARS.length());
+            salt.append(SALTCHARS.charAt(index));
+        }
+        return salt.toString();
     }
 }

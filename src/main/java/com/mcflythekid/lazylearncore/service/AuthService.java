@@ -1,5 +1,6 @@
 package com.mcflythekid.lazylearncore.service;
 
+import com.mcflythekid.lazylearncore.Utils;
 import com.mcflythekid.lazylearncore.entity.Card;
 import com.mcflythekid.lazylearncore.entity.Deck;
 import com.mcflythekid.lazylearncore.entity.User;
@@ -13,6 +14,7 @@ import com.mcflythekid.lazylearncore.repo.CardRepo;
 import com.mcflythekid.lazylearncore.repo.DeckRepo;
 import com.mcflythekid.lazylearncore.repo.UserRepo;
 import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;
@@ -21,12 +23,15 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.encoding.ShaPasswordEncoder;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -47,7 +52,7 @@ public class AuthService {
     private String appOAuthTokenChecker;
 
     @Autowired
-    private ShaPasswordEncoder passwordEncoder;
+    private PasswordEncoder passwordEncoder;
 
     @Autowired
     private UserRepo userRepo;
@@ -56,15 +61,17 @@ public class AuthService {
      * @return 32 chars string
      */
     public String getRamdomId(){
-        return UUID.randomUUID().toString().replace("-", "");
+        final SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+        String pre = sdf.format(new Date());
+        return pre + Utils.randomString(30);
     }
 
     public boolean isPasswordValid(String password, User user){
-        return passwordEncoder.isPasswordValid(user.getHashedPassword(), password, null);
+        return passwordEncoder.matches(password, user.getHashedPassword());
     }
 
     public String hashPassword(String password){
-        return passwordEncoder.encodePassword(password, null);
+        return passwordEncoder.encode(password);
     }
 
     public AuthLoginOutDto login(AuthLoginInDto authLoginInDto){
@@ -80,21 +87,6 @@ public class AuthService {
             return new AuthLoginOutDto(oAuthOutDto.getAccessToken(), user.getId(), user.getEmail());
         } catch (Exception e){
             throw new AppUnauthorizedException("Login failure", e);
-        }
-    }
-
-    public void checkOwner(Object object){
-        if (object == null){
-            throw new AppNotFoundException();
-        }
-        if (object instanceof User){
-            if (!((User)object).getId().equals(getCurrentUserId())){
-                throw new AppForbiddenException("It's not you");
-            }
-        } else if (object instanceof Deck){
-            if (!((Deck)object).getUserId().equals(getCurrentUserId())){
-                throw new AppForbiddenException("It's not you");
-            }
         }
     }
 

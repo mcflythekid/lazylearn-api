@@ -1,4 +1,4 @@
-package com.mcflythekid.lazylearncore.config;
+package com.mcflythekid.lazylearncore.configoauth;
 
 import java.util.Arrays;
 
@@ -35,7 +35,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 	private String scopeRead;
 
 	@Value("${security.jwt.scope-write}")
-	private String scopeWrite = "write";
+	private String scopeWrite;
 
 	@Value("${security.jwt.resource-ids}")
 	private String resourceIds;
