@@ -45,7 +45,7 @@ public class CardService {
         card.setWakeupOn(new Date());
         card.setDeckId(createCardInDto.getDeckId());
         card.setUserId(createCardInDto.getUserId());
-        card.setStep(Const.CARD_STEP_FRESH);
+        card.setStep(Const.CARD_STEP_BEGIN);
         cardRepo.save(card);
         return JSON.ok();
     }

@@ -20,20 +20,17 @@ public class Card implements Serializable{
 
     @JsonIgnore
     public boolean isReadyToArchive(){
-        return step >= Const.CARD_STEP_ARCHIVE;
+        return step >= Const.CARD_STEP_END;
     }
 
     @JsonIgnore
     public void increaseStep(){
-        if (step == Const.CARD_STEP_FRESH){
-            step = 0;
-        }
         step++;
     }
 
     @JsonIgnore
     public void resetStep(){
-        step = Const.CARD_STEP_WRONG;
+        step = Const.CARD_STEP_BEGIN;
     }
 
     @Id

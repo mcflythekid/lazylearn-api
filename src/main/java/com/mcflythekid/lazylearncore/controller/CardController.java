@@ -2,13 +2,11 @@ package com.mcflythekid.lazylearncore.controller;
 
 import com.mcflythekid.lazylearncore.entity.Card;
 import com.mcflythekid.lazylearncore.entity.Deck;
+import com.mcflythekid.lazylearncore.entity.User;
 import com.mcflythekid.lazylearncore.indto.*;
 import com.mcflythekid.lazylearncore.outdto.BootstrapTableOutDto;
 import com.mcflythekid.lazylearncore.outdto.JSON;
-import com.mcflythekid.lazylearncore.service.AuthService;
-import com.mcflythekid.lazylearncore.service.CardService;
-import com.mcflythekid.lazylearncore.service.DeckService;
-import com.mcflythekid.lazylearncore.service.UserService;
+import com.mcflythekid.lazylearncore.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,6 +20,9 @@ public class CardController extends BaseController{
 
     @Autowired
     private CardService cardService;
+
+    @Autowired
+    private ChartService chartService;
 
     @PostMapping("/deck/{deckId}/card")
     public JSON create(@PathVariable("deckId") String deckId, @RequestBody @Valid CreateCardInDto createCardInDto){
@@ -79,5 +80,19 @@ public class CardController extends BaseController{
         Card card = authorizeCard(cardId);
 
         return cardService.incorrect(card);
+    }
+
+    @GetMapping("/user/{userId}/chart")
+    public Object userChart(@PathVariable("userId") String userId){
+        authorizeUser(userId);
+
+        return chartService.userChart(userId);
+    }
+
+    @GetMapping("/deck/{deckId}/chart")
+    public Object deckChart(@PathVariable("deckId") String deckId){
+        authorizeDeck(deckId);
+
+        return chartService.deckChart(deckId);
     }
 }
