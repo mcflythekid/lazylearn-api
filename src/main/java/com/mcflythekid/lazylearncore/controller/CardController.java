@@ -32,7 +32,7 @@ public class CardController extends BaseController{
         return cardService.create(createCardInDto);
     }
 
-    @PutMapping("/card/{cardId}")
+    @PatchMapping("/card/{cardId}")
     public JSON update(@PathVariable("cardId") String cardId, @RequestBody @Valid UpdateCardInDto updateCardInDto){
         authorizeCard(cardId);
 
@@ -65,5 +65,19 @@ public class CardController extends BaseController{
         searchCardInDto.setSearch(search);
         searchCardInDto.setDeckId(deckId);
         return cardService.search(searchCardInDto);
+    }
+
+    @PatchMapping("/card/{cardId}/correct")
+    public JSON correct(@PathVariable("cardId") String cardId){
+        Card card = authorizeCard(cardId);
+
+        return cardService.correct(card);
+    }
+
+    @PatchMapping("/card/{cardId}/incorrect")
+    public JSON incorrect(@PathVariable("cardId") String cardId){
+        Card card = authorizeCard(cardId);
+
+        return cardService.incorrect(card);
     }
 }

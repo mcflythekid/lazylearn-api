@@ -20,4 +20,8 @@ public final class Const {
     public static final Integer FORGETPASSWORD_EXPIRED_DAYS = 10;
 
     public static final Integer CARD_STEP_FRESH = -1;
+    public static final Integer CARD_STEP_WRONG = 0;
+
+    public static final String LEARNTYPE_LEARN = "learn";
+    public static final String LEARNTYPE_REVIEW = "review";
 }

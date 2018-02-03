@@ -62,4 +62,20 @@ public class CardService {
         cardRepo.save(card);
         return JSON.ok();
     }
+
+    public JSON correct(Card card) {
+        card.setUpdatedOn(new Date());
+        card.setWakeupOn(card.getUpdatedOn());
+        card.setStep(card.getStep() + 1);
+        cardRepo.save(card);
+        return JSON.ok();
+    }
+
+    public JSON incorrect(Card card) {
+        card.setUpdatedOn(new Date());
+        card.setWakeupOn(card.getUpdatedOn());
+        card.setStep(Const.CARD_STEP_WRONG);
+        cardRepo.save(card);
+        return JSON.ok();
+    }
 }
