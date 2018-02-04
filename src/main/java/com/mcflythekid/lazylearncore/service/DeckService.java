@@ -1,6 +1,7 @@
 package com.mcflythekid.lazylearncore.service;
 
 import com.mcflythekid.lazylearncore.entity.Deck;
+import com.mcflythekid.lazylearncore.entity.VDeck;
 import com.mcflythekid.lazylearncore.indto.CreateDeckInDto;
 import com.mcflythekid.lazylearncore.indto.UpdateDeckInDto;
 import com.mcflythekid.lazylearncore.indto.SearchDeckInDto;
@@ -8,6 +9,7 @@ import com.mcflythekid.lazylearncore.outdto.BootstrapTableOutDto;
 import com.mcflythekid.lazylearncore.outdto.JSON;
 import com.mcflythekid.lazylearncore.repo.CardRepo;
 import com.mcflythekid.lazylearncore.repo.DeckRepo;
+import com.mcflythekid.lazylearncore.repo.VDeckRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,6 +26,9 @@ public class DeckService {
 
     @Autowired
     private DeckRepo deckRepo;
+
+    @Autowired
+    private VDeckRepo vDeckRepo;
 
     @Autowired
     private CardRepo cardRepo;
@@ -60,9 +65,9 @@ public class DeckService {
     }
 
     public BootstrapTableOutDto search(SearchDeckInDto searchDeckInDto){
-        List<Deck> rows = deckRepo.findAllByUserIdAndNameContainingIgnoreCase(searchDeckInDto.getUserId(),
+        List<VDeck> rows = vDeckRepo.findAllByUserIdAndNameContainingIgnoreCase(searchDeckInDto.getUserId(),
                 searchDeckInDto.getSearch(), searchDeckInDto.getPageable());
-        Long total = deckRepo.countByUserIdAndNameContainingIgnoreCase(searchDeckInDto.getUserId(), searchDeckInDto.getSearch());
+        Long total = vDeckRepo.countByUserIdAndNameContainingIgnoreCase(searchDeckInDto.getUserId(), searchDeckInDto.getSearch());
         return new BootstrapTableOutDto(rows, total);
     }
 }
