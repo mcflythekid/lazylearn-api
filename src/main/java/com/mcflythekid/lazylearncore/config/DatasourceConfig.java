@@ -73,7 +73,11 @@ public class DatasourceConfig {
         Properties props = new Properties();
         props.put("hibernate.dialect", "org.hibernate.dialect.MySQLDialect");
         props.put("hibernate.hbm2ddl.auto", "validate");
-        props.put("show-sql", true);
+        props.put("hibernate.show_sql", false);
+        props.put("hibernate.format_sql", true);
+        props.put("hibernate.connection.useUnicode", true);
+        props.put("hibernate.connection.CharSet", "utf8mb4");
+        props.put("hibernate.connection.characterEncoding", "utf8");
         return props;
     }
 
