@@ -57,6 +57,15 @@ public class Card implements Serializable{
     private String deckId;
     private String userId;
     private Integer step;
+    private Integer archived;
+
+    public Integer getArchived() {
+        return archived;
+    }
+
+    public void setArchived(Integer archived) {
+        this.archived = archived;
+    }
 
     public Integer getStep() {
         return step;
