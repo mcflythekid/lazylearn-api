@@ -21,6 +21,7 @@ public class Deck implements Serializable {
 
     private String userId;
     private String name;
+    private Integer archived;
 
     @JsonFormat(pattern = Const.PARAM_JSON_DATETIMEFORMAT, timezone = Const.PARAM_JSON_TIMEZONE)
     private Date createdOn;
@@ -66,5 +67,13 @@ public class Deck implements Serializable {
 
     public void setUpdatedOn(Date updatedOn) {
         this.updatedOn = updatedOn;
+    }
+
+    public Integer getArchived() {
+        return archived;
+    }
+
+    public void setArchived(Integer archived) {
+        this.archived = archived;
     }
 }
