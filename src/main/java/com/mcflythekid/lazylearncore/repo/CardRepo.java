@@ -43,4 +43,12 @@ public interface CardRepo extends JpaRepository<Card, String> {
 
     Long countAllByDeckIdAndStep(String deckId, Integer step);
     Long countAllByUserIdAndStep(String userId, Integer step);
+
+    @Modifying
+    @Query("UPDATE Card c SET c.archived = 1 WHERE c.deckId = :deckId")
+    void archiveAllByDeckId(@Param("deckId") String deckId);
+
+    @Modifying
+    @Query("UPDATE Card c SET c.archived = 0 WHERE c.deckId = :deckId")
+    void unarchiveAllByDeckId(@Param("deckId") String deckId);
 }

@@ -1,5 +1,6 @@
 package com.mcflythekid.lazylearncore.service;
 
+import com.mcflythekid.lazylearncore.Const;
 import com.mcflythekid.lazylearncore.entity.Deck;
 import com.mcflythekid.lazylearncore.entity.VDeck;
 import com.mcflythekid.lazylearncore.indto.CreateDeckInDto;
@@ -69,5 +70,23 @@ public class DeckService {
                 searchDeckInDto.getSearch(), searchDeckInDto.getPageable());
         Long total = vDeckRepo.countByUserIdAndNameContainingIgnoreCase(searchDeckInDto.getUserId(), searchDeckInDto.getSearch());
         return new BootstrapTableOutDto(rows, total);
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    public JSON archive(String deckId) {
+        Deck deck = deckRepo.findOne(deckId);
+        deck.setArchived(Const.CARDDECK_ARCHIVED);
+        deckRepo.save(deck);
+        cardRepo.archiveAllByDeckId(deckId);
+        return JSON.ok();
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    public JSON unarchive(String deckId) {
+        Deck deck = deckRepo.findOne(deckId);
+        deck.setArchived(Const.CARDDECK_UNARCHIVED);
+        deckRepo.save(deck);
+        cardRepo.unarchiveAllByDeckId(deckId);
+        return JSON.ok();
     }
 }

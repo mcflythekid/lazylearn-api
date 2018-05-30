@@ -85,4 +85,16 @@ public class DeckController extends BaseController{
 
         throw new AppNotFoundException("Learn type not found");
     }
+
+    @PostMapping("/deck/archive/{deckId}")
+    public JSON archive(@PathVariable("deckId") String deckId){
+        authorizeDeck(deckId);
+        return deckService.archive(deckId);
+    }
+
+    @PostMapping("/deck/unarchive/{deckId}")
+    public JSON unarchive(@PathVariable("deckId") String deckId){
+        authorizeDeck(deckId);
+        return deckService.unarchive(deckId);
+    }
 }

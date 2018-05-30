@@ -49,4 +49,8 @@ public final class Const {
         CARD_STEP_LABEL_MAP.put(5, "2 years");
         CARD_STEP_LABEL_MAP.put(6, "Done");
     }
+
+    public static final Integer CARDDECK_ARCHIVED = 1;
+    public static final Integer CARDDECK_UNARCHIVED = 0;
+
 }
