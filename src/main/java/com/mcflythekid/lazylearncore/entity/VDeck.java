@@ -36,6 +36,16 @@ public class VDeck{
     @Column(columnDefinition = "decimal(19,0)")
     private Long totalTimeupCard;
 
+    private Integer archived;
+
+    public Integer getArchived() {
+        return archived;
+    }
+
+    public void setArchived(Integer archived) {
+        this.archived = archived;
+    }
+
     public String getId() {
         return id;
     }
