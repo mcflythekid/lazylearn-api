@@ -35,14 +35,14 @@ public interface CardRepo extends JpaRepository<Card, String> {
 
     List<Card> findAllByDeckIdAndWakeupOnBefore(String deckId, Date wakeupOn);
 
-    Long countAllByDeckIdAndStepAndWakeupOnBefore(String deckId, Integer step, Date wakeupOn);
-    Long countAllByUserIdAndStepAndWakeupOnBefore(String userId, Integer step, Date wakeupOn);
+    Long countAllByDeckIdAndStepAndWakeupOnBeforeAndArchived(String deckId, Integer step, Date wakeupOn, Integer archived);
+    Long countAllByUserIdAndStepAndWakeupOnBeforeAndArchived(String userId, Integer step, Date wakeupOn, Integer archived);
 
-    Long countAllByDeckIdAndStepAndWakeupOnAfter(String deckId, Integer step, Date wakeupOn);
-    Long countAllByUserIdAndStepAndWakeupOnAfter(String userId, Integer step, Date wakeupOn);
+    Long countAllByDeckIdAndStepAndWakeupOnAfterAndArchived(String deckId, Integer step, Date wakeupOn, Integer archived);
+    Long countAllByUserIdAndStepAndWakeupOnAfterAndArchived(String userId, Integer step, Date wakeupOn, Integer archived);
 
-    Long countAllByDeckIdAndStep(String deckId, Integer step);
-    Long countAllByUserIdAndStep(String userId, Integer step);
+    Long countAllByDeckIdAndStepAndArchived(String deckId, Integer step, Integer archived);
+    Long countAllByUserIdAndStepAndArchived(String userId, Integer step, Integer archived);
 
     @Modifying
     @Query("UPDATE Card c SET c.archived = 1 WHERE c.deckId = :deckId")

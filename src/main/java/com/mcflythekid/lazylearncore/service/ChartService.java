@@ -44,19 +44,19 @@ public class ChartService {
     }
 
     private Long countCorrectByUserAndStep(String userId, Integer step){
-        if (step == Const.CARD_STEP_END) return cardRepo.countAllByUserIdAndStep(userId, step);
-        return cardRepo.countAllByUserIdAndStepAndWakeupOnAfter(userId, step, new Date());
+        if (step == Const.CARD_STEP_END) return cardRepo.countAllByUserIdAndStepAndArchived(userId, step, Const.CARDDECK_UNARCHIVED);
+        return cardRepo.countAllByUserIdAndStepAndWakeupOnAfterAndArchived(userId, step, new Date(), Const.CARDDECK_UNARCHIVED);
     }
     private Long countTimeupByUserAndStep(String userId, Integer step){
         if (step == Const.CARD_STEP_END) return 0L;
-        return cardRepo.countAllByUserIdAndStepAndWakeupOnBefore(userId, step, new Date());
+        return cardRepo.countAllByUserIdAndStepAndWakeupOnBeforeAndArchived(userId, step, new Date(), Const.CARDDECK_UNARCHIVED);
     }
     private Long countCorrectByDeckAndStep(String deckId, Integer step){
-        if (step == Const.CARD_STEP_END) return cardRepo.countAllByDeckIdAndStep(deckId, step);
-        return cardRepo.countAllByDeckIdAndStepAndWakeupOnAfter(deckId, step, new Date());
+        if (step == Const.CARD_STEP_END) return cardRepo.countAllByDeckIdAndStepAndArchived(deckId, step, Const.CARDDECK_UNARCHIVED);
+        return cardRepo.countAllByDeckIdAndStepAndWakeupOnAfterAndArchived(deckId, step, new Date(), Const.CARDDECK_UNARCHIVED);
     }
     private Long countTimeupByDeckAndStep(String deckId, Integer step){
         if (step == Const.CARD_STEP_END) return 0L;
-        return cardRepo.countAllByDeckIdAndStepAndWakeupOnBefore(deckId, step, new Date());
+        return cardRepo.countAllByDeckIdAndStepAndWakeupOnBeforeAndArchived(deckId, step, new Date(), Const.CARDDECK_UNARCHIVED);
     }
 }
