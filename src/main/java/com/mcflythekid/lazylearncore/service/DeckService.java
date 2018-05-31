@@ -43,6 +43,7 @@ public class DeckService {
         deck.setId(authService.getRamdomId());
         deck.setName(createDeckInDto.getName());
         deck.setUserId(createDeckInDto.getUserId());
+        deck.setArchived(Const.CARDDECK_UNARCHIVED);
         deckRepo.save(deck);
         return JSON.ok();
     }

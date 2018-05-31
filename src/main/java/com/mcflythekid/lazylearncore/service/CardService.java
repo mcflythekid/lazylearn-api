@@ -46,6 +46,7 @@ public class CardService {
         card.setDeckId(createCardInDto.getDeckId());
         card.setUserId(createCardInDto.getUserId());
         card.setStep(Const.CARD_STEP_BEGIN);
+        card.setArchived(Const.CARDDECK_UNARCHIVED);
         cardRepo.save(card);
         return JSON.ok();
     }
