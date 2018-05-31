@@ -76,6 +76,7 @@ public class UserService {
         forgetPassword.setUpdatedOn(new Date());
 
         user.setHashedPassword(authService.hashPassword(userResetPasswordInDto.getPassword()));
+        user.setUpdatedOn(new Date());
         userRepo.save(user);
 
         return JSON.ok();
