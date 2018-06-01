@@ -86,7 +86,7 @@ public class AuthService {
             OAuthOutDto oAuthOutDto = new RestTemplate().postForObject(appOAuthTokenChecker, request, OAuthOutDto.class);
             return new AuthLoginOutDto(oAuthOutDto.getAccessToken(), user.getId(), user.getEmail());
         } catch (Exception e){
-            throw new AppUnauthorizedException("Login failure", e);
+            throw new AppUnauthorizedException("401", e);
         }
     }
 
