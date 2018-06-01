@@ -34,6 +34,6 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
         .antMatchers("/login", "/user", "/forget-password", "/user/by-forget-password/**").permitAll()
         .antMatchers("/admin/**").hasAuthority(Const.AUTHORITY_ADMIN)
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////
-        .anyRequest().authenticated();
+       .anyRequest().hasAuthority(Const.AUTHORITY_DEFAULT);
     }
 }
