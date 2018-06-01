@@ -3,17 +3,18 @@ package com.mcflythekid.lazylearncore.service;
 import com.mcflythekid.lazylearncore.Const;
 import com.mcflythekid.lazylearncore.entity.ForgetPassword;
 import com.mcflythekid.lazylearncore.entity.User;
+import com.mcflythekid.lazylearncore.entity.VDeck;
 import com.mcflythekid.lazylearncore.exception.AppConflictException;
 import com.mcflythekid.lazylearncore.exception.AppForbiddenException;
 import com.mcflythekid.lazylearncore.exception.AppNotFoundException;
 import com.mcflythekid.lazylearncore.exception.AppUnauthorizedException;
-import com.mcflythekid.lazylearncore.indto.UserChangePasswordInDto;
-import com.mcflythekid.lazylearncore.indto.UserRegisterInDto;
-import com.mcflythekid.lazylearncore.indto.UserResetPasswordInDto;
+import com.mcflythekid.lazylearncore.indto.*;
+import com.mcflythekid.lazylearncore.outdto.BootstrapTableOutDto;
 import com.mcflythekid.lazylearncore.outdto.JSON;
 import com.mcflythekid.lazylearncore.outdto.UserRegisterOutDto;
 import com.mcflythekid.lazylearncore.repo.ForgetPasswordRepo;
 import com.mcflythekid.lazylearncore.repo.UserRepo;
+import com.mcflythekid.lazylearncore.repo.VUserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 
 import javax.swing.*;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author McFly the Kid
@@ -57,6 +59,9 @@ public class UserService {
     private UserRepo userRepo;
 
     @Autowired
+    private VUserRepo vuserRepo;
+
+    @Autowired
     private ForgetPasswordRepo forgetPasswordRepo;
 
     @Autowired
@@ -80,5 +85,11 @@ public class UserService {
         userRepo.save(user);
 
         return JSON.ok();
+    }
+
+    public BootstrapTableOutDto search(SearchUserInDto searchUserInDto){
+        List rows = vuserRepo.findAllByEmail(searchUserInDto.getSearch(), searchUserInDto.getPageable());
+        Long total = vuserRepo.countAllByEmail(searchUserInDto.getSearch());
+        return new BootstrapTableOutDto(rows, total);
     }
 }
