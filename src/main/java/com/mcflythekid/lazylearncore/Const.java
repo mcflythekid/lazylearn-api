@@ -13,7 +13,9 @@ public final class Const {
 
     public static final String PARAM_JSON_TIMEZONE = "GMT+7";
 
-    public static final String ROLE_DEFAULT = "DEFAULT";
+    public static final String AUTHORITY_DEFAULT = "DEFAULT";
+    public static final String AUTHORITY_ADMIN = "ADMIN";
+    public static final String AUTHORITY_ADMIN__EMAIL = "odopoc@gmail.com";
 
     public static final String RET_OK = "ok";
     public static final String RET_ERROR = "error";

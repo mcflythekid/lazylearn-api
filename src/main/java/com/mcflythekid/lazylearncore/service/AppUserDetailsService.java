@@ -13,7 +13,6 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 /**
  * @author McFly the Kid
@@ -29,8 +28,11 @@ public class AppUserDetailsService implements UserDetailsService {
             throw new UsernameNotFoundException(String.format("The username %s doesn't exist", email));
         }
 
-        List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
-        authorities.add(new SimpleGrantedAuthority(Const.ROLE_DEFAULT));
+        List<GrantedAuthority> authorities = new ArrayList<>();
+        authorities.add(new SimpleGrantedAuthority(Const.AUTHORITY_DEFAULT));
+        if (user.getEmail().equals(Const.AUTHORITY_ADMIN__EMAIL)){
+            authorities.add(new SimpleGrantedAuthority(Const.AUTHORITY_ADMIN));
+        }
 
         UserDetails userDetails = new org.springframework.security.core.userdetails.
                 User(user.getId(), user.getHashedPassword(), authorities);

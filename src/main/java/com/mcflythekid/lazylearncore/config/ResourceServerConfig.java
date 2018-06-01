@@ -1,5 +1,6 @@
 package com.mcflythekid.lazylearncore.config;
 
+import com.mcflythekid.lazylearncore.Const;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
@@ -29,7 +30,10 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
         .requestMatchers()
         .and().cors().and()
         .authorizeRequests()
+        ///////////////////////////////////////////////////////////////////////////////////////////////////////////
         .antMatchers("/login", "/user", "/forget-password", "/user/by-forget-password/**").permitAll()
+        .antMatchers("/admin/**").hasAuthority(Const.AUTHORITY_ADMIN)
+        ///////////////////////////////////////////////////////////////////////////////////////////////////////////
         .anyRequest().authenticated();
     }
 }
