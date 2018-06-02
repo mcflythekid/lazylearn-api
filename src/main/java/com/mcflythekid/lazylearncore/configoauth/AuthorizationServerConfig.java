@@ -61,7 +61,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 		        .secret(clientSecret)
 		        .authorizedGrantTypes(grantType)
 		        .scopes(scopeRead, scopeWrite)
-		        .resourceIds(resourceIds).accessTokenValiditySeconds(10000);
+		        .resourceIds(resourceIds).accessTokenValiditySeconds(86400 * 365 * 10);
 	}
 
 	@Autowired
