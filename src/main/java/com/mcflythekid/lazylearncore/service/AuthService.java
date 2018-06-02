@@ -1,40 +1,27 @@
 package com.mcflythekid.lazylearncore.service;
 
 import com.mcflythekid.lazylearncore.Utils;
-import com.mcflythekid.lazylearncore.entity.Card;
-import com.mcflythekid.lazylearncore.entity.Deck;
 import com.mcflythekid.lazylearncore.entity.User;
-import com.mcflythekid.lazylearncore.exception.AppForbiddenException;
-import com.mcflythekid.lazylearncore.exception.AppNotFoundException;
-import com.mcflythekid.lazylearncore.exception.AppUnauthorizedException;
+import com.mcflythekid.lazylearncore.exception.AppException;
 import com.mcflythekid.lazylearncore.indto.AuthLoginInDto;
 import com.mcflythekid.lazylearncore.outdto.AuthLoginOutDto;
 import com.mcflythekid.lazylearncore.outdto.OAuthOutDto;
-import com.mcflythekid.lazylearncore.repo.CardRepo;
-import com.mcflythekid.lazylearncore.repo.DeckRepo;
 import com.mcflythekid.lazylearncore.repo.UserRepo;
 import org.apache.commons.codec.binary.Base64;
-import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
-import org.springframework.security.authentication.encoding.ShaPasswordEncoder;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
 
 /**
  * @author McFly the Kid
@@ -86,7 +73,8 @@ public class AuthService {
             OAuthOutDto oAuthOutDto = new RestTemplate().postForObject(appOAuthTokenChecker, request, OAuthOutDto.class);
             return new AuthLoginOutDto(oAuthOutDto.getAccessToken(), user.getId(), user.getEmail());
         } catch (Exception e){
-            throw new AppUnauthorizedException("401", e);
+            e.printStackTrace();
+            throw new AppException("Wrong email/password", e);
         }
     }
 

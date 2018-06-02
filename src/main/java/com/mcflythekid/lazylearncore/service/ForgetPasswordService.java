@@ -4,7 +4,7 @@ import com.mcflythekid.lazylearncore.Const;
 import com.mcflythekid.lazylearncore.dto.EmailDto;
 import com.mcflythekid.lazylearncore.entity.ForgetPassword;
 import com.mcflythekid.lazylearncore.entity.User;
-import com.mcflythekid.lazylearncore.exception.AppNotFoundException;
+import com.mcflythekid.lazylearncore.exception.AppException;
 import com.mcflythekid.lazylearncore.indto.ForgetPasswordCreateInDto;
 import com.mcflythekid.lazylearncore.outdto.JSON;
 import com.mcflythekid.lazylearncore.repo.ForgetPasswordRepo;
@@ -26,7 +26,7 @@ public class ForgetPasswordService {
 
     public JSON create(ForgetPasswordCreateInDto forgetPasswordCreateInDto) {
         User user = userRepo.findByEmail(forgetPasswordCreateInDto.getEmail());
-        if (user == null) throw new AppNotFoundException("Email not found");
+        if (user == null) throw new AppException("Email not found");
 
         ForgetPassword forgetPassword = new ForgetPassword();
         forgetPassword.setId(authService.getRamdomId());

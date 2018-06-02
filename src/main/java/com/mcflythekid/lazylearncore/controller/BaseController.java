@@ -3,7 +3,7 @@ package com.mcflythekid.lazylearncore.controller;
 import com.mcflythekid.lazylearncore.entity.Card;
 import com.mcflythekid.lazylearncore.entity.Deck;
 import com.mcflythekid.lazylearncore.entity.User;
-import com.mcflythekid.lazylearncore.exception.AppForbiddenException;
+import com.mcflythekid.lazylearncore.exception.AppException;
 import com.mcflythekid.lazylearncore.repo.CardRepo;
 import com.mcflythekid.lazylearncore.repo.DeckRepo;
 import com.mcflythekid.lazylearncore.repo.UserRepo;
@@ -30,7 +30,7 @@ public abstract class BaseController {
     public User authorizeUser(String userId){
         User user = userRepo.findOne(userId);
         if (user == null || !user.getId().equals(authService.getCurrentUserId())){
-            throw new AppForbiddenException("It's not you");
+            throw new AppException("It's not you");
         }
         return user;
     }
@@ -38,7 +38,7 @@ public abstract class BaseController {
     public Deck authorizeDeck(String deckId){
         Deck deck = deckRepo.findOne(deckId);
         if (deck == null || !deck.getUserId().equals(authService.getCurrentUserId())){
-            throw new AppForbiddenException("It's not you");
+            throw new AppException("It's not you");
         }
         return deck;
     }
@@ -46,7 +46,7 @@ public abstract class BaseController {
     public Card authorizeCard(String cardId) {
         Card card = cardRepo.findOne(cardId);
         if (card == null || !card.getUserId().equals(authService.getCurrentUserId())){
-            throw new AppForbiddenException("It's not you");
+            throw new AppException("It's not you");
         }
         return card;
     }

@@ -2,17 +2,15 @@ package com.mcflythekid.lazylearncore.controller;
 
 import com.mcflythekid.lazylearncore.Const;
 import com.mcflythekid.lazylearncore.entity.Deck;
-import com.mcflythekid.lazylearncore.exception.AppNotFoundException;
+import com.mcflythekid.lazylearncore.exception.AppException;
 import com.mcflythekid.lazylearncore.indto.CreateDeckInDto;
-import com.mcflythekid.lazylearncore.indto.UpdateDeckInDto;
 import com.mcflythekid.lazylearncore.indto.SearchDeckInDto;
+import com.mcflythekid.lazylearncore.indto.UpdateDeckInDto;
 import com.mcflythekid.lazylearncore.outdto.BootstrapTableOutDto;
 import com.mcflythekid.lazylearncore.outdto.JSON;
 import com.mcflythekid.lazylearncore.outdto.LearnOutDto;
-import com.mcflythekid.lazylearncore.service.AuthService;
 import com.mcflythekid.lazylearncore.service.DeckService;
 import com.mcflythekid.lazylearncore.service.LearnService;
-import com.mcflythekid.lazylearncore.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -83,7 +81,7 @@ public class DeckController extends BaseController{
             return learnService.getByReview(deck);
         }
 
-        throw new AppNotFoundException("Learn type not found");
+        throw new AppException("Learn type not found");
     }
 
     @PostMapping("/deck/archive/{deckId}")

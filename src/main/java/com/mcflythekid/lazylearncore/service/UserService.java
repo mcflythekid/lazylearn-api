@@ -3,12 +3,11 @@ package com.mcflythekid.lazylearncore.service;
 import com.mcflythekid.lazylearncore.Const;
 import com.mcflythekid.lazylearncore.entity.ForgetPassword;
 import com.mcflythekid.lazylearncore.entity.User;
-import com.mcflythekid.lazylearncore.entity.VDeck;
-import com.mcflythekid.lazylearncore.exception.AppConflictException;
-import com.mcflythekid.lazylearncore.exception.AppForbiddenException;
-import com.mcflythekid.lazylearncore.exception.AppNotFoundException;
-import com.mcflythekid.lazylearncore.exception.AppUnauthorizedException;
-import com.mcflythekid.lazylearncore.indto.*;
+import com.mcflythekid.lazylearncore.exception.AppException;
+import com.mcflythekid.lazylearncore.indto.SearchUserInDto;
+import com.mcflythekid.lazylearncore.indto.UserChangePasswordInDto;
+import com.mcflythekid.lazylearncore.indto.UserRegisterInDto;
+import com.mcflythekid.lazylearncore.indto.UserResetPasswordInDto;
 import com.mcflythekid.lazylearncore.outdto.BootstrapTableOutDto;
 import com.mcflythekid.lazylearncore.outdto.JSON;
 import com.mcflythekid.lazylearncore.outdto.UserRegisterOutDto;
@@ -18,9 +17,7 @@ import com.mcflythekid.lazylearncore.repo.VUserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.PutMapping;
 
-import javax.swing.*;
 import java.util.Date;
 import java.util.List;
 
@@ -37,7 +34,7 @@ public class UserService {
 
     public UserRegisterOutDto register(UserRegisterInDto userRegisterInDto){
         if (userRepo.findByEmail(userRegisterInDto.getEmail()) != null)
-            throw new AppConflictException("Email address already exists");
+            throw new AppException("Email address already exists");
 
         User user = userRegisterInDto.getUser();
         user.setCreatedOn(new Date());
@@ -69,13 +66,13 @@ public class UserService {
 
     public JSON resetPassword(String forgetPasswordId, UserResetPasswordInDto userResetPasswordInDto) {
         ForgetPassword forgetPassword = forgetPasswordRepo.findOne(forgetPasswordId);
-        if (forgetPassword == null) throw new AppNotFoundException("Request doesn't exists");
+        if (forgetPassword == null) throw new AppException("Request doesn't exists");
 
-        if (forgetPassword.getStatus() == Const.FORGETPASSWORD_STATUS_USED) throw new AppConflictException("Already used");
-        if (forgetPassword.getExpiredOn().before(new Date())) throw new AppConflictException("Already expired");
+        if (forgetPassword.getStatus() == Const.FORGETPASSWORD_STATUS_USED) throw new AppException("Already used");
+        if (forgetPassword.getExpiredOn().before(new Date())) throw new AppException("Already expired");
 
         User user = userRepo.findOne(forgetPassword.getUserId());
-        if (user == null) throw new AppNotFoundException("User doesn't not exists anymore");
+        if (user == null) throw new AppException("User doesn't not exists anymore");
 
         forgetPassword.setStatus(Const.FORGETPASSWORD_STATUS_USED);
         forgetPassword.setUpdatedOn(new Date());
