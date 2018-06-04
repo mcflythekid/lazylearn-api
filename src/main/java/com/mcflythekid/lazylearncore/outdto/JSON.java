@@ -1,6 +1,7 @@
 package com.mcflythekid.lazylearncore.outdto;
 
-import com.mcflythekid.lazylearncore.Const;
+import com.mcflythekid.lazylearncore.config.Consts;
+import com.mcflythekid.lazylearncore.repo.UserRepo;
 
 /**
  * @author McFly the Kid
@@ -16,11 +17,11 @@ public class JSON {
     }
 
     public static JSON ok(){
-        return new JSON(Const.RET_OK);
+        return new JSON(Consts.RET_OK);
     }
 
     public static JSON error(){
-        return new JSON(Const.RET_ERROR);
+        return new JSON(Consts.RET_ERROR);
     }
 
     public static JSON ok(String msg){

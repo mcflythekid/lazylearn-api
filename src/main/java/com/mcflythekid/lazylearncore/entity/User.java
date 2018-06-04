@@ -1,40 +1,57 @@
 package com.mcflythekid.lazylearncore.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.mcflythekid.lazylearncore.Const;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.mcflythekid.lazylearncore.config.Consts;
+import com.mcflythekid.lazylearncore.repo.UserRepo;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
-import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author McFly the Kid
  */
 @Entity
 @Table(name="user")
-public class User implements Serializable{
+public class User implements Serializable {
 
     @Id
     private String id;
-
     private String email;
+    private String hashedPassword;
+    @JsonFormat(pattern = Consts.PARAM_JSON_DATETIMEFORMAT, timezone = Consts.PARAM_JSON_TIMEZONE)
+    private Date createdOn;
+    @JsonFormat(pattern = Consts.PARAM_JSON_DATETIMEFORMAT, timezone = Consts.PARAM_JSON_TIMEZONE)
+    private Date updatedOn;
+    private String registerIpAddress;
+    private String authorities;
 
     @Transient
     private String password;
+    @JsonIgnore
+    List<GrantedAuthority> getGrantedAuthorities() {
+        List data = new ArrayList<>();
+        for (String authority : authorities.split(",")){
+            data.add(new SimpleGrantedAuthority(authority));
+        }
+        return data;
+    }
 
-    private String hashedPassword;
+    public String getAuthorities() {
+        return authorities;
+    }
 
-    @JsonFormat(pattern = Const.PARAM_JSON_DATETIMEFORMAT, timezone = Const.PARAM_JSON_TIMEZONE)
-    private Date createdOn;
-
-    @JsonFormat(pattern = Const.PARAM_JSON_DATETIMEFORMAT, timezone = Const.PARAM_JSON_TIMEZONE)
-    private Date updatedOn;
-
-    private String registerIpAddress;
+    public void setAuthorities(String authorities) {
+        this.authorities = authorities;
+    }
 
     public String getRegisterIpAddress() {
         return registerIpAddress;

@@ -1,12 +1,12 @@
 package com.mcflythekid.lazylearncore.config;
 
-import com.mcflythekid.lazylearncore.Const;
-import org.springframework.boot.context.embedded.ConfigurableEmbeddedServletContainer;
+import com.mcflythekid.lazylearncore.repo.UserRepo;
 import org.springframework.boot.context.embedded.EmbeddedServletContainerCustomizer;
 import org.springframework.boot.context.embedded.tomcat.TomcatEmbeddedServletContainerFactory;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.Ordered;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.cors.CorsConfiguration;
@@ -15,7 +15,6 @@ import org.springframework.web.filter.CorsFilter;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -23,26 +22,20 @@ import java.util.List;
  */
 @EnableWebMvc
 @Configuration
-public class AdditionalWebConfig extends WebMvcConfigurerAdapter {
+public class WebConfig extends WebMvcConfigurerAdapter {
 
-    /**
-     * Allowing all origins, headers and methods here is only intended to keep this example simple.
-     * This is not a default recommended configuration. Make adjustments as
-     * necessary to your use case.
-     *
-     */
     @Bean
-    public CorsFilter corsFilter() {
+    public FilterRegistrationBean corsFilter() {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowCredentials(true);
-        config.setAllowedOrigins(Arrays.asList("*"));
-        config.setAllowedHeaders(Arrays.asList("*"));
-        config.setAllowedMethods(Arrays.asList("*"));
-        if (config.getAllowedOrigins() != null && !config.getAllowedOrigins().isEmpty()) {
-            source.registerCorsConfiguration("/**", config);
-        }
-        return new CorsFilter(source);
+        config.addAllowedOrigin("*");
+        config.addAllowedHeader("*");
+        config.addAllowedMethod("*");
+        source.registerCorsConfiguration("/**", config);
+        FilterRegistrationBean bean = new FilterRegistrationBean(new CorsFilter(source));
+        bean.setOrder(Ordered.HIGHEST_PRECEDENCE);
+        return bean;
     }
 
     @Bean
@@ -52,11 +45,11 @@ public class AdditionalWebConfig extends WebMvcConfigurerAdapter {
                 TomcatEmbeddedServletContainerFactory tomcat = (TomcatEmbeddedServletContainerFactory) container;
                 tomcat.addConnectorCustomizers(
                         (connector) -> {
-                            connector.setMaxPostSize(10000000); // 10 MB
+                            connector.setMaxPostSize(Consts.PARAM_POST_MAXSIZE); // 10 MB
                         }
                 );
             }
-            container.setPort(Const.PARAM_PORT);
+            container.setPort(Consts.PARAM_PORT);
         });
     }
 

@@ -1,20 +1,20 @@
-package com.mcflythekid.lazylearncore;
+package com.mcflythekid.lazylearncore.config;
 
 import java.util.HashMap;
 import java.util.Map;
 
 /**
  * @author McFly the Kid
- * @JsonFormat(pattern = "", timezone = "")
  */
-public final class Const {
+public final class Consts {
     public static final Integer PARAM_PORT = 8084;
     public static final String PARAM_JSON_DATETIMEFORMAT = "yyyy-MM-dd HH:mm:ss";
-
     public static final String PARAM_JSON_TIMEZONE = "GMT+7";
+    public static final int PARAM_POST_MAXSIZE = 10000000;
+    public static final int PARAM_JWT_SECONDS = 3600 * 24 * 365 * 10;
 
-    public static final String AUTHORITY_DEFAULT = "DEFAULT";
-    public static final String AUTHORITY_ADMIN = "ADMIN";
+    public static final String AUTHORITY_DEFAULT = "default";
+    public static final String AUTHORITY_ADMIN = "admin";
     public static final String AUTHORITY_ADMIN__EMAIL = "odopoc@gmail.com";
 
     public static final String RET_OK = "ok";
@@ -56,5 +56,6 @@ public final class Const {
     public static final Integer CARDDECK_UNARCHIVED = 0;
 
     public static final String DEFAUL_ERR_FORMAT = "Cannot process request. ID:%s";
+
 
 }

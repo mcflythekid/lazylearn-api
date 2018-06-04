@@ -15,7 +15,6 @@ import java.util.List;
  * @author McFly the Kid
  */
 @Service
-@Transactional
 public class LearnService {
 
     @Autowired

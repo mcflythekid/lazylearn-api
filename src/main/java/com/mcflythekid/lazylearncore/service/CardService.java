@@ -1,7 +1,7 @@
 package com.mcflythekid.lazylearncore.service;
 import java.util.Date;
 
-import com.mcflythekid.lazylearncore.Const;
+import com.mcflythekid.lazylearncore.config.Consts;
 import com.mcflythekid.lazylearncore.entity.Card;
 import com.mcflythekid.lazylearncore.indto.CreateCardInDto;
 import com.mcflythekid.lazylearncore.indto.SearchCardInDto;
@@ -9,6 +9,8 @@ import com.mcflythekid.lazylearncore.indto.UpdateCardInDto;
 import com.mcflythekid.lazylearncore.outdto.BootstrapTableOutDto;
 import com.mcflythekid.lazylearncore.outdto.JSON;
 import com.mcflythekid.lazylearncore.repo.CardRepo;
+import com.mcflythekid.lazylearncore.repo.UserRepo;
+import com.mcflythekid.lazylearncore.util.StringUtils2;
 import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,11 +22,7 @@ import java.util.List;
  * @author McFly the Kid
  */
 @Service
-@Transactional
 public class CardService {
-
-    @Autowired
-    private AuthService authService;
 
     @Autowired
     private CardRepo cardRepo;
@@ -36,26 +34,29 @@ public class CardService {
         return new BootstrapTableOutDto(rows, total);
     }
 
+    @Transactional(rollbackFor = Exception.class)
     public JSON create(CreateCardInDto createCardInDto) {
         Card card = new Card();
-        card.setId(authService.getRamdomId());
+        card.setId(StringUtils2.generateRandomId());
         card.setFront(createCardInDto.getFront());
         card.setBack(createCardInDto.getBack());
         card.setCreatedOn(new Date());
         card.setWakeupOn(new Date());
         card.setDeckId(createCardInDto.getDeckId());
         card.setUserId(createCardInDto.getUserId());
-        card.setStep(Const.CARD_STEP_BEGIN);
-        card.setArchived(Const.CARDDECK_UNARCHIVED);
+        card.setStep(Consts.CARD_STEP_BEGIN);
+        card.setArchived(Consts.CARDDECK_UNARCHIVED);
         cardRepo.save(card);
         return JSON.ok();
     }
 
+    @Transactional(rollbackFor = Exception.class)
     public JSON delete(String cardId) {
         cardRepo.delete(cardId);
         return JSON.ok();
     }
 
+    @Transactional(rollbackFor = Exception.class)
     public JSON update(UpdateCardInDto updateCardInDto) {
         Card card = cardRepo.findOne(updateCardInDto.getCardId());
         card.setFront(updateCardInDto.getFront());
@@ -66,10 +67,11 @@ public class CardService {
     }
 
     private Date getWakeupOn(Integer step){
-        return DateUtils.addDays(new Date(), Const.CARD_STEP_MAP.get(step));
+        return DateUtils.addDays(new Date(), Consts.CARD_STEP_MAP.get(step));
     }
 
-    public JSON correct(Card card) {
+    @Transactional(rollbackFor = Exception.class)
+    public JSON markCorrect(Card card) {
         card.increaseStep();
         card.setLearnedOn(new Date());
 
@@ -83,7 +85,8 @@ public class CardService {
         return JSON.ok();
     }
 
-    public JSON incorrect(Card card) {
+    @Transactional(rollbackFor = Exception.class)
+    public JSON markIncorrect(Card card) {
         card.setLearnedOn(new Date());
         card.setWakeupOn(new Date());
         card.resetStep();

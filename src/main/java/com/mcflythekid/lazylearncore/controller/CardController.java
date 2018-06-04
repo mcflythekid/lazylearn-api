@@ -2,7 +2,6 @@ package com.mcflythekid.lazylearncore.controller;
 
 import com.mcflythekid.lazylearncore.entity.Card;
 import com.mcflythekid.lazylearncore.entity.Deck;
-import com.mcflythekid.lazylearncore.entity.User;
 import com.mcflythekid.lazylearncore.indto.*;
 import com.mcflythekid.lazylearncore.outdto.BootstrapTableOutDto;
 import com.mcflythekid.lazylearncore.outdto.JSON;
@@ -72,14 +71,14 @@ public class CardController extends BaseController{
     public JSON correct(@PathVariable("cardId") String cardId){
         Card card = authorizeCard(cardId);
 
-        return cardService.correct(card);
+        return cardService.markCorrect(card);
     }
 
     @PatchMapping("/card/{cardId}/incorrect")
     public JSON incorrect(@PathVariable("cardId") String cardId){
         Card card = authorizeCard(cardId);
 
-        return cardService.incorrect(card);
+        return cardService.markIncorrect(card);
     }
 
     @GetMapping("/user/{userId}/chart")

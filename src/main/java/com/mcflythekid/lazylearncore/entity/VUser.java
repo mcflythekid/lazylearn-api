@@ -1,10 +1,10 @@
 package com.mcflythekid.lazylearncore.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.mcflythekid.lazylearncore.Const;
+import com.mcflythekid.lazylearncore.config.Consts;
+import com.mcflythekid.lazylearncore.repo.UserRepo;
 
 import javax.persistence.*;
-import java.math.BigInteger;
 import java.util.Date;
 
 /**
@@ -17,10 +17,10 @@ public class VUser {
     @Id
     private String id;
 
-    @JsonFormat(pattern = Const.PARAM_JSON_DATETIMEFORMAT, timezone = Const.PARAM_JSON_TIMEZONE)
+    @JsonFormat(pattern = Consts.PARAM_JSON_DATETIMEFORMAT, timezone = Consts.PARAM_JSON_TIMEZONE)
     private Date createdOn;
 
-    @JsonFormat(pattern = Const.PARAM_JSON_DATETIMEFORMAT, timezone = Const.PARAM_JSON_TIMEZONE)
+    @JsonFormat(pattern = Consts.PARAM_JSON_DATETIMEFORMAT, timezone = Consts.PARAM_JSON_TIMEZONE)
     private Date updatedOn;
 
     private String email;

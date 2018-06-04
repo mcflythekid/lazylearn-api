@@ -2,7 +2,8 @@ package com.mcflythekid.lazylearncore.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.mcflythekid.lazylearncore.Const;
+import com.mcflythekid.lazylearncore.config.Consts;
+import com.mcflythekid.lazylearncore.repo.UserRepo;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -20,7 +21,7 @@ public class Card implements Serializable{
 
     @JsonIgnore
     public boolean isReadyToArchive(){
-        return step >= Const.CARD_STEP_END;
+        return step >= Consts.CARD_STEP_END;
     }
 
     @JsonIgnore
@@ -30,7 +31,7 @@ public class Card implements Serializable{
 
     @JsonIgnore
     public void resetStep(){
-        step = Const.CARD_STEP_BEGIN;
+        step = Consts.CARD_STEP_BEGIN;
     }
 
     @Id
@@ -42,16 +43,16 @@ public class Card implements Serializable{
     @Lob
     private String back;
 
-    @JsonFormat(pattern = Const.PARAM_JSON_DATETIMEFORMAT, timezone = Const.PARAM_JSON_TIMEZONE)
+    @JsonFormat(pattern = Consts.PARAM_JSON_DATETIMEFORMAT, timezone = Consts.PARAM_JSON_TIMEZONE)
     private Date createdOn;
 
-    @JsonFormat(pattern = Const.PARAM_JSON_DATETIMEFORMAT, timezone = Const.PARAM_JSON_TIMEZONE)
+    @JsonFormat(pattern = Consts.PARAM_JSON_DATETIMEFORMAT, timezone = Consts.PARAM_JSON_TIMEZONE)
     private Date updatedOn;
 
-    @JsonFormat(pattern = Const.PARAM_JSON_DATETIMEFORMAT, timezone = Const.PARAM_JSON_TIMEZONE)
+    @JsonFormat(pattern = Consts.PARAM_JSON_DATETIMEFORMAT, timezone = Consts.PARAM_JSON_TIMEZONE)
     private Date wakeupOn;
 
-    @JsonFormat(pattern = Const.PARAM_JSON_DATETIMEFORMAT, timezone = Const.PARAM_JSON_TIMEZONE)
+    @JsonFormat(pattern = Consts.PARAM_JSON_DATETIMEFORMAT, timezone = Consts.PARAM_JSON_TIMEZONE)
     private Date learnedOn;
 
     private String deckId;

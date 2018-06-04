@@ -9,12 +9,11 @@ import java.util.Date;
  * @author McFly the Kid
  */
 @Entity
-@Table(name="forgetpassword")
+@Table(name="forget_password")
 public class ForgetPassword {
 
     @Id
     private String id;
-
     private String userId;
     private Date createdOn;
     private Date updatedOn;

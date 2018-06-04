@@ -1,8 +1,9 @@
 package com.mcflythekid.lazylearncore.service;
 
-import com.mcflythekid.lazylearncore.Const;
+import com.mcflythekid.lazylearncore.config.Consts;
 import com.mcflythekid.lazylearncore.outdto.ChartRow;
 import com.mcflythekid.lazylearncore.repo.CardRepo;
+import com.mcflythekid.lazylearncore.repo.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,9 +22,9 @@ public class ChartService {
 
     public List<ChartRow> deckChart(String deckId){
         List<ChartRow> out = new ArrayList<>();
-        for (int step = Const.CARD_STEP_BEGIN; step <= Const.CARD_STEP_END; step++){
+        for (int step = Consts.CARD_STEP_BEGIN; step <= Consts.CARD_STEP_END; step++){
             out.add(new ChartRow(
-                Const.CARD_STEP_LABEL_MAP.get(step),
+                Consts.CARD_STEP_LABEL_MAP.get(step),
                 countCorrectByDeckAndStep(deckId, step),
                 countTimeupByDeckAndStep(deckId, step)
             ));
@@ -33,9 +34,9 @@ public class ChartService {
 
     public List<ChartRow> userChart(String userId){
         List<ChartRow> out = new ArrayList<>();
-        for (int step = Const.CARD_STEP_BEGIN; step <= Const.CARD_STEP_END; step++){
+        for (int step = Consts.CARD_STEP_BEGIN; step <= Consts.CARD_STEP_END; step++){
             out.add(new ChartRow(
-                    Const.CARD_STEP_LABEL_MAP.get(step),
+                    Consts.CARD_STEP_LABEL_MAP.get(step),
                     countCorrectByUserAndStep(userId, step),
                     countTimeupByUserAndStep(userId, step)
             ));
@@ -44,19 +45,19 @@ public class ChartService {
     }
 
     private Long countCorrectByUserAndStep(String userId, Integer step){
-        if (step == Const.CARD_STEP_END) return cardRepo.countAllByUserIdAndStepAndArchived(userId, step, Const.CARDDECK_UNARCHIVED);
-        return cardRepo.countAllByUserIdAndStepAndWakeupOnAfterAndArchived(userId, step, new Date(), Const.CARDDECK_UNARCHIVED);
+        if (step == Consts.CARD_STEP_END) return cardRepo.countAllByUserIdAndStepAndArchived(userId, step, Consts.CARDDECK_UNARCHIVED);
+        return cardRepo.countAllByUserIdAndStepAndWakeupOnAfterAndArchived(userId, step, new Date(), Consts.CARDDECK_UNARCHIVED);
     }
     private Long countTimeupByUserAndStep(String userId, Integer step){
-        if (step == Const.CARD_STEP_END) return 0L;
-        return cardRepo.countAllByUserIdAndStepAndWakeupOnBeforeAndArchived(userId, step, new Date(), Const.CARDDECK_UNARCHIVED);
+        if (step == Consts.CARD_STEP_END) return 0L;
+        return cardRepo.countAllByUserIdAndStepAndWakeupOnBeforeAndArchived(userId, step, new Date(), Consts.CARDDECK_UNARCHIVED);
     }
     private Long countCorrectByDeckAndStep(String deckId, Integer step){
-        if (step == Const.CARD_STEP_END) return cardRepo.countAllByDeckIdAndStepAndArchived(deckId, step, Const.CARDDECK_UNARCHIVED);
-        return cardRepo.countAllByDeckIdAndStepAndWakeupOnAfterAndArchived(deckId, step, new Date(), Const.CARDDECK_UNARCHIVED);
+        if (step == Consts.CARD_STEP_END) return cardRepo.countAllByDeckIdAndStepAndArchived(deckId, step, Consts.CARDDECK_UNARCHIVED);
+        return cardRepo.countAllByDeckIdAndStepAndWakeupOnAfterAndArchived(deckId, step, new Date(), Consts.CARDDECK_UNARCHIVED);
     }
     private Long countTimeupByDeckAndStep(String deckId, Integer step){
-        if (step == Const.CARD_STEP_END) return 0L;
-        return cardRepo.countAllByDeckIdAndStepAndWakeupOnBeforeAndArchived(deckId, step, new Date(), Const.CARDDECK_UNARCHIVED);
+        if (step == Consts.CARD_STEP_END) return 0L;
+        return cardRepo.countAllByDeckIdAndStepAndWakeupOnBeforeAndArchived(deckId, step, new Date(), Consts.CARDDECK_UNARCHIVED);
     }
 }

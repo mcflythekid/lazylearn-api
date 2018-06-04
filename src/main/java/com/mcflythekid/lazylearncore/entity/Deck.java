@@ -1,7 +1,8 @@
 package com.mcflythekid.lazylearncore.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.mcflythekid.lazylearncore.Const;
+import com.mcflythekid.lazylearncore.config.Consts;
+import com.mcflythekid.lazylearncore.repo.UserRepo;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -18,15 +19,12 @@ public class Deck implements Serializable {
 
     @Id
     private String id;
-
     private String userId;
     private String name;
     private Integer archived;
-
-    @JsonFormat(pattern = Const.PARAM_JSON_DATETIMEFORMAT, timezone = Const.PARAM_JSON_TIMEZONE)
+    @JsonFormat(pattern = Consts.PARAM_JSON_DATETIMEFORMAT, timezone = Consts.PARAM_JSON_TIMEZONE)
     private Date createdOn;
-
-    @JsonFormat(pattern = Const.PARAM_JSON_DATETIMEFORMAT, timezone = Const.PARAM_JSON_TIMEZONE)
+    @JsonFormat(pattern = Consts.PARAM_JSON_DATETIMEFORMAT, timezone = Consts.PARAM_JSON_TIMEZONE)
     private Date updatedOn;
 
     public String getId() {

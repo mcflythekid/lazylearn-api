@@ -1,14 +1,13 @@
 package com.mcflythekid.lazylearncore.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.mcflythekid.lazylearncore.Const;
+import com.mcflythekid.lazylearncore.config.Consts;
+import com.mcflythekid.lazylearncore.repo.UserRepo;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.util.Date;
 
 /**
@@ -24,10 +23,10 @@ public class VDeck{
     private String userId;
     private String name;
 
-    @JsonFormat(pattern = Const.PARAM_JSON_DATETIMEFORMAT, timezone = Const.PARAM_JSON_TIMEZONE)
+    @JsonFormat(pattern = Consts.PARAM_JSON_DATETIMEFORMAT, timezone = Consts.PARAM_JSON_TIMEZONE)
     private Date createdOn;
 
-    @JsonFormat(pattern = Const.PARAM_JSON_DATETIMEFORMAT, timezone = Const.PARAM_JSON_TIMEZONE)
+    @JsonFormat(pattern = Consts.PARAM_JSON_DATETIMEFORMAT, timezone = Consts.PARAM_JSON_TIMEZONE)
     private Date updatedOn;
 
     @Column(columnDefinition = "decimal(19,0)")

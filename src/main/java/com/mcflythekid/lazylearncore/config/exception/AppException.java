@@ -1,4 +1,4 @@
-package com.mcflythekid.lazylearncore.exception;
+package com.mcflythekid.lazylearncore.config.exception;
 
 /**
  * @author McFly the Kid

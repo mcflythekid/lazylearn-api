@@ -1,91 +1,74 @@
 package com.mcflythekid.lazylearncore.config;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
+import com.mcflythekid.lazylearncore.config.jwt.JWTSecurityConfigurer;
+import com.mcflythekid.lazylearncore.config.jwt.JWTTokenProvider;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Primary;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.encoding.ShaPasswordEncoder;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.context.annotation.Import;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.oauth2.provider.token.DefaultTokenServices;
-import org.springframework.security.oauth2.provider.token.TokenStore;
-import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
-import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
+import org.springframework.security.data.repository.query.SecurityEvaluationContextExtension;
+import org.zalando.problem.spring.web.advice.security.SecurityProblemSupport;
 
 /**
  * Created by nydiarra on 06/05/17.
  */
 @Configuration
+@Import(SecurityProblemSupport.class)
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(prePostEnabled = true)
+@EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-	@Value("${security.signing-key}")
-	private String signingKey;
-
-	@Value("${security.security-realm}")
-	private String securityRealm;
-
-	@Autowired
-	private UserDetailsService userDetailsService;
-
-	@Bean
-	@Override
-	protected AuthenticationManager authenticationManager() throws Exception {
-		return super.authenticationManager();
-	}
-
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
+    private final JWTTokenProvider JWTTokenProvider;
+    private final SecurityProblemSupport problemSupport;
+    private JWTSecurityConfigurer jwtSecurityConfigurer() {
+        return new JWTSecurityConfigurer(JWTTokenProvider);
     }
 
-	@Override
-	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-		auth.userDetailsService(userDetailsService)
-		        .passwordEncoder(passwordEncoder());
-	}
+    public SecurityConfig(JWTTokenProvider JWTTokenProvider, SecurityProblemSupport problemSupport) {
+        this.JWTTokenProvider = JWTTokenProvider;
+        this.problemSupport = problemSupport;
+    }
 
-	@Override
-	protected void configure(HttpSecurity http) throws Exception {
-		http
-            .sessionManagement()
-            .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-            .and()
-            .httpBasic()
-            .realmName(securityRealm)
-            .and()
+    @Bean
+    public PasswordEncoder passwordEncoder(){
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        return passwordEncoder;
+    }
+
+    @Bean
+    public SecurityEvaluationContextExtension securityEvaluationContextExtension() {
+        return new SecurityEvaluationContextExtension();
+    }
+
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+        http
+            .logout()
+                .disable()
             .csrf()
-            .disable();
-	}
-
-	@Bean
-	public JwtAccessTokenConverter accessTokenConverter() {
-		JwtAccessTokenConverter converter = new JwtAccessTokenConverter();
-		converter.setSigningKey(signingKey);
-		return converter;
-	}
-
-	@Bean
-	public TokenStore tokenStore() {
-		return new JwtTokenStore(accessTokenConverter());
-	}
-
-	@Bean
-	@Primary //Making this primary to avoid any accidental duplication with another token service instance of the same name
-	public DefaultTokenServices tokenServices() {
-		DefaultTokenServices defaultTokenServices = new DefaultTokenServices();
-		defaultTokenServices.setTokenStore(tokenStore());
-		defaultTokenServices.setSupportRefreshToken(true);
-		return defaultTokenServices;
-	}
+                .disable()
+                .exceptionHandling()
+                .authenticationEntryPoint(problemSupport)
+                .accessDeniedHandler(problemSupport)
+            .and()
+                .headers()
+                .frameOptions()
+                .disable()
+            .and()
+                .sessionManagement()
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+            .and()
+                .authorizeRequests()
+                .antMatchers("/login", "/revoke-token").permitAll()
+                .antMatchers("/admin/**").hasAuthority(Consts.AUTHORITY_ADMIN)
+                .anyRequest().authenticated()
+            .and()
+                .apply(jwtSecurityConfigurer());
+    }
 }

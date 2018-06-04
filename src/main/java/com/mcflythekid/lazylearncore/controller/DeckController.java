@@ -1,14 +1,15 @@
 package com.mcflythekid.lazylearncore.controller;
 
-import com.mcflythekid.lazylearncore.Const;
+import com.mcflythekid.lazylearncore.config.Consts;
+import com.mcflythekid.lazylearncore.config.exception.AppException;
 import com.mcflythekid.lazylearncore.entity.Deck;
-import com.mcflythekid.lazylearncore.exception.AppException;
 import com.mcflythekid.lazylearncore.indto.CreateDeckInDto;
 import com.mcflythekid.lazylearncore.indto.SearchDeckInDto;
 import com.mcflythekid.lazylearncore.indto.UpdateDeckInDto;
 import com.mcflythekid.lazylearncore.outdto.BootstrapTableOutDto;
 import com.mcflythekid.lazylearncore.outdto.JSON;
 import com.mcflythekid.lazylearncore.outdto.LearnOutDto;
+import com.mcflythekid.lazylearncore.repo.UserRepo;
 import com.mcflythekid.lazylearncore.service.DeckService;
 import com.mcflythekid.lazylearncore.service.LearnService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +25,6 @@ public class DeckController extends BaseController{
 
     @Autowired
     private DeckService deckService;
-
     @Autowired
     private LearnService learnService;
 
@@ -75,9 +75,9 @@ public class DeckController extends BaseController{
     public LearnOutDto getLearnData(@PathVariable("deckId") String deckId, @RequestParam("type") String type){
         Deck deck = authorizeDeck(deckId);
 
-        if (type.equals(Const.LEARNTYPE_LEARN)){
+        if (type.equals(Consts.LEARNTYPE_LEARN)){
             return learnService.getByLearn(deck);
-        } else if (type.equals(Const.LEARNTYPE_REVIEW)){
+        } else if (type.equals(Consts.LEARNTYPE_REVIEW)){
             return learnService.getByReview(deck);
         }
 

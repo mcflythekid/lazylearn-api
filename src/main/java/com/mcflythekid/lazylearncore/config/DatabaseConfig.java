@@ -26,16 +26,33 @@ import java.util.Properties;
 @Configuration
 @EnableTransactionManagement
 @EnableJpaRepositories(basePackages = "com.mcflythekid.lazylearncore.repo")
-public class DatasourceConfig {
+public class DatabaseConfig {
+
+    @Value("${mysql.server-port}")
+    private String mysqlServerPort;
+
+    @Value("${mysql.database}")
+    private String mysqlDatabase;
+
+    @Value("${mysql.username}")
+    private String mysqlUsername;
+
+    @Value("${mysql.password}")
+    private String mysqlPassword;
+
+    private String mysqlJdbcUrl(){
+        final String format = "jdbc:mysql://%s/%s?useUnicode=yes&characterEncoding=UTF-8";
+        return String.format(format, mysqlServerPort, mysqlDatabase);
+    }
 
     @Bean
     @Primary
     public DataSource dataSource() {
         HikariConfig config = new HikariConfig();
-        config.setJdbcUrl(dataSourceUrl);
-        config.setUsername(dataSourceUsername);
-        config.setPassword(dataSourcePassword);
-        config.setDriverClassName(dataSourceDriverClassName);
+        config.setJdbcUrl(mysqlJdbcUrl());
+        config.setUsername(mysqlUsername);
+        config.setPassword(mysqlPassword);
+        config.setDriverClassName("com.mysql.jdbc.Driver");
         config.addDataSourceProperty("cachePrepStmts", "true");
         config.addDataSourceProperty("prepStmtCacheSize", "250");
         config.addDataSourceProperty("prepStmtCacheSqlLimit", "2048");
@@ -71,16 +88,4 @@ public class DatasourceConfig {
         props.put("hibernate.connection.characterEncoding", "utf8");
         return props;
     }
-
-    @Value("${spring.datasource.url}")
-    private String dataSourceUrl;
-
-    @Value("${spring.datasource.username}")
-    private String dataSourceUsername;
-
-    @Value("${spring.datasource.password}")
-    private String dataSourcePassword;
-
-    @Value("${spring.datasource.driverClassName}")
-    private String dataSourceDriverClassName;
 }

@@ -1,14 +1,15 @@
 package com.mcflythekid.lazylearncore.service;
 
-import com.mcflythekid.lazylearncore.Const;
-import com.mcflythekid.lazylearncore.dto.EmailDto;
+import com.mcflythekid.lazylearncore.config.Consts;
+import com.mcflythekid.lazylearncore.config.exception.AppException;
 import com.mcflythekid.lazylearncore.entity.ForgetPassword;
 import com.mcflythekid.lazylearncore.entity.User;
-import com.mcflythekid.lazylearncore.exception.AppException;
 import com.mcflythekid.lazylearncore.indto.ForgetPasswordCreateInDto;
 import com.mcflythekid.lazylearncore.outdto.JSON;
 import com.mcflythekid.lazylearncore.repo.ForgetPasswordRepo;
 import com.mcflythekid.lazylearncore.repo.UserRepo;
+import com.mcflythekid.lazylearncore.util.EmailUtils;
+import com.mcflythekid.lazylearncore.util.StringUtils2;
 import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -21,51 +22,37 @@ import java.util.Date;
  * @author McFly the Kid
  */
 @Service
-@Transactional
 public class ForgetPasswordService {
 
+    @Autowired
+    private ForgetPasswordRepo forgetPasswordRepo;
+    @Autowired
+    private UserRepo userRepo;
+    @Value("${format.reset-password-url}")
+    private String resetPasswordUrlFormat;
+
+    @Transactional(rollbackFor = Exception.class)
     public JSON create(ForgetPasswordCreateInDto forgetPasswordCreateInDto) {
         User user = userRepo.findByEmail(forgetPasswordCreateInDto.getEmail());
         if (user == null) throw new AppException("Email not found");
 
         ForgetPassword forgetPassword = new ForgetPassword();
-        forgetPassword.setId(authService.getRamdomId());
+        forgetPassword.setId(StringUtils2.generateRandomId());
         forgetPassword.setCreatedOn(new Date());
         forgetPassword.setCurrentEmail(forgetPasswordCreateInDto.getEmail());
         forgetPassword.setIpAddress(forgetPasswordCreateInDto.getIpAddress());
-        forgetPassword.setStatus(Const.FORGETPASSWORD_STATUS_NEW);
+        forgetPassword.setStatus(Consts.FORGETPASSWORD_STATUS_NEW);
         forgetPassword.setUserId(user.getId());
-        forgetPassword.setExpiredOn(DateUtils.addDays(new Date(), Const.FORGETPASSWORD_EXPIRED_DAYS));
+        forgetPassword.setExpiredOn(DateUtils.addDays(new Date(), Consts.FORGETPASSWORD_EXPIRED_DAYS));
         forgetPasswordRepo.save(forgetPassword);
 
-        emailService.sendHtml(getForgetPasswordEmail(forgetPassword));
-
+        EmailUtils.sendHtmlEmail("support@lazylearn.com", "Lazylearn Team",
+                forgetPassword.getCurrentEmail(), "Reset your password",  getEmailHtml(forgetPassword));
         return JSON.ok();
     }
 
-    private EmailDto getForgetPasswordEmail(ForgetPassword forgetPassword){
-        EmailDto emailDto = new EmailDto();
-        emailDto.setTo(forgetPassword.getCurrentEmail());
-        emailDto.setFromPerson("Lazylearn Team");
-        emailDto.setFrom("support@lazylearn.com");
-        emailDto.setSubject("Reset your password");
-        emailDto.setBody(String.format("<a href='%s%s'>Please click here</a>", appResetPasswordUrl, forgetPassword.getId()));
-        return emailDto;
+    private String getEmailHtml(ForgetPassword forgetPassword){
+        String url = String.format(resetPasswordUrlFormat, forgetPassword.getId());
+        return String.format("<a href='%s'>Please click here</a>", url);
     }
-
-    @Autowired
-    private ForgetPasswordRepo forgetPasswordRepo;
-
-    @Autowired
-    private UserRepo userRepo;
-
-    @Autowired
-    private AuthService authService;
-
-    @Autowired
-    private EmailService emailService;
-
-    @Value("${app.reset-password-url}")
-    private String appResetPasswordUrl;
-
 }

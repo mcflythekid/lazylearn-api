@@ -1,24 +1,30 @@
 package com.mcflythekid.lazylearncore.controller;
 
-import com.mcflythekid.lazylearncore.indto.AuthLoginInDto;
+import com.mcflythekid.lazylearncore.indto.*;
 import com.mcflythekid.lazylearncore.outdto.AuthLoginOutDto;
 import com.mcflythekid.lazylearncore.outdto.JSON;
+import com.mcflythekid.lazylearncore.outdto.UserRegisterOutDto;
 import com.mcflythekid.lazylearncore.service.AuthService;
+import com.mcflythekid.lazylearncore.service.ForgetPasswordService;
+import com.mcflythekid.lazylearncore.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.oauth2.provider.token.ConsumerTokenServices;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 /**
  * @author McFly the Kid
  */
 @RestController
-public class AuthController {
+public class AuthController extends BaseController{
+
+    @Autowired
+    private AuthService authService;
+
+    @Autowired
+    private ForgetPasswordService forgetPasswordService;
+    @Autowired
+    private UserService userService;
 
     @PostMapping("/ping")
     public JSON ping(){
@@ -26,23 +32,40 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public AuthLoginOutDto login(@Valid @RequestBody AuthLoginInDto authLoginInDto){
-        return authService.login(authLoginInDto);
+    public AuthLoginOutDto login(@Valid @RequestBody AuthLoginInDto payload){
+        return authService.login(payload);
     }
 
-    @PostMapping("/revoke-token")
-    public JSON logout(HttpServletRequest request){
-        String authorization = request.getHeader("Authorization");
-        if (authorization != null && authorization.contains("Bearer")){
-            String tokenId = authorization.substring("Bearer".length()+1);
-            tokenServices.revokeToken(tokenId);
-        }
-        return JSON.ok();
+    @PostMapping("/logout")
+    public JSON logout(){
+        return authService.logout();
     }
 
-    @Resource(name = "tokenServices")
-    private ConsumerTokenServices tokenServices;
+    @PostMapping("/forget-password")
+    public JSON create(@Valid @RequestBody ForgetPasswordCreateInDto forgetPasswordCreateInDto) {
+        forgetPasswordCreateInDto.setIpAddress(getIpAddress());
+        return forgetPasswordService.create(forgetPasswordCreateInDto);
+    }
 
-    @Autowired
-    private AuthService authService;
+    @PutMapping("/user/by-forget-password/{forgetPasswordId}/password")
+    public JSON resetPassword(
+            @PathVariable("forgetPasswordId") String forgetPasswordId,
+            @Valid @RequestBody UserResetPasswordInDto userResetPasswordInDto) {
+        return userService.resetPassword(forgetPasswordId, userResetPasswordInDto);
+    }
+
+    @PostMapping("/user")
+    public UserRegisterOutDto register(@Valid @RequestBody UserRegisterInDto userRegisterInDto){
+        userRegisterInDto.setRegisterIpAddress(getIpAddress());
+        return userService.register(userRegisterInDto);
+    }
+
+    @PutMapping("/user/{userId}/password")
+    public JSON changePassword(@PathVariable("userId") String userId,
+                               @Valid @RequestBody UserChangePasswordInDto userChangePasswordInDto){
+        authorizeUser(userId);
+
+        userChangePasswordInDto.setUserId(userId);
+        return userService.changePassword(userChangePasswordInDto);
+    }
 }
