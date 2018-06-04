@@ -37,11 +37,11 @@ public class AuthController extends BaseController{
     }
 
     @PostMapping("/login-facebook")
-    public AuthLoginOutDto loginFacebook(@RequestBody String accessToken){
-        AuthLoginInDto payload = new AuthLoginInDto();
-        payload.setEmail("testlogin@gmail.com");
-        payload.setPassword("dkmm");
-        return login(payload);
+    public AuthLoginOutDto loginFacebook(@Valid @RequestBody FacebookLoginInDto payload){
+        AuthLoginInDto x = new AuthLoginInDto();
+        x.setEmail("odopoc@gmail.com");
+        x.setPassword("dkmm");
+        return login(x);
     }
 
     @PostMapping("/logout")
