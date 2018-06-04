@@ -6,7 +6,9 @@ import com.mcflythekid.lazylearncore.util.ReflectionUtils;
 import com.mcflythekid.lazylearncore.outdto.JSON;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
+import org.springframework.security.authentication.InsufficientAuthenticationException;
 import org.springframework.validation.ObjectError;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -31,9 +33,21 @@ public class AppExceptionHandler  {
         return JSON.error(msg);
     }
 
+    @ExceptionHandler(InsufficientAuthenticationException.class)
+    public JSON insufficientAuthenticationExceptionHandler(Exception e, HttpServletResponse response)  {
+        response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+        return JSON.error("InsufficientAuthentication");
+    }
+
+    @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
+    public JSON httpRequestMethodNotSupportedExceptionhandler(Exception e, HttpServletResponse response)  {
+        response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+        return JSON.error("MethodNotSupported");
+    }
+
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public JSON methodArgumentNotValidExceptionHandler(Exception e, HttpServletResponse response)  {
-        response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+        response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
         String msg;
         try{
             ObjectError objectError = ((MethodArgumentNotValidException) e).getBindingResult().getAllErrors().get(0);

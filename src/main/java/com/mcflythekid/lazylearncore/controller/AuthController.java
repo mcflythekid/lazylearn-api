@@ -36,6 +36,14 @@ public class AuthController extends BaseController{
         return authService.login(payload);
     }
 
+    @PostMapping("/login-facebook")
+    public AuthLoginOutDto loginFacebook(@RequestBody String accessToken){
+        AuthLoginInDto payload = new AuthLoginInDto();
+        payload.setEmail("testlogin@gmail.com");
+        payload.setPassword("dkmm");
+        return login(payload);
+    }
+
     @PostMapping("/logout")
     public JSON logout(){
         return authService.logout();
@@ -54,7 +62,7 @@ public class AuthController extends BaseController{
         return userService.resetPassword(forgetPasswordId, userResetPasswordInDto);
     }
 
-    @PostMapping("/user")
+    @PostMapping("/register")
     public UserRegisterOutDto register(@Valid @RequestBody UserRegisterInDto userRegisterInDto){
         userRegisterInDto.setRegisterIpAddress(getIpAddress());
         return userService.register(userRegisterInDto);
