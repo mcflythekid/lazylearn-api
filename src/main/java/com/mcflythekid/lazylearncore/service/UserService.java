@@ -1,6 +1,7 @@
 package com.mcflythekid.lazylearncore.service;
 
 import com.mcflythekid.lazylearncore.config.Consts;
+import com.mcflythekid.lazylearncore.config.jwt.JWTTokenProvider;
 import com.mcflythekid.lazylearncore.entity.ForgetPassword;
 import com.mcflythekid.lazylearncore.entity.User;
 import com.mcflythekid.lazylearncore.config.exception.AppException;
@@ -8,9 +9,9 @@ import com.mcflythekid.lazylearncore.indto.SearchUserInDto;
 import com.mcflythekid.lazylearncore.indto.UserChangePasswordInDto;
 import com.mcflythekid.lazylearncore.indto.UserRegisterInDto;
 import com.mcflythekid.lazylearncore.indto.UserResetPasswordInDto;
+import com.mcflythekid.lazylearncore.outdto.AuthLoginOutDto;
 import com.mcflythekid.lazylearncore.outdto.BootstrapTableOutDto;
 import com.mcflythekid.lazylearncore.outdto.JSON;
-import com.mcflythekid.lazylearncore.outdto.UserRegisterOutDto;
 import com.mcflythekid.lazylearncore.repo.ForgetPasswordRepo;
 import com.mcflythekid.lazylearncore.repo.UserRepo;
 import com.mcflythekid.lazylearncore.repo.VUserRepo;
@@ -38,9 +39,11 @@ public class UserService {
     private VUserRepo vuserRepo;
     @Autowired
     private ForgetPasswordRepo forgetPasswordRepo;
+    @Autowired
+    private JWTTokenProvider jWTTokenProvider;
 
     @Transactional(rollbackFor = Exception.class)
-    public UserRegisterOutDto register(UserRegisterInDto userRegisterInDto){
+    public AuthLoginOutDto register(UserRegisterInDto userRegisterInDto){
         if (userRepo.findByEmail(userRegisterInDto.getEmail()) != null) throw new AppException("Email address already exists");
 
         User user = userRegisterInDto.getUser();
@@ -49,7 +52,9 @@ public class UserService {
         user.setId(StringUtils2.generateRandomId());
         user.setJtv(UUID.randomUUID().toString());
         userRepo.save(user);
-        return new UserRegisterOutDto(user);
+
+        String token = jWTTokenProvider.createToken(user);
+        return new AuthLoginOutDto(token, user.getId(), user.getEmail());
     }
 
     @Transactional(rollbackFor = Exception.class)

@@ -1,10 +1,8 @@
 package com.mcflythekid.lazylearncore.controller;
 
-import com.mcflythekid.lazylearncore.config.exception.AppException;
 import com.mcflythekid.lazylearncore.indto.*;
 import com.mcflythekid.lazylearncore.outdto.AuthLoginOutDto;
 import com.mcflythekid.lazylearncore.outdto.JSON;
-import com.mcflythekid.lazylearncore.outdto.UserRegisterOutDto;
 import com.mcflythekid.lazylearncore.service.AuthService;
 import com.mcflythekid.lazylearncore.service.ForgetPasswordService;
 import com.mcflythekid.lazylearncore.service.UserService;
@@ -44,7 +42,7 @@ public class AuthController extends BaseController{
         x.setPassword("dkmm");
         return login(x);
     }
-    
+
     @PostMapping("/logout-other-session")
     public AuthLoginOutDto logoutOtherSession() throws Exception {
         return authService.logoutOtherSession(SecurityUtils.getCurrentUserLogin());
@@ -64,7 +62,7 @@ public class AuthController extends BaseController{
     }
 
     @PostMapping("/register")
-    public UserRegisterOutDto register(@Valid @RequestBody UserRegisterInDto userRegisterInDto){
+    public AuthLoginOutDto register(@Valid @RequestBody UserRegisterInDto userRegisterInDto){
         userRegisterInDto.setRegisterIpAddress(getIpAddress());
         return userService.register(userRegisterInDto);
     }
