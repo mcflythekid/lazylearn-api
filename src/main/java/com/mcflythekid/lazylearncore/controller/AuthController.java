@@ -59,11 +59,8 @@ public class AuthController extends BaseController{
 
     @PostMapping("/login-facebook")
     public AuthLoginOutDto loginFacebook(@Valid @RequestBody FacebookLoginInDto payload){
-
-//        User_Profile obj_User_Profile=new User_Profile();
         FacebookClient facebookClient = new DefaultFacebookClient(payload.getAccessToken(), Version.VERSION_3_0);
-        //com.restfb.types.User fbUser = facebookClient.fetchObject("/me?fields=name,id,email", com.restfb.types.User.class);
-        com.restfb.types.User fbUser = facebookClient.fetchObject("me",  com.restfb.types.User.class,Parameter.with("fields", "email,name,id"));
+        com.restfb.types.User fbUser = facebookClient.fetchObject("me",  com.restfb.types.User.class,Parameter.with("fields", "name,id"));
 
         User user = userRepo.findByFacebookId(fbUser.getId());
         if (user == null){
@@ -73,7 +70,7 @@ public class AuthController extends BaseController{
             user.setCreatedOn(new Date());
             user.setJtv(UUID.randomUUID().toString());
             user.setFacebookId(fbUser.getId());
-            user.setEmail(fbUser.getEmail());
+            user.setFullName(fbUser.getName());
             user = userRepo.save(user);
 
             UserAuthority userAuthority = new UserAuthority();
@@ -91,15 +88,8 @@ public class AuthController extends BaseController{
             userAuthorityRepo.save(userAuthority2);
         }
 
-
         String token = jwtTokenProvider.createToken(user);
-        return new AuthLoginOutDto(token, user.getId(), user.getEmail());
-
-        //facebookClient.
-//        System.out.println("User name: " + user.getName());
-//        obj_User_Profile.setUser_name(user.getName());
-//        return obj_User_Profile;
-
+        return new AuthLoginOutDto(token, user.getId(), user.getFullName());
     }
 
     @PostMapping("/logout-other-session")

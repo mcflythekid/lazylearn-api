@@ -34,10 +34,18 @@ public class User implements Serializable {
     private String registerIpAddress;
     private String jtv;
     private String facebookId;
+    private String fullName;
 
     @Transient
     private String password;
 
+    public String getFullName() {
+        return fullName;
+    }
+
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
+    }
 
     public String getFacebookId() {
         return facebookId;

@@ -56,6 +56,7 @@ public class UserService {
         user.setHashedPassword(passwordEncoder.encode(user.getPassword()));
         user.setId(StringUtils2.generateRandomId());
         user.setJtv(UUID.randomUUID().toString());
+        user.setFullName(user.getEmail().split("@")[0]);
         userRepo.save(user);
 
         UserAuthority userAuthority = new UserAuthority();
@@ -66,7 +67,7 @@ public class UserService {
         userAuthorityRepo.save(userAuthority);
 
         String token = jWTTokenProvider.createToken(user);
-        return new AuthLoginOutDto(token, user.getId(), user.getEmail());
+        return new AuthLoginOutDto(token, user.getId(), user.getFullName());
     }
 
     @Transactional(rollbackFor = Exception.class)
