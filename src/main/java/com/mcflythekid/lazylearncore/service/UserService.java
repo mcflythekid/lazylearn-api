@@ -5,6 +5,8 @@ import com.mcflythekid.lazylearncore.config.jwt.JWTTokenProvider;
 import com.mcflythekid.lazylearncore.entity.ForgetPassword;
 import com.mcflythekid.lazylearncore.entity.User;
 import com.mcflythekid.lazylearncore.config.exception.AppException;
+import com.mcflythekid.lazylearncore.entity.UserAuthority;
+import com.mcflythekid.lazylearncore.entity.key.UserAuthorityKey;
 import com.mcflythekid.lazylearncore.indto.SearchUserInDto;
 import com.mcflythekid.lazylearncore.indto.UserChangePasswordInDto;
 import com.mcflythekid.lazylearncore.indto.UserRegisterInDto;
@@ -13,6 +15,7 @@ import com.mcflythekid.lazylearncore.outdto.AuthLoginOutDto;
 import com.mcflythekid.lazylearncore.outdto.BootstrapTableOutDto;
 import com.mcflythekid.lazylearncore.outdto.JSON;
 import com.mcflythekid.lazylearncore.repo.ForgetPasswordRepo;
+import com.mcflythekid.lazylearncore.repo.UserAuthorityRepo;
 import com.mcflythekid.lazylearncore.repo.UserRepo;
 import com.mcflythekid.lazylearncore.repo.VUserRepo;
 import com.mcflythekid.lazylearncore.util.StringUtils2;
@@ -36,6 +39,8 @@ public class UserService {
     @Autowired
     private UserRepo userRepo;
     @Autowired
+    private UserAuthorityRepo userAuthorityRepo;
+    @Autowired
     private VUserRepo vuserRepo;
     @Autowired
     private ForgetPasswordRepo forgetPasswordRepo;
@@ -52,6 +57,13 @@ public class UserService {
         user.setId(StringUtils2.generateRandomId());
         user.setJtv(UUID.randomUUID().toString());
         userRepo.save(user);
+
+        UserAuthority userAuthority = new UserAuthority();
+        UserAuthorityKey userAuthorityKey = new UserAuthorityKey();
+        userAuthorityKey.setAuthority(Consts.AUTHORITY_DEFAULT);
+        userAuthorityKey.setUserId(user.getId());
+        userAuthority.setKey(userAuthorityKey);
+        userAuthorityRepo.save(userAuthority);
 
         String token = jWTTokenProvider.createToken(user);
         return new AuthLoginOutDto(token, user.getId(), user.getEmail());
