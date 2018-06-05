@@ -33,9 +33,19 @@ public class User implements Serializable {
     private Date updatedOn;
     private String registerIpAddress;
     private String jtv;
+    private String facebookId;
 
     @Transient
     private String password;
+
+
+    public String getFacebookId() {
+        return facebookId;
+    }
+
+    public void setFacebookId(String facebookId) {
+        this.facebookId = facebookId;
+    }
 
     public String getJtv() {
         return jtv;

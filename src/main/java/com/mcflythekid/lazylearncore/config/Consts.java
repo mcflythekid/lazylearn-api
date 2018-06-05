@@ -15,6 +15,7 @@ public final class Consts {
 
     public static final String AUTHORITY_DEFAULT = "default";
     public static final String AUTHORITY_ADMIN = "admin";
+    public static final String AUTHORITY_FACEBOOK = "facebook";
     public static final String AUTHORITY_ADMIN__EMAIL = "odopoc@gmail.com";
 
     public static final String RET_OK = "ok";

@@ -13,9 +13,5 @@ import java.util.Map;
 @Repository
 public interface UserRepo extends JpaRepository<User, String>{
     User findByEmail(String email);
-
-    /**
-     * @author McFly the Kid
-     * @JsonFormat(pattern = "", timezone = "")
-     */
+    User findByFacebookId(String facebookId);
 }
