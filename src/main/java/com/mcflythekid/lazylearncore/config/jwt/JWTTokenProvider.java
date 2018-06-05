@@ -2,8 +2,8 @@ package com.mcflythekid.lazylearncore.config.jwt;
 
 import com.mcflythekid.lazylearncore.config.Consts;
 import com.mcflythekid.lazylearncore.entity.UserAuthority;
-import com.mcflythekid.lazylearncore.repo.ExpiredTokenRepo;
 import com.mcflythekid.lazylearncore.repo.UserAuthorityRepo;
+import com.mcflythekid.lazylearncore.repo.UserRepo;
 import io.jsonwebtoken.*;
 import org.apache.commons.lang3.time.DateUtils;
 import org.slf4j.Logger;
@@ -20,6 +20,7 @@ import org.springframework.stereotype.Component;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 /**
@@ -30,16 +31,14 @@ public class JWTTokenProvider {
 
     private final Logger log = LoggerFactory.getLogger(JWTTokenProvider.class);
     private static final String KEY_AUTHORITIES = "authorities";
-    private static final String KEY_EMAIL = "email";
+    private static final String KEY_JTV = "jtv";
 
     @Value("${jwt.secret}")
     private String jwtSecret;
-
     @Autowired
     private UserAuthorityRepo userAuthorityRepo;
-
     @Autowired
-    private ExpiredTokenRepo expiredTokenRepo;
+    private UserRepo userRepo;
 
     public String createToken(com.mcflythekid.lazylearncore.entity.User user) {
         String authorities = userAuthorityRepo.findAllByKeyUserId(user.getId())
@@ -47,7 +46,8 @@ public class JWTTokenProvider {
         return Jwts.builder()
             .setSubject(user.getId())
             .claim(KEY_AUTHORITIES, authorities)
-            .claim(KEY_EMAIL, user.getEmail())
+            .claim(KEY_JTV, user.getJtv())
+            .setId(UUID.randomUUID().toString())
             .signWith(SignatureAlgorithm.HS512, jwtSecret)
             .setExpiration(DateUtils.addSeconds(new Date(), Consts.PARAM_JWT_SECONDS))
             .compact();
@@ -64,10 +64,16 @@ public class JWTTokenProvider {
 
     public boolean validateToken(String jwtToken) {
         try {
-            Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(jwtToken); // Try parse
-            if (expiredTokenRepo.countBySignatureAndExpirationBefore(jwtToken, new Date()) > 0){
+            Claims claims = Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(jwtToken).getBody(); // Try parse
+
+            String userId = claims.getSubject();
+            String jtv = (String) claims.get(KEY_JTV);
+            com.mcflythekid.lazylearncore.entity.User user = userRepo.findOne(userId);
+            if (!user.getJtv().equals(jtv)){
+                log.info("Invalid JWT jwv");
                 return false;
             }
+
             return true;
         } catch (SignatureException e) {
             log.info("Invalid JWT signature.");

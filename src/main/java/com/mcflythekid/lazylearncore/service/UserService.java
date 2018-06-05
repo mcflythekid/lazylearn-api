@@ -22,6 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * @author McFly the Kid
@@ -46,6 +47,7 @@ public class UserService {
         user.setCreatedOn(new Date());
         user.setHashedPassword(passwordEncoder.encode(user.getPassword()));
         user.setId(StringUtils2.generateRandomId());
+        user.setJtv(UUID.randomUUID().toString());
         userRepo.save(user);
         return new UserRegisterOutDto(user);
     }
@@ -55,6 +57,7 @@ public class UserService {
         User user = userRepo.findOne(userChangePasswordInDto.getUserId());
         user.setHashedPassword(passwordEncoder.encode(userChangePasswordInDto.getNewPassword()));
         user.setUpdatedOn(new Date());
+        user.setJtv(UUID.randomUUID().toString());
         userRepo.save(user);
         return JSON.ok();
     }
@@ -75,6 +78,7 @@ public class UserService {
 
         user.setHashedPassword(passwordEncoder.encode(userResetPasswordInDto.getPassword()));
         user.setUpdatedOn(new Date());
+        user.setJtv(UUID.randomUUID().toString());
         userRepo.save(user);
 
         return JSON.ok();

@@ -35,25 +35,25 @@ public abstract class BaseController {
         return ipAddress;
     }
 
-    protected User authorizeUser(String userId){
+    protected User authorizeUser(String userId) throws Exception {
         User user = userRepo.findOne(userId);
-        if (user == null || !user.getId().equals(SecurityUtils.getCurrentUserLogin().orElse(""))){
+        if (user == null || !user.getId().equals(SecurityUtils.getCurrentUserLogin())){
             throw new AppException("It's not you");
         }
         return user;
     }
 
-    protected Deck authorizeDeck(String deckId){
+    protected Deck authorizeDeck(String deckId) throws Exception {
         Deck deck = deckRepo.findOne(deckId);
-        if (deck == null || !deck.getUserId().equals(SecurityUtils.getCurrentUserLogin().orElse(""))){
+        if (deck == null || !deck.getUserId().equals(SecurityUtils.getCurrentUserLogin())){
             throw new AppException("It's not you");
         }
         return deck;
     }
 
-    protected Card authorizeCard(String cardId) {
+    protected Card authorizeCard(String cardId) throws Exception {
         Card card = cardRepo.findOne(cardId);
-        if (card == null || !card.getUserId().equals(SecurityUtils.getCurrentUserLogin().orElse(""))){
+        if (card == null || !card.getUserId().equals(SecurityUtils.getCurrentUserLogin())){
             throw new AppException("It's not you");
         }
         return card;

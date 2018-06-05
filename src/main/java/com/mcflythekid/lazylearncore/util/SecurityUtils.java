@@ -1,5 +1,6 @@
 package com.mcflythekid.lazylearncore.util;
 
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -19,18 +20,16 @@ public final class SecurityUtils {
      *
      * @return the login of the current user
      */
-    public static Optional<String> getCurrentUserLogin() {
+    public static String getCurrentUserLogin() throws Exception {
         SecurityContext securityContext = SecurityContextHolder.getContext();
-        return Optional.ofNullable(securityContext.getAuthentication())
-            .map(authentication -> {
-                if (authentication.getPrincipal() instanceof UserDetails) {
-                    UserDetails springSecurityUser = (UserDetails) authentication.getPrincipal();
-                    return springSecurityUser.getUsername();
-                } else if (authentication.getPrincipal() instanceof String) {
-                    return (String) authentication.getPrincipal();
-                }
-                return null;
-            });
+        Authentication authentication = securityContext.getAuthentication();
+        if (authentication.getPrincipal() instanceof UserDetails) {
+            UserDetails springSecurityUser = (UserDetails) authentication.getPrincipal();
+            return springSecurityUser.getUsername();
+        } else if (authentication.getPrincipal() instanceof String) {
+            return (String) authentication.getPrincipal();
+        }
+        throw new Exception("Not logged in");
     }
 
     /**

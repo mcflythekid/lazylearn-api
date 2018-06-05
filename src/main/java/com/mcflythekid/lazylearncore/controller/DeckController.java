@@ -29,7 +29,7 @@ public class DeckController extends BaseController{
     private LearnService learnService;
 
     @PostMapping("/user/{userId}/deck")
-    public JSON create(@PathVariable("userId") String userId, @Valid @RequestBody CreateDeckInDto createDeckInDto){
+    public JSON create(@PathVariable("userId") String userId, @Valid @RequestBody CreateDeckInDto createDeckInDto) throws Exception {
         authorizeUser(userId);
 
         createDeckInDto.setUserId(userId);
@@ -37,7 +37,7 @@ public class DeckController extends BaseController{
     }
 
     @PatchMapping("/deck/{deckId}")
-    public JSON update(@PathVariable("deckId") String deckId, @RequestBody UpdateDeckInDto updateDeckInDto){
+    public JSON update(@PathVariable("deckId") String deckId, @RequestBody UpdateDeckInDto updateDeckInDto) throws Exception {
         authorizeDeck(deckId);
 
         updateDeckInDto.setDeckId(deckId);
@@ -45,14 +45,14 @@ public class DeckController extends BaseController{
     }
 
     @DeleteMapping("/deck/{deckId}")
-    public JSON delete(@PathVariable("deckId") String deckId){
+    public JSON delete(@PathVariable("deckId") String deckId) throws Exception {
         authorizeDeck(deckId);
 
         return deckService.delete(deckId);
     }
 
     @GetMapping("/deck/{deckId}")
-    public Deck get(@PathVariable("deckId") String deckId){
+    public Deck get(@PathVariable("deckId") String deckId) throws Exception {
         Deck deck = authorizeDeck(deckId);
 
         return deck;
@@ -62,7 +62,7 @@ public class DeckController extends BaseController{
     public BootstrapTableOutDto search(@PathVariable("userId") String userId,
                                        @RequestParam(name = "search", defaultValue = "") String search,
                                        @RequestParam("sort") String sort, @RequestParam("order") String order,
-                                       @RequestParam("limit") Integer limit,  @RequestParam("offset") Integer offset){
+                                       @RequestParam("limit") Integer limit,  @RequestParam("offset") Integer offset) throws Exception {
         authorizeUser(userId);
         
         SearchDeckInDto searchDeckInDto = new SearchDeckInDto(order, sort, limit, offset);
@@ -72,7 +72,7 @@ public class DeckController extends BaseController{
     }
 
     @GetMapping("/deck/{deckId}/learn-data")
-    public LearnOutDto getLearnData(@PathVariable("deckId") String deckId, @RequestParam("type") String type){
+    public LearnOutDto getLearnData(@PathVariable("deckId") String deckId, @RequestParam("type") String type) throws Exception {
         Deck deck = authorizeDeck(deckId);
 
         if (type.equals(Consts.LEARNTYPE_LEARN)){
@@ -85,13 +85,13 @@ public class DeckController extends BaseController{
     }
 
     @PostMapping("/deck/archive/{deckId}")
-    public JSON archive(@PathVariable("deckId") String deckId){
+    public JSON archive(@PathVariable("deckId") String deckId) throws Exception {
         authorizeDeck(deckId);
         return deckService.archive(deckId);
     }
 
     @PostMapping("/deck/unarchive/{deckId}")
-    public JSON unarchive(@PathVariable("deckId") String deckId){
+    public JSON unarchive(@PathVariable("deckId") String deckId) throws Exception {
         authorizeDeck(deckId);
         return deckService.unarchive(deckId);
     }

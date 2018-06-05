@@ -1,5 +1,6 @@
 package com.mcflythekid.lazylearncore.controller;
 
+import com.mcflythekid.lazylearncore.config.exception.AppException;
 import com.mcflythekid.lazylearncore.indto.*;
 import com.mcflythekid.lazylearncore.outdto.AuthLoginOutDto;
 import com.mcflythekid.lazylearncore.outdto.JSON;
@@ -7,6 +8,7 @@ import com.mcflythekid.lazylearncore.outdto.UserRegisterOutDto;
 import com.mcflythekid.lazylearncore.service.AuthService;
 import com.mcflythekid.lazylearncore.service.ForgetPasswordService;
 import com.mcflythekid.lazylearncore.service.UserService;
+import com.mcflythekid.lazylearncore.util.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,7 +22,6 @@ public class AuthController extends BaseController{
 
     @Autowired
     private AuthService authService;
-
     @Autowired
     private ForgetPasswordService forgetPasswordService;
     @Autowired
@@ -44,9 +45,14 @@ public class AuthController extends BaseController{
         return login(x);
     }
 
-    @PostMapping("/logout")
-    public JSON logout(){
-        return authService.logout();
+    @PostMapping("/logout-all-session")
+    public JSON logoutAllSession() throws Exception {
+        return authService.logoutAllSession(SecurityUtils.getCurrentUserLogin());
+    }
+
+    @PostMapping("/logout-other-session")
+    public AuthLoginOutDto logoutOtherSession() throws Exception {
+        return authService.logoutOtherSession(SecurityUtils.getCurrentUserLogin());
     }
 
     @PostMapping("/forget-password")
@@ -70,7 +76,7 @@ public class AuthController extends BaseController{
 
     @PutMapping("/user/{userId}/password")
     public JSON changePassword(@PathVariable("userId") String userId,
-                               @Valid @RequestBody UserChangePasswordInDto userChangePasswordInDto){
+                               @Valid @RequestBody UserChangePasswordInDto userChangePasswordInDto) throws Exception {
         authorizeUser(userId);
 
         userChangePasswordInDto.setUserId(userId);

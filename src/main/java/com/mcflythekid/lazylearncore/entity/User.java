@@ -33,6 +33,7 @@ public class User implements Serializable {
     private Date updatedOn;
     private String registerIpAddress;
     private String authorities;
+    private String jtv;
 
     @Transient
     private String password;
@@ -43,6 +44,15 @@ public class User implements Serializable {
             data.add(new SimpleGrantedAuthority(authority));
         }
         return data;
+    }
+
+
+    public String getJtv() {
+        return jtv;
+    }
+
+    public void setJtv(String jtv) {
+        this.jtv = jtv;
     }
 
     public String getAuthorities() {

@@ -24,7 +24,7 @@ public class CardController extends BaseController{
     private ChartService chartService;
 
     @PostMapping("/deck/{deckId}/card")
-    public JSON create(@PathVariable("deckId") String deckId, @RequestBody @Valid CreateCardInDto createCardInDto){
+    public JSON create(@PathVariable("deckId") String deckId, @RequestBody @Valid CreateCardInDto createCardInDto) throws Exception {
         Deck deck = authorizeDeck(deckId);
 
         createCardInDto.setUserId(deck.getUserId());
@@ -33,7 +33,7 @@ public class CardController extends BaseController{
     }
 
     @PatchMapping("/card/{cardId}")
-    public JSON update(@PathVariable("cardId") String cardId, @RequestBody @Valid UpdateCardInDto updateCardInDto){
+    public JSON update(@PathVariable("cardId") String cardId, @RequestBody @Valid UpdateCardInDto updateCardInDto) throws Exception {
         authorizeCard(cardId);
 
         updateCardInDto.setCardId(cardId);
@@ -41,14 +41,14 @@ public class CardController extends BaseController{
     }
 
     @DeleteMapping("/card/{cardId}")
-    public JSON deleteCard(@PathVariable("cardId") String cardId){
+    public JSON deleteCard(@PathVariable("cardId") String cardId) throws Exception {
         authorizeCard(cardId);
 
         return cardService.delete(cardId);
     }
 
     @GetMapping("/card/{cardId}")
-    public Card get(@PathVariable("cardId") String cardId){
+    public Card get(@PathVariable("cardId") String cardId) throws Exception {
         Card card = authorizeCard(cardId);
 
         return card;
@@ -58,7 +58,7 @@ public class CardController extends BaseController{
     public BootstrapTableOutDto searchDeck(@PathVariable("deckId") String deckId,
                                          @RequestParam(name = "search", defaultValue = "") String search,
                                          @RequestParam("sort") String sort, @RequestParam("order") String order,
-                                         @RequestParam("limit") Integer limit, @RequestParam("offset") Integer offset){
+                                         @RequestParam("limit") Integer limit, @RequestParam("offset") Integer offset) throws Exception {
         authorizeDeck(deckId);
 
         SearchCardInDto searchCardInDto = new SearchCardInDto(order, sort, limit, offset);
@@ -68,28 +68,28 @@ public class CardController extends BaseController{
     }
 
     @PatchMapping("/card/{cardId}/correct")
-    public JSON correct(@PathVariable("cardId") String cardId){
+    public JSON correct(@PathVariable("cardId") String cardId) throws Exception {
         Card card = authorizeCard(cardId);
 
         return cardService.markCorrect(card);
     }
 
     @PatchMapping("/card/{cardId}/incorrect")
-    public JSON incorrect(@PathVariable("cardId") String cardId){
+    public JSON incorrect(@PathVariable("cardId") String cardId) throws Exception {
         Card card = authorizeCard(cardId);
 
         return cardService.markIncorrect(card);
     }
 
     @GetMapping("/user/{userId}/chart")
-    public Object userChart(@PathVariable("userId") String userId){
+    public Object userChart(@PathVariable("userId") String userId) throws Exception {
         authorizeUser(userId);
 
         return chartService.userChart(userId);
     }
 
     @GetMapping("/deck/{deckId}/chart")
-    public Object deckChart(@PathVariable("deckId") String deckId){
+    public Object deckChart(@PathVariable("deckId") String deckId) throws Exception {
         authorizeDeck(deckId);
 
         return chartService.deckChart(deckId);
