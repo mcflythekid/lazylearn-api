@@ -41,22 +41,13 @@ public class AuthService {
     }
 
     @Transactional(rollbackFor = Exception.class)
-    public JSON logoutAllSession(String userId){
-        changeJtv(userId);
-        return JSON.ok();
-    }
-
-    @Transactional(rollbackFor = Exception.class)
     public AuthLoginOutDto logoutOtherSession(String userId){
-        User user = changeJtv(userId);
-        String token = JWTTokenProvider.createToken(user);
-        return new AuthLoginOutDto(token, user.getId(), user.getEmail());
-    }
-
-    private User changeJtv(String userId){
         User user = userRepo.findOne(userId);
         user.setJtv(UUID.randomUUID().toString());
         user.setUpdatedOn(new Date());
-        return userRepo.save(user);
+        userRepo.save(user);
+
+        String token = JWTTokenProvider.createToken(user);
+        return new AuthLoginOutDto(token, user.getId(), user.getEmail());
     }
 }

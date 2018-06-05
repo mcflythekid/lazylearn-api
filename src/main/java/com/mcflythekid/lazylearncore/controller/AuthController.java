@@ -44,12 +44,7 @@ public class AuthController extends BaseController{
         x.setPassword("dkmm");
         return login(x);
     }
-
-    @PostMapping("/logout-all-session")
-    public JSON logoutAllSession() throws Exception {
-        return authService.logoutAllSession(SecurityUtils.getCurrentUserLogin());
-    }
-
+    
     @PostMapping("/logout-other-session")
     public AuthLoginOutDto logoutOtherSession() throws Exception {
         return authService.logoutOtherSession(SecurityUtils.getCurrentUserLogin());
