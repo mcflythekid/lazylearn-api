@@ -32,20 +32,10 @@ public class User implements Serializable {
     @JsonFormat(pattern = Consts.PARAM_JSON_DATETIMEFORMAT, timezone = Consts.PARAM_JSON_TIMEZONE)
     private Date updatedOn;
     private String registerIpAddress;
-    private String authorities;
     private String jtv;
 
     @Transient
     private String password;
-    @JsonIgnore
-    List<GrantedAuthority> getGrantedAuthorities() {
-        List data = new ArrayList<>();
-        for (String authority : authorities.split(",")){
-            data.add(new SimpleGrantedAuthority(authority));
-        }
-        return data;
-    }
-
 
     public String getJtv() {
         return jtv;
@@ -53,14 +43,6 @@ public class User implements Serializable {
 
     public void setJtv(String jtv) {
         this.jtv = jtv;
-    }
-
-    public String getAuthorities() {
-        return authorities;
-    }
-
-    public void setAuthorities(String authorities) {
-        this.authorities = authorities;
     }
 
     public String getRegisterIpAddress() {
