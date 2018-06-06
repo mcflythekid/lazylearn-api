@@ -75,7 +75,6 @@ public class UserService {
         User user = userRepo.findOne(userChangePasswordInDto.getUserId());
         user.setHashedPassword(passwordEncoder.encode(userChangePasswordInDto.getNewPassword()));
         user.setUpdatedOn(new Date());
-        user.setJtv(UUID.randomUUID().toString());
         userRepo.save(user);
         return JSON.ok();
     }
