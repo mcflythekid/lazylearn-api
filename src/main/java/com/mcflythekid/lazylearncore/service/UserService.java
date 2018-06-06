@@ -67,7 +67,7 @@ public class UserService {
         userAuthorityRepo.save(userAuthority);
 
         String token = jWTTokenProvider.createToken(user);
-        return new AuthLoginOutDto(token, user.getId(), user.getFullName());
+        return new AuthLoginOutDto(token, user.getId(), user.getEmail(), user.getFullName());
     }
 
     @Transactional(rollbackFor = Exception.class)

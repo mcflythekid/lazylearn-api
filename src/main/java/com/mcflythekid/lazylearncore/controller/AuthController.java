@@ -89,7 +89,7 @@ public class AuthController extends BaseController{
         }
 
         String token = jwtTokenProvider.createToken(user);
-        return new AuthLoginOutDto(token, user.getId(), user.getFullName());
+        return new AuthLoginOutDto(token, user.getId(), user.getEmail(), user.getFullName());
     }
 
     @PostMapping("/logout-other-session")

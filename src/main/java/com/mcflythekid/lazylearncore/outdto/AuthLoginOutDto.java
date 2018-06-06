@@ -7,11 +7,21 @@ public class AuthLoginOutDto {
     private String token;
     private String userId;
     private String email;
+    private String fullName;
 
-    public AuthLoginOutDto(String token, String userId, String email) {
+    public AuthLoginOutDto(String token, String userId, String email, String fullName) {
         this.token = token;
         this.userId = userId;
         this.email = email;
+        this.fullName = fullName;
+    }
+
+    public String getFullName() {
+        return fullName;
+    }
+
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
     }
 
     public String getToken() {

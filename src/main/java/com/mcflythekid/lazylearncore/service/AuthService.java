@@ -37,7 +37,7 @@ public class AuthService {
             throw new AppException("Wrong password");
         }
         String token = JWTTokenProvider.createToken(user);
-        return new AuthLoginOutDto(token, user.getId(), user.getFullName());
+        return new AuthLoginOutDto(token, user.getId(), user.getEmail(), user.getFullName());
     }
 
     @Transactional(rollbackFor = Exception.class)
@@ -48,6 +48,6 @@ public class AuthService {
         userRepo.save(user);
 
         String token = JWTTokenProvider.createToken(user);
-        return new AuthLoginOutDto(token, user.getId(), user.getFullName());
+        return new AuthLoginOutDto(token, user.getId(), user.getEmail(), user.getFullName());
     }
 }
