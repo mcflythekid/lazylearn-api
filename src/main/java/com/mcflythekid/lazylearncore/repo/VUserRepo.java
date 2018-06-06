@@ -16,7 +16,7 @@ import java.util.List;
 public interface VUserRepo extends JpaRepository<VUser, String> {
     //@Query("SELECT new User(u.id, u.email, u.createdOn, u.updatedOn, u.registerIpAddress) " +
     @Query("SELECT u " +
-            "FROM VUser u WHERE (LOWER(u.email) LIKE LOWER(CONCAT('%', ?1, '%')))")
+            "FROM VUser u WHERE u.email IS NULL OR (LOWER(u.email) LIKE LOWER(CONCAT('%', ?1, '%')))")
     List<VUser> findAllByEmail(String email, Pageable pageable);
 
     @Query("SELECT COUNT(u) FROM VUser u WHERE (LOWER(u.email) LIKE LOWER(CONCAT('%', ?1, '%')))")

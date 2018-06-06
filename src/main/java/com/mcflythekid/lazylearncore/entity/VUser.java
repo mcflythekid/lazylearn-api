@@ -25,12 +25,30 @@ public class VUser {
 
     private String email;
     private String registerIpAddress;
+    private String facebookId;
+    private String fullName;
 
     @Column(columnDefinition = "NUMERIC(19,0)")
     private Long cards;
 
     @Column(columnDefinition = "NUMERIC(19,0)")
     private Long decks;
+
+    public String getFullName() {
+        return fullName;
+    }
+
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
+    }
+
+    public String getFacebookId() {
+        return facebookId;
+    }
+
+    public void setFacebookId(String facebookId) {
+        this.facebookId = facebookId;
+    }
 
     public String getId() {
         return id;
