@@ -65,11 +65,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             .and()
                 .authorizeRequests()
-                .antMatchers("/register").permitAll()
-                .antMatchers("/login", "/revoke-token").permitAll()
-                .antMatchers("/login-facebook", "/revoke-token2").permitAll()
+                .antMatchers("/forget-password", "/reset-password", "/register", "/login", "/login-facebook").permitAll()
                 .antMatchers("/admin/**").hasAuthority(Consts.AUTHORITY_ADMIN)
-                .anyRequest().authenticated()
+                .anyRequest().hasAuthority(Consts.AUTHORITY_DEFAULT)
             .and()
                 .apply(jwtSecurityConfigurer());
     }

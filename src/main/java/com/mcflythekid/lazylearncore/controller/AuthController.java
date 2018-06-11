@@ -25,11 +25,6 @@ public class AuthController extends BaseController{
     @Autowired
     private AuthService authService;
 
-    @PostMapping("/ping")
-    public JSON ping(){
-        return JSON.ok();
-    }
-
     @PostMapping("/forget-password")
     public JSON forgetPassword(@Valid @RequestBody ForgetPasswordIn in) {
         authService.forgetPassword(in);
@@ -55,6 +50,15 @@ public class AuthController extends BaseController{
     @PostMapping("/login-facebook")
     public String loginFacebook(@Valid @RequestBody LoginFacebookIn in){
         return authService.loginFacebook(in, getIpAddress());
+    }
+
+    /*************************************************************************************************/
+    /*************************************************************************************************/
+    /*************************************************************************************************/
+
+    @PostMapping("/ping")
+    public JSON ping(){
+        return JSON.ok();
     }
 
     @PostMapping("/logout-all-session")
