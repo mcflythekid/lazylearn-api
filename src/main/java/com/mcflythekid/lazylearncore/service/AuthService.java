@@ -72,7 +72,7 @@ public class AuthService {
         user.setEncodedPassword(passwordEncoder.encode(in.getRawPassword()));
         userRepo.save(user);
 
-        forgetPasswordRepo.delete(forgetPassword);
+        forgetPasswordRepo.deleteByUserId(user.getId());
     }
 
     @Transactional(rollbackFor = Exception.class)
