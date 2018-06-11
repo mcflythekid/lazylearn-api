@@ -24,14 +24,14 @@ import org.zalando.problem.spring.web.advice.security.SecurityProblemSupport;
 @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private final JWTTokenProvider JWTTokenProvider;
+    private final JWTTokenProvider jwtTokenProvider;
     private final SecurityProblemSupport problemSupport;
     private JWTSecurityConfigurer jwtSecurityConfigurer() {
-        return new JWTSecurityConfigurer(JWTTokenProvider);
+        return new JWTSecurityConfigurer(jwtTokenProvider);
     }
 
-    public SecurityConfig(JWTTokenProvider JWTTokenProvider, SecurityProblemSupport problemSupport) {
-        this.JWTTokenProvider = JWTTokenProvider;
+    public SecurityConfig(JWTTokenProvider jwtTokenProvider, SecurityProblemSupport problemSupport) {
+        this.jwtTokenProvider = jwtTokenProvider;
         this.problemSupport = problemSupport;
     }
 
