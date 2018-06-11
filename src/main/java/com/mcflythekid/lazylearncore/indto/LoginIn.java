@@ -9,7 +9,7 @@ import java.util.Map;
 /**
  * @author McFly the Kid
  */
-public class AuthLoginInDto {
+public class LoginIn {
 
     @Email
     @NotBlank

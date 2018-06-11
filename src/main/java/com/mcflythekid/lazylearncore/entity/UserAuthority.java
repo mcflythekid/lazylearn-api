@@ -1,35 +1,70 @@
 package com.mcflythekid.lazylearncore.entity;
 
-import com.mcflythekid.lazylearncore.entity.key.UserAuthorityKey;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.mcflythekid.lazylearncore.config.Consts;
+import com.mcflythekid.lazylearncore.util.StringUtils2;
 
-import javax.persistence.EmbeddedId;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * @author McFly the Kid
  */
 @Entity
-@Table(name = "user_authority")
+@Table(
+    name = "user_authority",
+    uniqueConstraints = {
+        @UniqueConstraint(columnNames = {"userId", "authority"})
+    }
+)
 public class UserAuthority implements Serializable {
 
-    public String getUserId(){
-        return key.getUserId();
+    @PrePersist
+    public void onPrePersist() {
+        setCreatedOn(new Date());
+        setId(StringUtils2.generateRandomId());
     }
 
-    public String getAuthority(){
-        return key.getAuthority();
+    @Id
+    private String id;
+
+    private String userId;
+
+    private String authority;
+
+    @JsonFormat(pattern = Consts.PARAM_JSON_DATETIMEFORMAT, timezone = Consts.PARAM_JSON_TIMEZONE)
+    private Date createdOn;
+
+    public String getId() {
+        return id;
     }
 
-    @EmbeddedId
-    private UserAuthorityKey key;
-
-    public UserAuthorityKey getKey() {
-        return key;
+    public void setId(String id) {
+        this.id = id;
     }
 
-    public void setKey(UserAuthorityKey key) {
-        this.key = key;
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    public String getAuthority() {
+        return authority;
+    }
+
+    public void setAuthority(String authority) {
+        this.authority = authority;
+    }
+
+    public Date getCreatedOn() {
+        return createdOn;
+    }
+
+    public void setCreatedOn(Date createdOn) {
+        this.createdOn = createdOn;
     }
 }

@@ -1,6 +1,7 @@
 package com.mcflythekid.lazylearncore.config.jwt;
 
-import org.springframework.security.core.Authentication;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.GenericFilterBean;
@@ -13,35 +14,35 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
 /**
- * Filters incoming requests and installs a Spring Security principal if a header corresponding to a valid user is
- * found.
+ * @author McFly the Kid
  */
 public class JWTFilter extends GenericFilterBean {
 
-    private JWTTokenProvider JWTTokenProvider;
+    private final Logger log = LoggerFactory.getLogger(JWTFilter.class);
+    private JWTTokenProvider jwtTokenProvider;
 
     public JWTFilter(JWTTokenProvider JWTTokenProvider) {
-        this.JWTTokenProvider = JWTTokenProvider;
-    }
-
-    private String resolveToken(HttpServletRequest request){
-        final String TOKEN_PREFIX = "Bearer ";
-        final String AUTHORIZATION_HEADER = "Authorization";
-        String bearerToken = request.getHeader(AUTHORIZATION_HEADER);
-        if (StringUtils.hasText(bearerToken) && bearerToken.startsWith(TOKEN_PREFIX)) {
-            return bearerToken.substring(7, bearerToken.length());
-        }
-        return null;
+        this.jwtTokenProvider = JWTTokenProvider;
     }
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
-        HttpServletRequest httpServletRequest = (HttpServletRequest) servletRequest;
-        String jwt = resolveToken(httpServletRequest);
-        if (StringUtils.hasText(jwt) && JWTTokenProvider.validateToken(jwt)) {
-            Authentication authentication = JWTTokenProvider.getAuthentication(jwt);
-            SecurityContextHolder.getContext().setAuthentication(authentication);
+        String accessToken = resolveToken((HttpServletRequest) servletRequest);
+        if (StringUtils.hasText(accessToken) && jwtTokenProvider.validateToken(accessToken)) {
+            SecurityContextHolder.getContext().setAuthentication(jwtTokenProvider.getAuthentication(accessToken));
         }
         filterChain.doFilter(servletRequest, servletResponse);
+    }
+
+    private String resolveToken(HttpServletRequest request){
+        try{
+            String bearerToken = request.getHeader("Authorization");
+            if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")) {
+                return bearerToken.substring(7, bearerToken.length());
+            }
+        } catch (Exception e){
+            log.error("Cannot get access token from header", e);
+        }
+        return null;
     }
 }

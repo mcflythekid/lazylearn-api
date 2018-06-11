@@ -35,6 +35,10 @@ public abstract class BaseController {
         return ipAddress;
     }
 
+    protected String getUserId() throws Exception{
+        return SecurityUtils.getCurrentUserLogin();
+    }
+
     protected User authorizeUser(String userId) throws Exception {
         User user = userRepo.findOne(userId);
         if (user == null || !user.getId().equals(SecurityUtils.getCurrentUserLogin())){

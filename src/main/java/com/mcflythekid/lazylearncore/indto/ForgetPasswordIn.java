@@ -6,21 +6,11 @@ import org.hibernate.validator.constraints.NotBlank;
 /**
  * @author McFly the Kid
  */
-public class ForgetPasswordCreateInDto {
+public class ForgetPasswordIn {
 
-    @Email
     @NotBlank
+    @Email
     private String email;
-
-    private String ipAddress;
-
-    public String getIpAddress() {
-        return ipAddress;
-    }
-
-    public void setIpAddress(String ipAddress) {
-        this.ipAddress = ipAddress;
-    }
 
     public String getEmail() {
         return email;

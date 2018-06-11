@@ -1,43 +1,47 @@
 package com.mcflythekid.lazylearncore.entity;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.mcflythekid.lazylearncore.config.Consts;
-import com.mcflythekid.lazylearncore.repo.UserRepo;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import com.mcflythekid.lazylearncore.util.StringUtils2;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.persistence.Transient;
+import javax.persistence.*;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
+import java.util.UUID;
 
 /**
  * @author McFly the Kid
  */
 @Entity
-@Table(name="user")
+@Table(
+    name="user",
+    uniqueConstraints = {
+        @UniqueConstraint(columnNames = {"email"}),
+        @UniqueConstraint(columnNames = {"facebookId"})
+    }
+)
 public class User implements Serializable {
+
+    @PrePersist
+    public void prePersist(){
+        setId(StringUtils2.generateRandomId());
+        setCreatedOn(new Date());
+        setJtv(UUID.randomUUID().toString());
+    }
+
+    @PreUpdate
+    public void preUpdate(){
+        setUpdatedOn(new Date());
+    }
 
     @Id
     private String id;
     private String email;
-    private String hashedPassword;
-    @JsonFormat(pattern = Consts.PARAM_JSON_DATETIMEFORMAT, timezone = Consts.PARAM_JSON_TIMEZONE)
+    private String encodedPassword;
     private Date createdOn;
-    @JsonFormat(pattern = Consts.PARAM_JSON_DATETIMEFORMAT, timezone = Consts.PARAM_JSON_TIMEZONE)
     private Date updatedOn;
-    private String registerIpAddress;
+    private String ipAddress;
     private String jtv;
     private String facebookId;
     private String fullName;
-
-    @Transient
-    private String password;
 
     public String getFullName() {
         return fullName;
@@ -63,12 +67,12 @@ public class User implements Serializable {
         this.jtv = jtv;
     }
 
-    public String getRegisterIpAddress() {
-        return registerIpAddress;
+    public String getIpAddress() {
+        return ipAddress;
     }
 
-    public void setRegisterIpAddress(String registerIpAddress) {
-        this.registerIpAddress = registerIpAddress;
+    public void setIpAddress(String ipAddress) {
+        this.ipAddress = ipAddress;
     }
 
     public String getId() {
@@ -87,12 +91,12 @@ public class User implements Serializable {
         this.email = email;
     }
 
-    public String getHashedPassword() {
-        return hashedPassword;
+    public String getEncodedPassword() {
+        return encodedPassword;
     }
 
-    public void setHashedPassword(String hashedPassword) {
-        this.hashedPassword = hashedPassword;
+    public void setEncodedPassword(String encodedPassword) {
+        this.encodedPassword = encodedPassword;
     }
 
     public Date getCreatedOn() {
@@ -111,11 +115,4 @@ public class User implements Serializable {
         this.updatedOn = updatedOn;
     }
 
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
 }

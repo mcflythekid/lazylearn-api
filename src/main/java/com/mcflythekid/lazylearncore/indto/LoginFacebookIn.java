@@ -5,7 +5,7 @@ import org.hibernate.validator.constraints.NotBlank;
 /**
  * @author McFly the Kid
  */
-public class FacebookLoginInDto {
+public class LoginFacebookIn {
 
     @NotBlank
     private String accessToken;

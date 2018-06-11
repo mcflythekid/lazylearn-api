@@ -10,25 +10,10 @@ import java.util.Date;
  */
 @Entity
 @Table(name="forget_password")
-public class ForgetPassword {
+public class ForgetPassword extends AbstractEntity{
 
-    @Id
-    private String id;
     private String userId;
-    private Date createdOn;
-    private Date updatedOn;
-    private Date expiredOn;
-    private Integer status;
-    private String currentEmail;
-    private String ipAddress;
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
+    private Date expiredDate;
 
     public String getUserId() {
         return userId;
@@ -38,51 +23,11 @@ public class ForgetPassword {
         this.userId = userId;
     }
 
-    public Date getCreatedOn() {
-        return createdOn;
+    public Date getExpiredDate() {
+        return expiredDate;
     }
 
-    public void setCreatedOn(Date createdOn) {
-        this.createdOn = createdOn;
-    }
-
-    public Date getUpdatedOn() {
-        return updatedOn;
-    }
-
-    public void setUpdatedOn(Date updatedOn) {
-        this.updatedOn = updatedOn;
-    }
-
-    public Date getExpiredOn() {
-        return expiredOn;
-    }
-
-    public void setExpiredOn(Date expiredOn) {
-        this.expiredOn = expiredOn;
-    }
-
-    public Integer getStatus() {
-        return status;
-    }
-
-    public void setStatus(Integer status) {
-        this.status = status;
-    }
-
-    public String getCurrentEmail() {
-        return currentEmail;
-    }
-
-    public void setCurrentEmail(String currentEmail) {
-        this.currentEmail = currentEmail;
-    }
-
-    public String getIpAddress() {
-        return ipAddress;
-    }
-
-    public void setIpAddress(String ipAddress) {
-        this.ipAddress = ipAddress;
+    public void setExpiredDate(Date expiredDate) {
+        this.expiredDate = expiredDate;
     }
 }
