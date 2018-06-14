@@ -1,1 +1,0 @@
-UPDATE `user`    SET fullname = SUBSTRING(email, 1, LOCATE('@', email) - 1);

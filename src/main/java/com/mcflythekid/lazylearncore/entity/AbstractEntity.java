@@ -1,5 +1,7 @@
 package com.mcflythekid.lazylearncore.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.mcflythekid.lazylearncore.config.Consts;
 import com.mcflythekid.lazylearncore.util.StringUtils2;
 
 import javax.persistence.Id;
@@ -28,7 +30,9 @@ public abstract class AbstractEntity implements Serializable {
 
     @Id
     private String id;
+    @JsonFormat(pattern = Consts.PARAM_JSON_DATETIMEFORMAT, timezone = Consts.PARAM_JSON_TIMEZONE)
     private Date createdDate;
+    @JsonFormat(pattern = Consts.PARAM_JSON_DATETIMEFORMAT, timezone = Consts.PARAM_JSON_TIMEZONE)
     private Date updatedDate;
 
     public String getId() {

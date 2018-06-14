@@ -2,7 +2,7 @@ package com.mcflythekid.lazylearncore.service;
 
 import com.mcflythekid.lazylearncore.config.Consts;
 import com.mcflythekid.lazylearncore.entity.Deck;
-import com.mcflythekid.lazylearncore.entity.VDeck;
+import com.mcflythekid.lazylearncore.entity.DetailedDeck;
 import com.mcflythekid.lazylearncore.indto.CreateDeckInDto;
 import com.mcflythekid.lazylearncore.indto.UpdateDeckInDto;
 import com.mcflythekid.lazylearncore.indto.SearchDeckInDto;
@@ -10,14 +10,11 @@ import com.mcflythekid.lazylearncore.outdto.BootstrapTableOutDto;
 import com.mcflythekid.lazylearncore.outdto.JSON;
 import com.mcflythekid.lazylearncore.repo.CardRepo;
 import com.mcflythekid.lazylearncore.repo.DeckRepo;
-import com.mcflythekid.lazylearncore.repo.UserRepo;
 import com.mcflythekid.lazylearncore.repo.VDeckRepo;
-import com.mcflythekid.lazylearncore.util.StringUtils2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -36,8 +33,6 @@ public class DeckService {
     @Transactional(rollbackFor = Exception.class)
     public JSON create(CreateDeckInDto createDeckInDto){
         Deck deck = new Deck();
-        deck.setCreatedOn(new Date());
-        deck.setId(StringUtils2.generateRandomId());
         deck.setName(createDeckInDto.getName());
         deck.setUserId(createDeckInDto.getUserId());
         deck.setArchived(Consts.CARDDECK_UNARCHIVED);
@@ -48,7 +43,6 @@ public class DeckService {
     @Transactional(rollbackFor = Exception.class)
     public JSON update(UpdateDeckInDto updateDeckInDto) {
         Deck deck = deckRepo.findOne(updateDeckInDto.getDeckId());
-        deck.setUpdatedOn(new Date());
         deck.setName(updateDeckInDto.getName());
         deckRepo.save(deck);
         return JSON.ok();
@@ -66,7 +60,7 @@ public class DeckService {
     }
 
     public BootstrapTableOutDto search(SearchDeckInDto searchDeckInDto){
-        List<VDeck> rows = vDeckRepo.findAllByUserIdAndNameContainingIgnoreCase(searchDeckInDto.getUserId(),
+        List<DetailedDeck> rows = vDeckRepo.findAllByUserIdAndNameContainingIgnoreCase(searchDeckInDto.getUserId(),
                 searchDeckInDto.getSearch(), searchDeckInDto.getPageable());
         Long total = vDeckRepo.countByUserIdAndNameContainingIgnoreCase(searchDeckInDto.getUserId(), searchDeckInDto.getSearch());
         return new BootstrapTableOutDto(rows, total);

@@ -11,35 +11,21 @@ import java.util.UUID;
  * @author McFly the Kid
  */
 @Entity
-@Table(
-    name="user",
-    uniqueConstraints = {
-        @UniqueConstraint(columnNames = {"email"}),
-        @UniqueConstraint(columnNames = {"facebookId"})
-    }
-)
-public class User implements Serializable {
+@Table(name="user", uniqueConstraints = {
+    @UniqueConstraint(columnNames = {"email"}),
+    @UniqueConstraint(columnNames = {"facebookId"})
+})
+public class User extends AbstractEntity{
 
     @PrePersist
     public void prePersist(){
-        setId(StringUtils2.generateRandomId());
-        setCreatedOn(new Date());
-        setJtv(UUID.randomUUID().toString());
+        setAccessTokenVersion(UUID.randomUUID().toString());
     }
 
-    @PreUpdate
-    public void preUpdate(){
-        setUpdatedOn(new Date());
-    }
-
-    @Id
-    private String id;
     private String email;
     private String encodedPassword;
-    private Date createdOn;
-    private Date updatedOn;
     private String ipAddress;
-    private String jtv;
+    private String accessTokenVersion;
     private String facebookId;
     private String fullName;
 
@@ -59,12 +45,12 @@ public class User implements Serializable {
         this.facebookId = facebookId;
     }
 
-    public String getJtv() {
-        return jtv;
+    public String getAccessTokenVersion() {
+        return accessTokenVersion;
     }
 
-    public void setJtv(String jtv) {
-        this.jtv = jtv;
+    public void setAccessTokenVersion(String accessTokenVersion) {
+        this.accessTokenVersion = accessTokenVersion;
     }
 
     public String getIpAddress() {
@@ -73,14 +59,6 @@ public class User implements Serializable {
 
     public void setIpAddress(String ipAddress) {
         this.ipAddress = ipAddress;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
     }
 
     public String getEmail() {
@@ -97,22 +75,6 @@ public class User implements Serializable {
 
     public void setEncodedPassword(String encodedPassword) {
         this.encodedPassword = encodedPassword;
-    }
-
-    public Date getCreatedOn() {
-        return createdOn;
-    }
-
-    public void setCreatedOn(Date createdOn) {
-        this.createdOn = createdOn;
-    }
-
-    public Date getUpdatedOn() {
-        return updatedOn;
-    }
-
-    public void setUpdatedOn(Date updatedOn) {
-        this.updatedOn = updatedOn;
     }
 
 }

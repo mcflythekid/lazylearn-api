@@ -46,7 +46,7 @@ public class JWTTokenProvider {
             .setSubject(user.getId())
             .setExpiration(DateUtils.addSeconds(new Date(), Consts.PARAM_JWT_SECONDS))
             .claim(KEY__AUTHORITIES, authorityService.getUserAuthorities(user.getId()))
-            .claim(KEY__ACCESS_TOKEN_VERSION, user.getJtv())
+            .claim(KEY__ACCESS_TOKEN_VERSION, user.getAccessTokenVersion())
             .claim("email", user.getEmail())
             .claim("fullName", user.getFullName())
             .signWith(SignatureAlgorithm.HS512, jwtSecret)
@@ -69,7 +69,7 @@ public class JWTTokenProvider {
             Claims claims = Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(jwtToken).getBody();
             com.mcflythekid.lazylearncore.entity.User user = userRepo.findOne(claims.getSubject());
             String accessTokenVersion = (String) claims.get(KEY__ACCESS_TOKEN_VERSION);
-            if (!user.getJtv().equals(accessTokenVersion)) throw new ExpiredJwtVersionException();
+            if (!user.getAccessTokenVersion().equals(accessTokenVersion)) throw new ExpiredJwtVersionException();
             return true;
         } catch (SignatureException e) {
             log.info("Invalid JWT signature.", e);

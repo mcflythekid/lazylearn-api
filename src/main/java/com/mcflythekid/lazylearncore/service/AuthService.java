@@ -3,13 +3,11 @@ package com.mcflythekid.lazylearncore.service;
 import com.mcflythekid.lazylearncore.config.Consts;
 import com.mcflythekid.lazylearncore.config.exception.AppException;
 import com.mcflythekid.lazylearncore.config.jwt.JWTTokenProvider;
-import com.mcflythekid.lazylearncore.entity.ForgetPassword;
+import com.mcflythekid.lazylearncore.entity.Reset;
 import com.mcflythekid.lazylearncore.entity.User;
 import com.mcflythekid.lazylearncore.indto.*;
 import com.mcflythekid.lazylearncore.repo.ForgetPasswordRepo;
-import com.mcflythekid.lazylearncore.repo.UserAuthorityRepo;
 import com.mcflythekid.lazylearncore.repo.UserRepo;
-import com.mcflythekid.lazylearncore.repo.VUserRepo;
 import com.mcflythekid.lazylearncore.util.EmailUtils;
 import com.restfb.DefaultFacebookClient;
 import com.restfb.FacebookClient;
@@ -50,7 +48,7 @@ public class AuthService {
         User user = userRepo.findByEmail(in.getEmail());
         if (user == null) throw new AppException(404, "Email not found");
 
-        ForgetPassword forgetPassword = new ForgetPassword();
+        Reset forgetPassword = new Reset();
         forgetPassword.setUserId(user.getId());
         forgetPassword.setExpiredDate(DateUtils.addDays(new Date(), Consts.FORGETPASSWORD_EXPIRED_DAYS));
 
@@ -62,7 +60,7 @@ public class AuthService {
 
     @Transactional(rollbackFor = Exception.class)
     public void resetPassword(ResetPasswordIn in) {
-        ForgetPassword forgetPassword = forgetPasswordRepo.findOne(in.getForgetPasswordId());
+        Reset forgetPassword = forgetPasswordRepo.findOne(in.getForgetPasswordId());
         if (forgetPassword == null) throw new AppException(404, "Request doesn't exists");
         if (forgetPassword.getExpiredDate().before(new Date())) throw new AppException(403, "Already expired");
 
@@ -125,7 +123,7 @@ public class AuthService {
     @Transactional(rollbackFor = Exception.class)
     public String logoutAllSession(String userId){
         User user = userRepo.findOne(userId);
-        user.setJtv(UUID.randomUUID().toString());
+        user.setAccessTokenVersion(UUID.randomUUID().toString());
         userRepo.save(user);
 
         return jwtTokenProvider.createToken(user);
@@ -138,7 +136,7 @@ public class AuthService {
         userRepo.save(user);
     }
 
-    private String createResetPasswordEmailContent(ForgetPassword forgetPassword){
+    private String createResetPasswordEmailContent(Reset forgetPassword){
         String url = String.format(resetPasswordUrlFormat, forgetPassword.getId());
         return String.format("<a href='%s'>Please click here</a>", url);
     }

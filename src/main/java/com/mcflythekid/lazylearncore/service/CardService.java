@@ -37,10 +37,8 @@ public class CardService {
     @Transactional(rollbackFor = Exception.class)
     public JSON create(CreateCardInDto createCardInDto) {
         Card card = new Card();
-        card.setId(StringUtils2.generateRandomId());
         card.setFront(createCardInDto.getFront());
         card.setBack(createCardInDto.getBack());
-        card.setCreatedOn(new Date());
         card.setWakeupOn(new Date());
         card.setDeckId(createCardInDto.getDeckId());
         card.setUserId(createCardInDto.getUserId());
@@ -61,7 +59,6 @@ public class CardService {
         Card card = cardRepo.findOne(updateCardInDto.getCardId());
         card.setFront(updateCardInDto.getFront());
         card.setBack(updateCardInDto.getBack());
-        card.setUpdatedOn(new Date());
         cardRepo.save(card);
         return JSON.ok();
     }

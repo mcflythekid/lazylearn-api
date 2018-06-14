@@ -1,10 +1,9 @@
--- vdeck
 select
     `d`.`id` as `id`,
     `d`.`userid` as `userid`,
     `d`.`name` as `name`,
-    `d`.`createdon` as `createdon`,
-    `d`.`updatedon` as `updatedon`,
+    `d`.`createddate` as `createddate`,
+    `d`.`updateddate` as `updateddate`,
     `d`.`archived` as `archived`,
     count( `c`.`id` ) as `totalcard`,
     sum( if(( `c`.`wakeupon` < now()), 1, 0 )) as `totaltimeupcard`
@@ -22,17 +21,16 @@ group by
     `d`.`id`,
     `d`.`userid`,
     `d`.`name`,
-    `d`.`createdon`,
-    `d`.`updatedon`,
+    `d`.`createddate`,
+    `d`.`updateddate`,
     `d`.`archived`;
 
--- vuser
 select
     `u`.`id` as `id`,
     `u`.`email` as `email`,
-    `u`.`registeripaddress` as `registeripaddress`,
-    `u`.`createdon` as `createdon`,
-    `u`.`updatedon` as `updatedon`,
+    `u`.`ipaddress` as `ipaddress`,
+    `u`.`createddate` as `createddate`,
+    `u`.`updateddate` as `updateddate`,
     `u`.`fullname` as `fullname`,
     `u`.`facebookid` as `facebookid`,
     count( distinct `c`.`id` ) as `cards`,
@@ -58,8 +56,8 @@ from
 group by
     `u`.`id`,
     `u`.`email`,
-    `u`.`registeripaddress`,
-    `u`.`createdon`,
-    `u`.`updatedon`,
+    `u`.`ipaddress`,
+    `u`.`createddate`,
+    `u`.`updateddate`,
     `u`.`fullname`,
     `u`.`facebookid`;
