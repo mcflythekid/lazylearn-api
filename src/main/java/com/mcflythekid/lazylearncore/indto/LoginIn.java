@@ -3,9 +3,6 @@ package com.mcflythekid.lazylearncore.indto;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
 
-import java.util.HashMap;
-import java.util.Map;
-
 /**
  * @author McFly the Kid
  */
@@ -16,7 +13,7 @@ public class LoginIn {
     private String email;
 
     @NotBlank
-    private String password;
+    private String rawPassword;
 
     public String getEmail() {
         return email;
@@ -26,11 +23,11 @@ public class LoginIn {
         this.email = email;
     }
 
-    public String getPassword() {
-        return password;
+    public String getRawPassword() {
+        return rawPassword;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setRawPassword(String rawPassword) {
+        this.rawPassword = rawPassword;
     }
 }

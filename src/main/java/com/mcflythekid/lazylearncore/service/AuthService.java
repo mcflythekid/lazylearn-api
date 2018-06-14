@@ -94,7 +94,7 @@ public class AuthService {
         if (user == null){
             throw new AppException("Email not found");
         }
-        if (!passwordEncoder.matches(authLoginInDto.getPassword(), user.getEncodedPassword())){
+        if (!passwordEncoder.matches(authLoginInDto.getRawPassword(), user.getEncodedPassword())){
             throw new AppException("Wrong password");
         }
         return jwtTokenProvider.createToken(user, clientData);
