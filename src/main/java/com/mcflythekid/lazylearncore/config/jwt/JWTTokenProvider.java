@@ -2,7 +2,10 @@ package com.mcflythekid.lazylearncore.config.jwt;
 
 import com.mcflythekid.lazylearncore.config.Consts;
 import com.mcflythekid.lazylearncore.config.exception.ExpiredJwtVersionException;
+import com.mcflythekid.lazylearncore.entity.Session;
 import com.mcflythekid.lazylearncore.entity.UserAuthority;
+import com.mcflythekid.lazylearncore.indto.ClientData;
+import com.mcflythekid.lazylearncore.repo.SessionRepo;
 import com.mcflythekid.lazylearncore.repo.UserAuthorityRepo;
 import com.mcflythekid.lazylearncore.repo.UserRepo;
 import com.mcflythekid.lazylearncore.service.AuthorityService;
@@ -40,8 +43,15 @@ public class JWTTokenProvider {
     private AuthorityService authorityService;
     @Autowired
     private UserRepo userRepo;
+    @Autowired
+    private SessionRepo sessionRepo;
 
-    public String createToken(com.mcflythekid.lazylearncore.entity.User user) {
+    public String createToken(com.mcflythekid.lazylearncore.entity.User user, ClientData clientData) {
+        Session session = new Session();
+        session.setUserId(user.getId());
+        session.setClientData(clientData.getIpAddress() + ": " + clientData.getData());
+        sessionRepo.save(session);
+
         return Jwts.builder()
             .setSubject(user.getId())
             .setExpiration(DateUtils.addSeconds(new Date(), Consts.PARAM_JWT_SECONDS))

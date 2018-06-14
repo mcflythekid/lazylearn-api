@@ -39,17 +39,17 @@ public class AuthController extends BaseController{
 
     @PostMapping("/register")
     public String register(@Valid @RequestBody RegisterIn in){
-        return authService.register(in, getIpAddress());
+        return authService.register(in, getClientData());
     }
 
     @PostMapping("/login")
     public String login(@Valid @RequestBody LoginIn in){
-        return authService.login(in);
+        return authService.login(in,getClientData());
     }
 
     @PostMapping("/login-facebook")
     public String loginFacebook(@Valid @RequestBody LoginFacebookIn in){
-        return authService.loginFacebook(in, getIpAddress());
+        return authService.loginFacebook(in, getClientData());
     }
 
     /*************************************************************************************************/
@@ -63,7 +63,7 @@ public class AuthController extends BaseController{
 
     @PostMapping("/logout-all-session")
     public String logoutAllSession() throws Exception {
-        return authService.logoutAllSession(SecurityUtils.getCurrentUserLogin());
+        return authService.logoutAllSession(SecurityUtils.getCurrentUserLogin(), getClientData());
     }
 
     @PutMapping("/change-password")

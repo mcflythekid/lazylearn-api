@@ -74,7 +74,7 @@ public class AuthService {
     }
 
     @Transactional(rollbackFor = Exception.class)
-    public String register(RegisterIn registerIn, String ipAddress){
+    public String register(RegisterIn registerIn, ClientData clientData){
         if (userRepo.findByEmail(registerIn.getEmail()) != null) throw new AppException(HttpStatus.CONFLICT.value(), "Email address already exists");
 
         User user = new User();
@@ -86,10 +86,10 @@ public class AuthService {
 
         authorityService.createAuthority(user.getId(), Consts.AUTHORITY_DEFAULT);
 
-        return jwtTokenProvider.createToken(user);
+        return jwtTokenProvider.createToken(user, clientData);
     }
 
-    public String login(LoginIn authLoginInDto){
+    public String login(LoginIn authLoginInDto, ClientData clientData){
         User user = userRepo.findByEmail(authLoginInDto.getEmail());
         if (user == null){
             throw new AppException("Email not found");
@@ -97,18 +97,18 @@ public class AuthService {
         if (!passwordEncoder.matches(authLoginInDto.getPassword(), user.getEncodedPassword())){
             throw new AppException("Wrong password");
         }
-        return jwtTokenProvider.createToken(user);
+        return jwtTokenProvider.createToken(user, clientData);
     }
 
     @Transactional(rollbackFor = Exception.class)
-    public String loginFacebook(LoginFacebookIn in, String ipAddress){
+    public String loginFacebook(LoginFacebookIn in, ClientData clientData){
         FacebookClient facebookClient = new DefaultFacebookClient(in.getAccessToken(), Version.VERSION_3_0);
         com.restfb.types.User fbUser = facebookClient.fetchObject("me",  com.restfb.types.User.class,Parameter.with("fields", "name,id"));
 
         User user = userRepo.findByFacebookId(fbUser.getId());
         if (user == null){
             user = new User();
-            user.setIpAddress(ipAddress);
+            user.setIpAddress(clientData.getIpAddress());
             user.setFacebookId(fbUser.getId());
             user.setFullName(fbUser.getName());
             user = userRepo.save(user);
@@ -117,16 +117,16 @@ public class AuthService {
             authorityService.createAuthority(user.getId(), Consts.AUTHORITY_FACEBOOK);
         }
 
-        return jwtTokenProvider.createToken(user);
+        return jwtTokenProvider.createToken(user, clientData);
     }
 
     @Transactional(rollbackFor = Exception.class)
-    public String logoutAllSession(String userId){
+    public String logoutAllSession(String userId, ClientData clientData){
         User user = userRepo.findOne(userId);
         user.setSessionKey(UUID.randomUUID().toString());
         userRepo.save(user);
 
-        return jwtTokenProvider.createToken(user);
+        return jwtTokenProvider.createToken(user, clientData);
     }
 
     @Transactional(rollbackFor = Exception.class)

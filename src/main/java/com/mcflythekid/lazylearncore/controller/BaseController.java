@@ -4,6 +4,7 @@ import com.mcflythekid.lazylearncore.entity.Card;
 import com.mcflythekid.lazylearncore.entity.Deck;
 import com.mcflythekid.lazylearncore.entity.User;
 import com.mcflythekid.lazylearncore.config.exception.AppException;
+import com.mcflythekid.lazylearncore.indto.ClientData;
 import com.mcflythekid.lazylearncore.repo.CardRepo;
 import com.mcflythekid.lazylearncore.repo.DeckRepo;
 import com.mcflythekid.lazylearncore.repo.UserRepo;
@@ -27,7 +28,14 @@ public abstract class BaseController {
     @Autowired
     private HttpServletRequest request;
 
-    protected String getIpAddress(){
+    protected ClientData getClientData(){
+        ClientData clientData = new ClientData();
+        clientData.setIpAddress(getIpAddress());
+        clientData.setData("Webapp");
+        return clientData;
+    }
+
+    private String getIpAddress(){
         String ipAddress = request.getHeader("X-FORWARDED-FOR");
         if (ipAddress == null || ipAddress.isEmpty()){
             ipAddress = request.getRemoteAddr();

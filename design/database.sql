@@ -65,7 +65,7 @@ CREATE TABLE `session` (
   `id` varchar(100) COLLATE utf8mb4_bin NOT NULL,
   `createddate` datetime DEFAULT NULL,
   `userid` varchar(100) COLLATE utf8mb4_bin NOT NULL,
-  `data` longtext COLLATE utf8mb4_bin NOT NULL,
+  `clientdata` longtext COLLATE utf8mb4_bin NOT NULL,
   PRIMARY KEY (`id`) USING BTREE,
   KEY `userid` (`userid`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
