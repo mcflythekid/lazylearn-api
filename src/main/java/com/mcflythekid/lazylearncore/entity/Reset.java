@@ -13,7 +13,7 @@ import java.util.Date;
 @Table(name="reset", indexes = {
         @Index(columnList = "userId")
 })
-public class Reset extends AbstractEntity{
+public class Reset extends AbstractSolidEntity{
 
     private String userId;
     private Date expiredDate;

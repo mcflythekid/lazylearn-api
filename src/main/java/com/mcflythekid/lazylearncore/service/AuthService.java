@@ -123,7 +123,7 @@ public class AuthService {
     @Transactional(rollbackFor = Exception.class)
     public String logoutAllSession(String userId){
         User user = userRepo.findOne(userId);
-        user.setAccessTokenVersion(UUID.randomUUID().toString());
+        user.setSessionKey(UUID.randomUUID().toString());
         userRepo.save(user);
 
         return jwtTokenProvider.createToken(user);

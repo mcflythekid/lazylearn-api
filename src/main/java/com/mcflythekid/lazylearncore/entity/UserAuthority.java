@@ -15,7 +15,7 @@ import java.util.Date;
 @Table( name = "user_authority", uniqueConstraints = {
     @UniqueConstraint(columnNames = {"userId", "authority"})
 })
-public class UserAuthority extends AbstractEntity {
+public class UserAuthority extends AbstractSolidEntity {
 
     private String userId;
 

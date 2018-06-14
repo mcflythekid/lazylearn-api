@@ -19,13 +19,13 @@ public class User extends AbstractEntity{
 
     @PrePersist
     public void prePersist(){
-        setAccessTokenVersion(UUID.randomUUID().toString());
+        setSessionKey(UUID.randomUUID().toString());
     }
 
     private String email;
     private String encodedPassword;
     private String ipAddress;
-    private String accessTokenVersion;
+    private String sessionKey;
     private String facebookId;
     private String fullName;
 
@@ -45,12 +45,12 @@ public class User extends AbstractEntity{
         this.facebookId = facebookId;
     }
 
-    public String getAccessTokenVersion() {
-        return accessTokenVersion;
+    public String getSessionKey() {
+        return sessionKey;
     }
 
-    public void setAccessTokenVersion(String accessTokenVersion) {
-        this.accessTokenVersion = accessTokenVersion;
+    public void setSessionKey(String sessionKey) {
+        this.sessionKey = sessionKey;
     }
 
     public String getIpAddress() {
