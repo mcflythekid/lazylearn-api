@@ -28,7 +28,7 @@ public class CardController extends BaseController{
     private ChartService chartService;
 
     @PostMapping("/search")
-    public BootstraptableOut searchDeck(CardSearchIn in) throws Exception {
+    public BootstraptableOut searchDeck(@Valid @RequestBody CardSearchIn in) throws Exception {
         authorizeDeck(in.getDeckId());
         return cardService.search(in);
     }
