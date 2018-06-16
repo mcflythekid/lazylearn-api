@@ -60,11 +60,6 @@ public class AuthController extends BaseController{
         return authService.getAllSession(getUserId());
     }
 
-    @PostMapping("/ping")
-    public JSON ping(){
-        return JSON.ok();
-    }
-
     @PostMapping("/logout-all-session")
     public LoginOut logoutAllSession() throws Exception {
         return authService.logoutAllSession(getUserId(), getClientData());
