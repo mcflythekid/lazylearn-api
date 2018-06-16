@@ -55,7 +55,7 @@ public class DeckController extends BaseController{
         return deckService.create(in, getUserId());
     }
 
-    @GetMapping("/deck/{deckId}")
+    @GetMapping("/get/{deckId}")
     public Deck get(@PathVariable("deckId") String deckId) throws Exception {
         return authorizeDeck(deckId);
     }
