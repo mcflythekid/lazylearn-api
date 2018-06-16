@@ -21,26 +21,26 @@ public class LearnController extends BaseController{
     private LearnService learnService;
 
     @GetMapping("/get-deck")
-    public LearnOut get(@RequestParam("deckId") String deckId, @RequestParam("type") String type) throws Exception {
+    public LearnOut get(@RequestParam("deckId") String deckId, @RequestParam("learnType") String learnType) throws Exception {
         Deck deck = authorizeDeck(deckId);
 
-        if (type.equals(Consts.LEARNTYPE_LEARN)){
+        if (learnType.equals(Consts.LEARNTYPE_LEARN)){
             return learnService.getByLearn(deck);
-        } else if (type.equals(Consts.LEARNTYPE_REVIEW)){
+        } else if (learnType.equals(Consts.LEARNTYPE_REVIEW)){
             return learnService.getByReview(deck);
         }
 
-        throw new AppException(404, "Learn type not found: " + type);
+        throw new AppException(404, "Learn type not found: " + learnType);
     }
 
-    @PatchMapping("/correct/{cardId}")
+    @PostMapping("/correct/{cardId}")
     public JSON correct(@PathVariable("cardId") String cardId) throws Exception {
         Card card = authorizeCard(cardId);
         learnService.markCorrect(card);
         return JSON.ok();
     }
 
-    @PatchMapping("/card/{cardId}/incorrect")
+    @PostMapping("/incorrect/{cardId}")
     public JSON incorrect(@PathVariable("cardId") String cardId) throws Exception {
         Card card = authorizeCard(cardId);
         learnService.markIncorrect(card);
