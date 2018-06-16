@@ -5,12 +5,12 @@ import java.util.Collection;
 /**
  * @author McFly the Kid
  */
-public class BootstrapTableOutDto {
+public class BootstraptableOut {
 
     private Long total = 0L;
     private Collection<?> rows;
 
-    public BootstrapTableOutDto(Collection<?> rows, Long total) {
+    public BootstraptableOut(Collection<?> rows, Long total) {
         this.rows = rows;
         this.total = total;
     }

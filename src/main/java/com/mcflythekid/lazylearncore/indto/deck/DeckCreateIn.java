@@ -1,24 +1,14 @@
-package com.mcflythekid.lazylearncore.indto;
+package com.mcflythekid.lazylearncore.indto.deck;
 
 import org.hibernate.validator.constraints.NotBlank;
 
 /**
  * @author McFly the Kid
  */
-public class CreateDeckInDto {
+public class DeckCreateIn {
 
     @NotBlank
     private String name;
-
-    private String userId;
-
-    public String getUserId() {
-        return userId;
-    }
-
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
 
     public String getName() {
         return name;

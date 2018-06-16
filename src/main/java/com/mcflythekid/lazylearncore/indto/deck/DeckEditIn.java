@@ -1,24 +1,17 @@
-package com.mcflythekid.lazylearncore.indto;
+package com.mcflythekid.lazylearncore.indto.deck;
 
 import org.hibernate.validator.constraints.NotBlank;
 
 /**
  * @author McFly the Kid
  */
-public class UpdateDeckInDto {
+public class DeckEditIn {
 
     @NotBlank
-    private String name;
-
     private String deckId;
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
+    @NotBlank
+    private String newName;
 
     public String getDeckId() {
         return deckId;
@@ -26,5 +19,13 @@ public class UpdateDeckInDto {
 
     public void setDeckId(String deckId) {
         this.deckId = deckId;
+    }
+
+    public String getNewName() {
+        return newName;
+    }
+
+    public void setNewName(String newName) {
+        this.newName = newName;
     }
 }

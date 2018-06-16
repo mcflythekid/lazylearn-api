@@ -1,17 +1,12 @@
 package com.mcflythekid.lazylearncore.controller;
 
-import com.mcflythekid.lazylearncore.config.Consts;
-import com.mcflythekid.lazylearncore.config.exception.AppException;
 import com.mcflythekid.lazylearncore.entity.Deck;
-import com.mcflythekid.lazylearncore.indto.CreateDeckInDto;
-import com.mcflythekid.lazylearncore.indto.SearchDeckInDto;
-import com.mcflythekid.lazylearncore.indto.UpdateDeckInDto;
-import com.mcflythekid.lazylearncore.outdto.BootstrapTableOutDto;
+import com.mcflythekid.lazylearncore.indto.SearchIn;
+import com.mcflythekid.lazylearncore.indto.deck.DeckCreateIn;
+import com.mcflythekid.lazylearncore.indto.deck.DeckEditIn;
+import com.mcflythekid.lazylearncore.outdto.BootstraptableOut;
 import com.mcflythekid.lazylearncore.outdto.JSON;
-import com.mcflythekid.lazylearncore.outdto.LearnOutDto;
-import com.mcflythekid.lazylearncore.repo.UserRepo;
 import com.mcflythekid.lazylearncore.service.DeckService;
-import com.mcflythekid.lazylearncore.service.LearnService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,78 +16,52 @@ import javax.validation.Valid;
  * @author McFly the Kid
  */
 @RestController
+@RequestMapping("/deck")
 public class DeckController extends BaseController{
 
     @Autowired
     private DeckService deckService;
-    @Autowired
-    private LearnService learnService;
 
-    @PostMapping("/user/{userId}/deck")
-    public JSON create(@PathVariable("userId") String userId, @Valid @RequestBody CreateDeckInDto createDeckInDto) throws Exception {
-        authorizeUser(userId);
-
-        createDeckInDto.setUserId(userId);
-        return deckService.create(createDeckInDto);
+    @PostMapping("/edit")
+    public JSON edit(@Valid @RequestBody DeckEditIn in) throws Exception {
+        authorizeDeck(in.getDeckId());
+        deckService.edit(in);
+        return JSON.ok("Rename success");
     }
 
-    @PatchMapping("/deck/{deckId}")
-    public JSON update(@PathVariable("deckId") String deckId, @RequestBody UpdateDeckInDto updateDeckInDto) throws Exception {
+    @PostMapping("/archive/{deckId}")
+    public JSON archive(@PathVariable("deckId") String deckId) throws Exception {
         authorizeDeck(deckId);
-
-        updateDeckInDto.setDeckId(deckId);
-        return deckService.update(updateDeckInDto);
+        deckService.archive(deckId);
+        return JSON.ok("Archived");
     }
 
-    @DeleteMapping("/deck/{deckId}")
+    @PostMapping("/unarchive/{deckId}")
+    public JSON unarchive(@PathVariable("deckId") String deckId) throws Exception {
+        authorizeDeck(deckId);
+        deckService.unarchive(deckId);
+        return JSON.ok("Unarchived");
+    }
+
+    @PostMapping("/delete/{deckId}")
     public JSON delete(@PathVariable("deckId") String deckId) throws Exception {
         authorizeDeck(deckId);
+        deckService.delete(deckId);
+        return JSON.ok("Delete success");
+    }
 
-        return deckService.delete(deckId);
+    @PostMapping("/create")
+    public Deck create(@Valid @RequestBody DeckCreateIn in) throws Exception {
+        return deckService.create(in, getUserId());
     }
 
     @GetMapping("/deck/{deckId}")
     public Deck get(@PathVariable("deckId") String deckId) throws Exception {
-        Deck deck = authorizeDeck(deckId);
-
-        return deck;
+        return authorizeDeck(deckId);
     }
 
-    @GetMapping("/user/{userId}/deck/by-search")
-    public BootstrapTableOutDto search(@PathVariable("userId") String userId,
-                                       @RequestParam(name = "search", defaultValue = "") String search,
-                                       @RequestParam("sort") String sort, @RequestParam("order") String order,
-                                       @RequestParam("limit") Integer limit,  @RequestParam("offset") Integer offset) throws Exception {
-        authorizeUser(userId);
-        
-        SearchDeckInDto searchDeckInDto = new SearchDeckInDto(order, sort, limit, offset);
-        searchDeckInDto.setSearch(search);
-        searchDeckInDto.setUserId(userId);
-        return deckService.search(searchDeckInDto);
-    }
-
-    @GetMapping("/deck/{deckId}/learn-data")
-    public LearnOutDto getLearnData(@PathVariable("deckId") String deckId, @RequestParam("type") String type) throws Exception {
-        Deck deck = authorizeDeck(deckId);
-
-        if (type.equals(Consts.LEARNTYPE_LEARN)){
-            return learnService.getByLearn(deck);
-        } else if (type.equals(Consts.LEARNTYPE_REVIEW)){
-            return learnService.getByReview(deck);
-        }
-
-        throw new AppException("Learn type not found");
-    }
-
-    @PostMapping("/deck/archive/{deckId}")
-    public JSON archive(@PathVariable("deckId") String deckId) throws Exception {
-        authorizeDeck(deckId);
-        return deckService.archive(deckId);
-    }
-
-    @PostMapping("/deck/unarchive/{deckId}")
-    public JSON unarchive(@PathVariable("deckId") String deckId) throws Exception {
-        authorizeDeck(deckId);
-        return deckService.unarchive(deckId);
+    @PostMapping("/search")
+    public BootstraptableOut search(@RequestBody SearchIn in) throws Exception {
+        return deckService.search(in, getUserId());
     }
 }

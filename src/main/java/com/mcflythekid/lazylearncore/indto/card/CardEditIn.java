@@ -1,11 +1,11 @@
-package com.mcflythekid.lazylearncore.indto;
+package com.mcflythekid.lazylearncore.indto.card;
 
 import org.hibernate.validator.constraints.NotBlank;
 
 /**
  * @author McFly the Kid
  */
-public class UpdateCardInDto {
+public class CardEditIn {
 
     @NotBlank
     private String front;
@@ -13,6 +13,7 @@ public class UpdateCardInDto {
     @NotBlank
     private String back;
 
+    @NotBlank
     private String cardId;
 
     public String getFront() {

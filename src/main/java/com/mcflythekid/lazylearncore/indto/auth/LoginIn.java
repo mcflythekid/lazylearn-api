@@ -1,4 +1,4 @@
-package com.mcflythekid.lazylearncore.indto;
+package com.mcflythekid.lazylearncore.indto.auth;
 
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
@@ -6,10 +6,10 @@ import org.hibernate.validator.constraints.NotBlank;
 /**
  * @author McFly the Kid
  */
-public class RegisterIn {
+public class LoginIn {
 
-    @NotBlank
     @Email
+    @NotBlank
     private String email;
 
     @NotBlank

@@ -1,11 +1,11 @@
-package com.mcflythekid.lazylearncore.indto;
+package com.mcflythekid.lazylearncore.indto.card;
 
 import org.hibernate.validator.constraints.NotBlank;
 
 /**
  * @author McFly the Kid
  */
-public class CreateCardInDto {
+public class CardCreateIn {
 
     @NotBlank
     private String front;
@@ -13,16 +13,8 @@ public class CreateCardInDto {
     @NotBlank
     private String back;
 
-    private String userId;
+    @NotBlank
     private String deckId;
-
-    public String getFront() {
-        return front;
-    }
-
-    public void setFront(String front) {
-        this.front = front;
-    }
 
     public String getBack() {
         return back;
@@ -32,19 +24,20 @@ public class CreateCardInDto {
         this.back = back;
     }
 
-    public String getUserId() {
-        return userId;
-    }
-
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
-
     public String getDeckId() {
         return deckId;
     }
 
     public void setDeckId(String deckId) {
         this.deckId = deckId;
+    }
+
+    public String getFront() {
+
+        return front;
+    }
+
+    public void setFront(String front) {
+        this.front = front;
     }
 }

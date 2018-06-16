@@ -1,15 +1,13 @@
 package com.mcflythekid.lazylearncore.controller;
 
-import com.mcflythekid.lazylearncore.indto.*;
+import com.mcflythekid.lazylearncore.indto.auth.*;
 import com.mcflythekid.lazylearncore.outdto.JSON;
 import com.mcflythekid.lazylearncore.outdto.LoginOut;
 import com.mcflythekid.lazylearncore.service.AuthService;
-import com.mcflythekid.lazylearncore.util.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 

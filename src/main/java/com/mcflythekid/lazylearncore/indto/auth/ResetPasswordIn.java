@@ -1,4 +1,4 @@
-package com.mcflythekid.lazylearncore.indto;
+package com.mcflythekid.lazylearncore.indto.auth;
 
 import org.hibernate.validator.constraints.NotBlank;
 

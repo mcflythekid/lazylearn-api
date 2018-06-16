@@ -19,6 +19,13 @@ import java.util.Date;
 })
 public class Card extends AbstractEntity{
 
+    @PrePersist
+    public void prePersist(){
+        setWakeupOn(new Date());
+        setStep(Consts.CARD_STEP_BEGIN);
+        setArchived(Consts.CARDDECK_UNARCHIVED);
+    }
+
     @JsonIgnore
     public boolean isReadyToArchive(){
         return step >= Consts.CARD_STEP_END;

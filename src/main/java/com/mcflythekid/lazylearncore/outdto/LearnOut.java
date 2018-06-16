@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * @author McFly the Kid
  */
-public class LearnOutDto {
+public class LearnOut {
 
     private Deck deck;
     private List<Card> cards;

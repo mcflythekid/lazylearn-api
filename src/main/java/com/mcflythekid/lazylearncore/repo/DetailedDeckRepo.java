@@ -11,7 +11,7 @@ import java.util.List;
  * @author McFly the Kid
  */
 @Repository
-public interface VDeckRepo extends JpaRepository<DetailedDeck, String> {
+public interface DetailedDeckRepo extends JpaRepository<DetailedDeck, String> {
     List<DetailedDeck> findAllByUserIdAndNameContainingIgnoreCase(String userId, String name, Pageable pageable);
     Long countByUserIdAndNameContainingIgnoreCase(String userId, String name);
 }

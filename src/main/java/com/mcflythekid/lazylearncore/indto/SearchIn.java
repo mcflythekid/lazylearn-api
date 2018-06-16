@@ -7,23 +7,25 @@ import org.springframework.data.domain.Sort;
 /**
  * @author McFly the Kid
  */
-public class BootstrapTableInDto {
-
-    private String sort;
-    private String order;
-    private Integer limit = 100;
-    private Integer offset = 0;
+public class SearchIn {
 
     public Pageable getPageable(){
         int page = offset / limit;
-        return new PageRequest(page, limit, Sort.Direction.fromString(sort), order);
+        return new PageRequest(page, limit, Sort.Direction.fromString(order), sort);
     }
 
-    public BootstrapTableInDto(String sort, String order, Integer limit, Integer offset) {
-        this.sort = sort;
-        this.order = order;
-        this.limit = limit;
-        this.offset = offset;
+    private String search;
+    private String sort;
+    private String order;
+    private Integer limit;
+    private Integer offset;
+
+    public String getSearch() {
+        return search;
+    }
+
+    public void setSearch(String search) {
+        this.search = search;
     }
 
     public String getSort() {
@@ -42,19 +44,19 @@ public class BootstrapTableInDto {
         this.order = order;
     }
 
-    public Integer getOffset() {
-        return offset;
-    }
-
-    public void setOffset(Integer offset) {
-        this.offset = offset;
-    }
-
     public Integer getLimit() {
         return limit;
     }
 
     public void setLimit(Integer limit) {
         this.limit = limit;
+    }
+
+    public Integer getOffset() {
+        return offset;
+    }
+
+    public void setOffset(Integer offset) {
+        this.offset = offset;
     }
 }

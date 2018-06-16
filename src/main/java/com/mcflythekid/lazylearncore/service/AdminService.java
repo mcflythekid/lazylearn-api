@@ -1,8 +1,8 @@
 package com.mcflythekid.lazylearncore.service;
 
-import com.mcflythekid.lazylearncore.indto.SearchUserInDto;
-import com.mcflythekid.lazylearncore.outdto.BootstrapTableOutDto;
-import com.mcflythekid.lazylearncore.repo.VUserRepo;
+import com.mcflythekid.lazylearncore.indto.SearchIn;
+import com.mcflythekid.lazylearncore.outdto.BootstraptableOut;
+import com.mcflythekid.lazylearncore.repo.DetailedUserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,11 +15,11 @@ import java.util.List;
 public class AdminService {
 
     @Autowired
-    private VUserRepo vUserRepo;
+    private DetailedUserRepo detailedUserRepo;
 
-    public BootstrapTableOutDto search(SearchUserInDto searchUserInDto){
-        List rows = vUserRepo.findAllByEmail(searchUserInDto.getSearch(), searchUserInDto.getPageable());
-        Long total = vUserRepo.countAllByEmail(searchUserInDto.getSearch());
-        return new BootstrapTableOutDto(rows, total);
+    public BootstraptableOut search(SearchIn in){
+        List rows = detailedUserRepo.findAllByEmail(in.getSearch(), in.getPageable());
+        Long total = detailedUserRepo.countAllByEmail(in.getSearch());
+        return new BootstraptableOut(rows, total);
     }
 }

@@ -12,7 +12,7 @@ import java.util.List;
  * @author McFly the Kid
  */
 @Repository
-public interface VUserRepo extends JpaRepository<DetailedUser, String> {
+public interface DetailedUserRepo extends JpaRepository<DetailedUser, String> {
     //@Query("SELECT new User(u.id, u.email, u.createdOn, u.updatedOn, u.registerIpAddress) " +
     @Query("SELECT u " +
             "FROM DetailedUser u WHERE u.email IS NULL OR (LOWER(u.email) LIKE LOWER(CONCAT('%', ?1, '%')))")

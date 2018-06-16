@@ -1,9 +1,12 @@
 package com.mcflythekid.lazylearncore.service;
 
+import com.mcflythekid.lazylearncore.config.Consts;
 import com.mcflythekid.lazylearncore.entity.Card;
 import com.mcflythekid.lazylearncore.entity.Deck;
-import com.mcflythekid.lazylearncore.outdto.LearnOutDto;
+import com.mcflythekid.lazylearncore.outdto.JSON;
+import com.mcflythekid.lazylearncore.outdto.LearnOut;
 import com.mcflythekid.lazylearncore.repo.CardRepo;
+import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,6 +23,28 @@ public class LearnService {
     @Autowired
     private CardRepo cardRepo;
 
+    @Transactional(rollbackFor = Exception.class)
+    public void markCorrect(Card card) {
+        card.increaseStep();
+        card.setLearnedOn(new Date());
+
+        if (card.isReadyToArchive()){
+            card.setWakeupOn(null);
+        } else {
+            card.setWakeupOn(getWakeupOn(card.getStep()));
+        }
+        cardRepo.save(card);
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    public void markIncorrect(Card card) {
+        card.setLearnedOn(new Date());
+        card.setWakeupOn(new Date());
+        card.resetStep();
+        cardRepo.save(card);
+    }
+
+
     private List<Card> findAllCardForReview(String deckId){
         return cardRepo.findAllByDeckId(deckId);
     }
@@ -28,17 +53,21 @@ public class LearnService {
         return cardRepo.findAllByDeckIdAndWakeupOnBefore(deckId, new Date());
     }
 
-    public LearnOutDto getByLearn(Deck deck){
-        LearnOutDto learnOutDto = new LearnOutDto();
-        learnOutDto.setDeck(deck);
-        learnOutDto.setCards(this.findAllCardForLearn(deck.getId()));
-        return learnOutDto;
+    public LearnOut getByLearn(Deck deck){
+        LearnOut learnOut = new LearnOut();
+        learnOut.setDeck(deck);
+        learnOut.setCards(this.findAllCardForLearn(deck.getId()));
+        return learnOut;
     }
 
-    public LearnOutDto getByReview(Deck deck){
-        LearnOutDto learnOutDto = new LearnOutDto();
-        learnOutDto.setDeck(deck);
-        learnOutDto.setCards(this.findAllCardForReview(deck.getId()));
-        return learnOutDto;
+    public LearnOut getByReview(Deck deck){
+        LearnOut learnOut = new LearnOut();
+        learnOut.setDeck(deck);
+        learnOut.setCards(this.findAllCardForReview(deck.getId()));
+        return learnOut;
+    }
+
+    private Date getWakeupOn(Integer step){
+        return DateUtils.addDays(new Date(), Consts.CARD_STEP_MAP.get(step));
     }
 }

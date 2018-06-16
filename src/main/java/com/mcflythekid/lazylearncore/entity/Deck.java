@@ -4,10 +4,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.mcflythekid.lazylearncore.config.Consts;
 import com.mcflythekid.lazylearncore.repo.UserRepo;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Index;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -19,6 +16,11 @@ import java.util.Date;
         @Index(columnList = "userId")
 })
 public class Deck extends AbstractEntity {
+
+    @PrePersist
+    public void prePersist(){
+        setArchived(Consts.CARDDECK_UNARCHIVED);
+    }
 
     private String userId;
     private String name;

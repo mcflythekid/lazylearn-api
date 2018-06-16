@@ -7,6 +7,7 @@ import com.mcflythekid.lazylearncore.entity.Reset;
 import com.mcflythekid.lazylearncore.entity.Session;
 import com.mcflythekid.lazylearncore.entity.User;
 import com.mcflythekid.lazylearncore.indto.*;
+import com.mcflythekid.lazylearncore.indto.auth.*;
 import com.mcflythekid.lazylearncore.outdto.LoginOut;
 import com.mcflythekid.lazylearncore.outdto.UserData;
 import com.mcflythekid.lazylearncore.repo.ForgetPasswordRepo;
