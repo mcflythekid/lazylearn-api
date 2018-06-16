@@ -80,7 +80,7 @@ public class DatabaseConfig {
     private Properties hibernateProperties() {
         Properties props = new Properties();
         props.put("hibernate.dialect", "org.hibernate.dialect.MySQLDialect");
-        props.put("hibernate.hbm2ddl.auto", "validate");
+     //   props.put("hibernate.hbm2ddl.auto", "validate");
         props.put("hibernate.show_sql", false);
         props.put("hibernate.format_sql", true);
         props.put("hibernate.connection.useUnicode", true);

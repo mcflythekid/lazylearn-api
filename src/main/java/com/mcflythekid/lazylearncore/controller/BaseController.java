@@ -9,6 +9,7 @@ import com.mcflythekid.lazylearncore.repo.CardRepo;
 import com.mcflythekid.lazylearncore.repo.DeckRepo;
 import com.mcflythekid.lazylearncore.repo.UserRepo;
 import com.mcflythekid.lazylearncore.service.AuthService;
+import com.mcflythekid.lazylearncore.util.HttpServletUtils;
 import com.mcflythekid.lazylearncore.util.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -30,8 +31,14 @@ public abstract class BaseController {
 
     protected ClientData getClientData(){
         ClientData clientData = new ClientData();
-        clientData.setIpAddress(getIpAddress());
-        clientData.setData("Webapp");
+
+        String os = HttpServletUtils.getClientOS(request);
+        String browser = HttpServletUtils.getClientBrowser(request);
+        String ipAddress = HttpServletUtils.getClientIpAddr(request);
+
+        clientData.setIpAddress(ipAddress);
+        clientData.setData(String.format("IP address: %s - Device: %s %s", ipAddress, os, browser));
+
         return clientData;
     }
 

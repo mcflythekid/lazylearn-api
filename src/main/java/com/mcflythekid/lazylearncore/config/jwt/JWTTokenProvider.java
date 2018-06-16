@@ -49,7 +49,7 @@ public class JWTTokenProvider {
     public String createToken(com.mcflythekid.lazylearncore.entity.User user, ClientData clientData) {
         Session session = new Session();
         session.setUserId(user.getId());
-        session.setClientData(clientData.getIpAddress() + ": " + clientData.getData());
+        session.setClientData(clientData.getData());
         sessionRepo.save(session);
 
         return Jwts.builder()

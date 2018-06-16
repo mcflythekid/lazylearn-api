@@ -8,13 +8,13 @@ import org.hibernate.validator.constraints.NotBlank;
 public class ChangePasswordIn {
 
     @NotBlank
-    private String rawPassword;
+    private String newRawPassword;
 
-    public String getRawPassword() {
-        return rawPassword;
+    public String getNewRawPassword() {
+        return newRawPassword;
     }
 
-    public void setRawPassword(String rawPassword) {
-        this.rawPassword = rawPassword;
+    public void setNewRawPassword(String newRawPassword) {
+        this.newRawPassword = newRawPassword;
     }
 }

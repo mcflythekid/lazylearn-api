@@ -15,15 +15,15 @@ import javax.persistence.Table;
 public class Vocab extends AbstractEntity {
 
     private String userId;
-    @Lob
+    
     private String data1;
-    @Lob
+    
     private String data2;
-    @Lob
+    
     private String data3;
-    @Lob
+    
     private String data4;
-    @Lob
+    
     private String data5;
 
     public String getUserId() {

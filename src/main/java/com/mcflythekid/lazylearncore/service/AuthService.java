@@ -4,9 +4,13 @@ import com.mcflythekid.lazylearncore.config.Consts;
 import com.mcflythekid.lazylearncore.config.exception.AppException;
 import com.mcflythekid.lazylearncore.config.jwt.JWTTokenProvider;
 import com.mcflythekid.lazylearncore.entity.Reset;
+import com.mcflythekid.lazylearncore.entity.Session;
 import com.mcflythekid.lazylearncore.entity.User;
 import com.mcflythekid.lazylearncore.indto.*;
+import com.mcflythekid.lazylearncore.outdto.LoginOut;
+import com.mcflythekid.lazylearncore.outdto.UserData;
 import com.mcflythekid.lazylearncore.repo.ForgetPasswordRepo;
+import com.mcflythekid.lazylearncore.repo.SessionRepo;
 import com.mcflythekid.lazylearncore.repo.UserRepo;
 import com.mcflythekid.lazylearncore.util.EmailUtils;
 import com.restfb.DefaultFacebookClient;
@@ -22,7 +26,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 /**
  * @author McFly the Kid
@@ -42,6 +48,8 @@ public class AuthService {
     private JWTTokenProvider jwtTokenProvider;
     @Autowired
     private AuthorityService authorityService;
+    @Autowired
+    private SessionRepo sessionRepo;
 
     @Transactional(rollbackFor = Exception.class)
     public void forgetPassword(ForgetPasswordIn in) {
@@ -74,22 +82,23 @@ public class AuthService {
     }
 
     @Transactional(rollbackFor = Exception.class)
-    public String register(RegisterIn registerIn, ClientData clientData){
+    public LoginOut register(RegisterIn registerIn, ClientData clientData){
         if (userRepo.findByEmail(registerIn.getEmail()) != null) throw new AppException(HttpStatus.CONFLICT.value(), "Email address already exists");
 
         User user = new User();
         user.setEmail(registerIn.getEmail());
         user.setEncodedPassword(passwordEncoder.encode(registerIn.getRawPassword()));
         user.setFullName(user.getEmail().split("@")[0]);
+        user.setIpAddress(clientData.getIpAddress());
 
         userRepo.save(user);
 
         authorityService.createAuthority(user.getId(), Consts.AUTHORITY_DEFAULT);
 
-        return jwtTokenProvider.createToken(user, clientData);
+        return createLoginResponse(user, clientData);
     }
 
-    public String login(LoginIn authLoginInDto, ClientData clientData){
+    public LoginOut login(LoginIn authLoginInDto, ClientData clientData){
         User user = userRepo.findByEmail(authLoginInDto.getEmail());
         if (user == null){
             throw new AppException("Email not found");
@@ -97,11 +106,11 @@ public class AuthService {
         if (!passwordEncoder.matches(authLoginInDto.getRawPassword(), user.getEncodedPassword())){
             throw new AppException("Wrong password");
         }
-        return jwtTokenProvider.createToken(user, clientData);
+        return createLoginResponse(user, clientData);
     }
 
     @Transactional(rollbackFor = Exception.class)
-    public String loginFacebook(LoginFacebookIn in, ClientData clientData){
+    public LoginOut loginFacebook(LoginFacebookIn in, ClientData clientData){
         FacebookClient facebookClient = new DefaultFacebookClient(in.getAccessToken(), Version.VERSION_3_0);
         com.restfb.types.User fbUser = facebookClient.fetchObject("me",  com.restfb.types.User.class,Parameter.with("fields", "name,id"));
 
@@ -117,16 +126,18 @@ public class AuthService {
             authorityService.createAuthority(user.getId(), Consts.AUTHORITY_FACEBOOK);
         }
 
-        return jwtTokenProvider.createToken(user, clientData);
+        return createLoginResponse(user, clientData);
     }
 
     @Transactional(rollbackFor = Exception.class)
-    public String logoutAllSession(String userId, ClientData clientData){
+    public LoginOut logoutAllSession(String userId, ClientData clientData){
         User user = userRepo.findOne(userId);
         user.setSessionKey(UUID.randomUUID().toString());
         userRepo.save(user);
 
-        return jwtTokenProvider.createToken(user, clientData);
+        sessionRepo.deleteAllByUserId(userId);
+
+        return createLoginResponse(user, clientData);
     }
 
     @Transactional(rollbackFor = Exception.class)
@@ -134,6 +145,24 @@ public class AuthService {
         User user = userRepo.findOne(userId);
         user.setEncodedPassword(passwordEncoder.encode(rawPassword));
         userRepo.save(user);
+    }
+
+    public String getAllSession(String userId){
+        List<Session> sessions = sessionRepo.findAllByUserIdOrderByCreatedDateDesc(userId);
+        return sessions.stream().map(Session::getClientData).collect(Collectors.joining("<br>"));
+    }
+
+    private LoginOut createLoginResponse(User user, ClientData clientData){
+        UserData userData = new UserData();
+        userData.setEmail(user.getEmail());
+        userData.setUserId(user.getId());
+        userData.setFullName(user.getFullName());
+        userData.setAuthorities(authorityService.getUserAuthorities(user.getId()));
+
+        LoginOut loginOut = new LoginOut();
+        loginOut.setAccessToken(jwtTokenProvider.createToken(user, clientData));
+        loginOut.setUserData(userData);
+        return loginOut;
     }
 
     private String createResetPasswordEmailContent(Reset forgetPassword){
