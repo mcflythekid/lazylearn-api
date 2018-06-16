@@ -8,24 +8,24 @@ import org.hibernate.validator.constraints.NotBlank;
 public class ResetPasswordIn {
 
     @NotBlank
-    private String forgetPasswordId;
+    private String resetId;
 
     @NotBlank
-    private String rawPassword;
+    private String newRawPassword;
 
-    public String getForgetPasswordId() {
-        return forgetPasswordId;
+    public String getResetId() {
+        return resetId;
     }
 
-    public void setForgetPasswordId(String forgetPasswordId) {
-        this.forgetPasswordId = forgetPasswordId;
+    public void setResetId(String resetId) {
+        this.resetId = resetId;
     }
 
-    public String getRawPassword() {
-        return rawPassword;
+    public String getNewRawPassword() {
+        return newRawPassword;
     }
 
-    public void setRawPassword(String rawPassword) {
-        this.rawPassword = rawPassword;
+    public void setNewRawPassword(String newRawPassword) {
+        this.newRawPassword = newRawPassword;
     }
 }

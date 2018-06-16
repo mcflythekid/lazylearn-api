@@ -28,13 +28,12 @@ public class AuthController extends BaseController{
     @PostMapping("/forget-password")
     public JSON forgetPassword(@Valid @RequestBody ForgetPasswordIn in) {
         authService.forgetPassword(in);
-        return JSON.ok();
+        return JSON.ok("An email was sent to " + in.getEmail());
     }
 
-    @PutMapping("/reset-password")
-    public JSON resetPassword(@Valid @RequestBody ResetPasswordIn in) {
-        authService.resetPassword(in);
-        return JSON.ok();
+    @PostMapping("/reset-password")
+    public LoginOut resetPassword(@Valid @RequestBody ResetPasswordIn in) {
+        return authService.resetPassword(in, getClientData());
     }
 
     @PostMapping("/register")

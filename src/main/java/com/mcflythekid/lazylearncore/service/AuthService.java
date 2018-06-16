@@ -59,26 +59,27 @@ public class AuthService {
         Reset forgetPassword = new Reset();
         forgetPassword.setUserId(user.getId());
         forgetPassword.setExpiredDate(DateUtils.addDays(new Date(), Consts.FORGETPASSWORD_EXPIRED_DAYS));
+        forgetPasswordRepo.save(forgetPassword);
 
         EmailUtils.sendHtmlEmail("support@lazylearn.com", "Lazylearn Team",
                 in.getEmail(), "Reset your password",  createResetPasswordEmailContent(forgetPassword));
-
-        forgetPasswordRepo.save(forgetPassword);
     }
 
     @Transactional(rollbackFor = Exception.class)
-    public void resetPassword(ResetPasswordIn in) {
-        Reset forgetPassword = forgetPasswordRepo.findOne(in.getForgetPasswordId());
-        if (forgetPassword == null) throw new AppException(404, "Request doesn't exists");
+    public LoginOut resetPassword(ResetPasswordIn in, ClientData clientData) {
+        Reset forgetPassword = forgetPasswordRepo.findOne(in.getResetId());
+        if (forgetPassword == null) throw new AppException(404, "Reset password request doesn't exists or used");
         if (forgetPassword.getExpiredDate().before(new Date())) throw new AppException(403, "Already expired");
 
         User user = userRepo.findOne(forgetPassword.getUserId());
         if (user == null) throw new AppException("User doesn't not exists anymore");
 
-        user.setEncodedPassword(passwordEncoder.encode(in.getRawPassword()));
+        user.setEncodedPassword(passwordEncoder.encode(in.getNewRawPassword()));
         userRepo.save(user);
 
         forgetPasswordRepo.deleteByUserId(user.getId());
+
+        return createLoginResponse(user, clientData);
     }
 
     @Transactional(rollbackFor = Exception.class)
