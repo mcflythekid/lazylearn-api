@@ -24,9 +24,6 @@ public class CardController extends BaseController{
     @Autowired
     private CardService cardService;
 
-    @Autowired
-    private ChartService chartService;
-
     @PostMapping("/search")
     public BootstraptableOut searchDeck(@Valid @RequestBody CardSearchIn in) throws Exception {
         authorizeDeck(in.getDeckId());
@@ -56,19 +53,5 @@ public class CardController extends BaseController{
     @GetMapping("/get/{cardId}")
     public Card get(@PathVariable("cardId") String cardId) throws Exception {
         return authorizeCard(cardId);
-    }
-
-    @GetMapping("/user/{userId}/chart")
-    public Object userChart(@PathVariable("userId") String userId) throws Exception {
-        authorizeUser(userId);
-
-        return chartService.userChart(userId);
-    }
-
-    @GetMapping("/deck/{deckId}/chart")
-    public Object deckChart(@PathVariable("deckId") String deckId) throws Exception {
-        authorizeDeck(deckId);
-
-        return chartService.deckChart(deckId);
     }
 }
