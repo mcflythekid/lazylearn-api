@@ -46,7 +46,7 @@ public class CardController extends BaseController{
         return JSON.ok("Delete success");
     }
 
-    @PostMapping("/edit/{cardId}")
+    @PostMapping("/edit")
     public JSON edit(@Valid @RequestBody CardEditIn in) throws Exception {
         authorizeCard(in.getCardId());
         cardService.edit(in);
