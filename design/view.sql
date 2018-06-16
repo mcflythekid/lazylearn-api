@@ -1,12 +1,12 @@
 select
-    `d`.`id` as `id`,
-    `d`.`userid` as `userid`,
-    `d`.`name` as `name`,
-    `d`.`createddate` as `createddate`,
-    `d`.`updateddate` as `updateddate`,
-    `d`.`archived` as `archived`,
-    count( `c`.`id` ) as `totalcard`,
-    sum( if(( `c`.`wakeupon` < now()), 1, 0 )) as `totaltimeupcard`
+    `d`.`id` AS `id`,
+    `d`.`userid` AS `userid`,
+    `d`.`name` AS `name`,
+    `d`.`createddate` AS `createddate`,
+    `d`.`updateddate` AS `updateddate`,
+    `d`.`archived` AS `archived`,
+    count( `c`.`id` ) AS `totalcard`,
+    sum( if(( `c`.`wakeupon` < now()), 1, 0 )) AS `totaltimeupcard`
 from
     (
         `lazylearn_api`.`deck` `d`
@@ -26,15 +26,15 @@ group by
     `d`.`archived`;
 
 select
-    `u`.`id` as `id`,
-    `u`.`email` as `email`,
-    `u`.`ipaddress` as `ipaddress`,
-    `u`.`createddate` as `createddate`,
-    `u`.`updateddate` as `updateddate`,
-    `u`.`fullname` as `fullname`,
-    `u`.`facebookid` as `facebookid`,
-    count( distinct `c`.`id` ) as `cards`,
-    count( distinct `d`.`id` ) as `decks`
+    `u`.`id` AS `id`,
+    `u`.`email` AS `email`,
+    `u`.`ipaddress` AS `ipaddress`,
+    `u`.`createddate` AS `createddate`,
+    `u`.`updateddate` AS `updateddate`,
+    `u`.`fullname` AS `fullname`,
+    `u`.`facebookid` AS `facebookid`,
+    count( distinct `c`.`id` ) AS `cards`,
+    count( distinct `d`.`id` ) AS `decks`
 from
     (
         (

@@ -9,7 +9,7 @@ CREATE TABLE `card` (
   `createddate` datetime DEFAULT NULL,
   `updateddate` datetime DEFAULT NULL,
   `learnedon` datetime DEFAULT NULL,
-  `archived` int(11) NOT NULL DEFAULT '0',
+  `archived` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE,
   KEY `userid` (`userid`) USING BTREE,
   KEY `deckid` (`deckid`) USING BTREE
@@ -21,9 +21,7 @@ CREATE TABLE `deck` (
   `name` varchar(100) COLLATE utf8mb4_bin DEFAULT NULL,
   `createddate` datetime DEFAULT NULL,
   `updateddate` datetime DEFAULT NULL,
-  `hyperdeckid` varchar(100) COLLATE utf8mb4_bin DEFAULT NULL,
-  `hyperdecktype` int(11) DEFAULT NULL,
-  `archived` int(11) DEFAULT '0',
+  `archived` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE,
   KEY `userid` (`userid`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
@@ -33,6 +31,15 @@ CREATE TABLE `reset` (
   `userid` varchar(100) COLLATE utf8mb4_bin DEFAULT NULL,
   `createddate` datetime DEFAULT NULL,
   `expireddate` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`) USING BTREE,
+  KEY `userid` (`userid`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+
+CREATE TABLE `session` (
+  `id` varchar(100) COLLATE utf8mb4_bin NOT NULL,
+  `createddate` datetime DEFAULT NULL,
+  `userid` varchar(100) COLLATE utf8mb4_bin NOT NULL,
+  `clientdata` longtext COLLATE utf8mb4_bin NOT NULL,
   PRIMARY KEY (`id`) USING BTREE,
   KEY `userid` (`userid`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
@@ -49,23 +56,28 @@ CREATE TABLE `user` (
   `fullname` varchar(100) COLLATE utf8mb4_bin DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE,
   UNIQUE KEY `email` (`email`) USING BTREE,
-  UNIQUE KEY `facebookid` (`facebookid`) USING BTREE
+  UNIQUE KEY `user_UN` (`facebookid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
 CREATE TABLE `user_authority` (
-  `id` varchar(100) COLLATE utf8mb4_bin NOT NULL,
-  `createddate` datetime DEFAULT NULL,
   `userid` varchar(100) COLLATE utf8mb4_bin NOT NULL,
   `authority` varchar(100) COLLATE utf8mb4_bin NOT NULL,
-  PRIMARY KEY (`id`) USING BTREE,
-  UNIQUE KEY `authority_userid` (`authority`, `userid`) USING BTREE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
-
-CREATE TABLE `session` (
   `id` varchar(100) COLLATE utf8mb4_bin NOT NULL,
   `createddate` datetime DEFAULT NULL,
-  `userid` varchar(100) COLLATE utf8mb4_bin NOT NULL,
-  `clientdata` longtext COLLATE utf8mb4_bin NOT NULL,
-  PRIMARY KEY (`id`) USING BTREE,
-  KEY `userid` (`userid`) USING BTREE
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `user_authority_UN` (`authority`,`userid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+
+CREATE TABLE `vocab` (
+  `id` varchar(100) COLLATE utf8mb4_bin NOT NULL,
+  `userid` varchar(100) COLLATE utf8mb4_bin DEFAULT NULL,
+  `createddate` datetime DEFAULT NULL,
+  `updateddate` datetime DEFAULT NULL,
+  `data1` varchar(100) COLLATE utf8mb4_bin DEFAULT NULL,
+  `data2` varchar(100) COLLATE utf8mb4_bin DEFAULT NULL,
+  `data3` varchar(100) COLLATE utf8mb4_bin DEFAULT NULL,
+  `data4` varchar(100) COLLATE utf8mb4_bin DEFAULT NULL,
+  `data5` varchar(100) COLLATE utf8mb4_bin DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `vocab_userid_idx` (`userid`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
