@@ -13,3 +13,19 @@ CREATE TABLE `minpair` (
   PRIMARY KEY (`id`),
   KEY `minpair_userid_idx` (`userid`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+--------------------------------------------------------------------------------------------------------------------
+drop table `vocab`;
+CREATE TABLE `vocab` (
+  `id` varchar(100) COLLATE utf8mb4_bin NOT NULL,
+  `userid` varchar(100) COLLATE utf8mb4_bin DEFAULT NULL,
+  `createddate` datetime DEFAULT NULL,
+  `updateddate` datetime DEFAULT NULL,
+  `word` varchar(100) COLLATE utf8mb4_bin DEFAULT NULL,
+  `phonetic` varchar(100) COLLATE utf8mb4_bin DEFAULT NULL,
+  `gender` varchar(100) COLLATE utf8mb4_bin DEFAULT NULL,
+  `imagepath` varchar(100) COLLATE utf8mb4_bin DEFAULT NULL,
+  `audiopath` varchar(100) COLLATE utf8mb4_bin DEFAULT NULL,
+  `personalconnection` varchar(100) COLLATE utf8mb4_bin DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `vocab_userid_idx` (`userid`) USING BTREE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;

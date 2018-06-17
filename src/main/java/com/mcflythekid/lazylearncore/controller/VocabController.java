@@ -1,7 +1,16 @@
 package com.mcflythekid.lazylearncore.controller;
 
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import com.mcflythekid.lazylearncore.entity.Vocab;
+import com.mcflythekid.lazylearncore.indto.SearchIn;
+import com.mcflythekid.lazylearncore.indto.vocab.VocabCreateIn;
+import com.mcflythekid.lazylearncore.indto.vocab.VocabEditIn;
+import com.mcflythekid.lazylearncore.outdto.BootstraptableOut;
+import com.mcflythekid.lazylearncore.outdto.JSON;
+import com.mcflythekid.lazylearncore.service.VocabService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 
 /**
  * @author McFly the Kid
@@ -9,4 +18,35 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/vocab")
 public class VocabController extends BaseController{
+
+    @Autowired
+    private VocabService vocabService;
+
+    @GetMapping("/get/{vocabId}")
+    public Vocab get(@PathVariable String vocabId) throws Exception{
+        return authorizeVocab(vocabId);
+    }
+
+    @PostMapping("/create")
+    public Vocab create(@Valid @RequestBody VocabCreateIn in){
+        return vocabService.create(in);
+    }
+
+    @PostMapping("/edit")
+    public JSON edit(@Valid @RequestBody VocabEditIn in) throws Exception{
+        authorizeVocab(in.getVocabId());
+        vocabService.edit(in);
+        return JSON.ok("Edit success");
+    }
+
+    @PostMapping("/delete/{vocabId}")
+    public JSON delete(@PathVariable String vocabId){
+        vocabService.delete(vocabId);
+        return JSON.ok("Delete success");
+    }
+
+    @PostMapping("/search")
+    public BootstraptableOut search(@Valid @RequestBody SearchIn in) throws Exception{
+        return vocabService.search(in, getUserId());
+    }
 }

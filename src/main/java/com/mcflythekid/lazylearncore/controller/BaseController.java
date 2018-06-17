@@ -1,15 +1,9 @@
 package com.mcflythekid.lazylearncore.controller;
 
-import com.mcflythekid.lazylearncore.entity.Card;
-import com.mcflythekid.lazylearncore.entity.Deck;
-import com.mcflythekid.lazylearncore.entity.Minpair;
-import com.mcflythekid.lazylearncore.entity.User;
+import com.mcflythekid.lazylearncore.entity.*;
 import com.mcflythekid.lazylearncore.config.exception.AppException;
 import com.mcflythekid.lazylearncore.indto.ClientData;
-import com.mcflythekid.lazylearncore.repo.CardRepo;
-import com.mcflythekid.lazylearncore.repo.DeckRepo;
-import com.mcflythekid.lazylearncore.repo.MinpairRepo;
-import com.mcflythekid.lazylearncore.repo.UserRepo;
+import com.mcflythekid.lazylearncore.repo.*;
 import com.mcflythekid.lazylearncore.service.AuthService;
 import com.mcflythekid.lazylearncore.util.HttpServletUtils;
 import com.mcflythekid.lazylearncore.util.SecurityUtils;
@@ -30,6 +24,8 @@ public abstract class BaseController {
     private CardRepo cardRepo;
     @Autowired
     private MinpairRepo minpairRepo;
+    @Autowired
+    private VocabRepo vocabRepo;
     @Autowired
     private HttpServletRequest request;
 
@@ -88,5 +84,13 @@ public abstract class BaseController {
             throw new AppException("It's not you");
         }
         return minpair;
+    }
+
+    protected Vocab authorizeVocab(String vocabId) throws Exception {
+        Vocab vocab = vocabRepo.findOne(vocabId);
+        if (vocab == null || !vocab.getUserId().equals(SecurityUtils.getCurrentUserLogin())){
+            throw new AppException("It's not you");
+        }
+        return vocab;
     }
 }
