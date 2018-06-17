@@ -46,6 +46,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/forget-password", "/reset-password", "/register", "/login", "/login-facebook").permitAll()
                 .antMatchers("/admin/**").hasAuthority(Consts.AUTHORITY_ADMIN)
+                .antMatchers("/minpair/**").hasAuthority(Consts.AUTHORITY_DEFAULT)
+                .antMatchers("/file/**").hasAuthority(Consts.AUTHORITY_DEFAULT)
                 .anyRequest().hasAuthority(Consts.AUTHORITY_DEFAULT)
             .and()
                 .apply(jwtSecurityConfigurer());

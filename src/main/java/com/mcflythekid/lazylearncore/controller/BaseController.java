@@ -2,11 +2,13 @@ package com.mcflythekid.lazylearncore.controller;
 
 import com.mcflythekid.lazylearncore.entity.Card;
 import com.mcflythekid.lazylearncore.entity.Deck;
+import com.mcflythekid.lazylearncore.entity.Minpair;
 import com.mcflythekid.lazylearncore.entity.User;
 import com.mcflythekid.lazylearncore.config.exception.AppException;
 import com.mcflythekid.lazylearncore.indto.ClientData;
 import com.mcflythekid.lazylearncore.repo.CardRepo;
 import com.mcflythekid.lazylearncore.repo.DeckRepo;
+import com.mcflythekid.lazylearncore.repo.MinpairRepo;
 import com.mcflythekid.lazylearncore.repo.UserRepo;
 import com.mcflythekid.lazylearncore.service.AuthService;
 import com.mcflythekid.lazylearncore.util.HttpServletUtils;
@@ -26,6 +28,8 @@ public abstract class BaseController {
     private DeckRepo deckRepo;
     @Autowired
     private CardRepo cardRepo;
+    @Autowired
+    private MinpairRepo minpairRepo;
     @Autowired
     private HttpServletRequest request;
 
@@ -76,5 +80,13 @@ public abstract class BaseController {
             throw new AppException("It's not you");
         }
         return card;
+    }
+
+    protected Minpair authorizeMinpair(String minpairId) throws Exception {
+        Minpair minpair = minpairRepo.findOne(minpairId);
+        if (minpair == null || !minpair.getUserId().equals(SecurityUtils.getCurrentUserLogin())){
+            throw new AppException("It's not you");
+        }
+        return minpair;
     }
 }
