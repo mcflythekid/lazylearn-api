@@ -26,6 +26,25 @@ public class Deck extends AbstractEntity {
     private String name;
     private Integer archived;
 
+    private String vocabId;
+    private Integer vocabType;
+
+    public String getVocabId() {
+        return vocabId;
+    }
+
+    public void setVocabId(String vocabId) {
+        this.vocabId = vocabId;
+    }
+
+    public Integer getVocabType() {
+        return vocabType;
+    }
+
+    public void setVocabType(Integer vocabType) {
+        this.vocabType = vocabType;
+    }
+
     public String getUserId() {
         return userId;
     }

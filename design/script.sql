@@ -29,3 +29,8 @@ CREATE TABLE `vocab` (
   PRIMARY KEY (`id`),
   KEY `vocab_userid_idx` (`userid`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+--------------------------------------------------------------------------
+ALTER TABLE lazylearn_api.deck ADD vocabid varchar(100) NULL;
+ALTER TABLE lazylearn_api.deck ADD vocabtype int NULL;
+CREATE INDEX deck_vocabid_idx USING BTREE ON lazylearn_api.deck (vocabid) ;
+CREATE INDEX deck_vocabtype_idx USING BTREE ON lazylearn_api.deck (vocabtype) ;
