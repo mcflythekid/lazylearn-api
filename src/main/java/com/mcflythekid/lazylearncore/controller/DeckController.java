@@ -3,7 +3,7 @@ package com.mcflythekid.lazylearncore.controller;
 import com.mcflythekid.lazylearncore.entity.Deck;
 import com.mcflythekid.lazylearncore.indto.SearchIn;
 import com.mcflythekid.lazylearncore.indto.deck.DeckCreateIn;
-import com.mcflythekid.lazylearncore.indto.deck.DeckEditIn;
+import com.mcflythekid.lazylearncore.indto.deck.DeckRenameIn;
 import com.mcflythekid.lazylearncore.outdto.BootstraptableOut;
 import com.mcflythekid.lazylearncore.outdto.JSON;
 import com.mcflythekid.lazylearncore.service.DeckService;
@@ -23,7 +23,7 @@ public class DeckController extends BaseController{
     private DeckService deckService;
 
     @PostMapping("/edit")
-    public JSON edit(@Valid @RequestBody DeckEditIn in) throws Exception {
+    public JSON edit(@Valid @RequestBody DeckRenameIn in) throws Exception {
         authorizeDeck(in.getDeckId());
         deckService.edit(in);
         return JSON.ok("Rename success");

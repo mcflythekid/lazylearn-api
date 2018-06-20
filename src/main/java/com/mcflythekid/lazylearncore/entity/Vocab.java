@@ -1,8 +1,9 @@
 package com.mcflythekid.lazylearncore.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.Entity;
 import javax.persistence.Index;
-import javax.persistence.Lob;
 import javax.persistence.Table;
 
 /**
@@ -10,11 +11,23 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="vocab", indexes = {
-        @Index(columnList = "userId")
+    @Index(columnList = "userId"),
+    @Index(columnList = "vocabdeckId")
 })
 public class Vocab extends AbstractEntity {
 
+    @JsonIgnore
+    public void generateImagePathWithoutExt(){
+        setImagePath("/vocab/" + getUserId() + "/" + getId() + "_image");
+    }
+
+    @JsonIgnore
+    public void generateAudioPathWithoutExt(){
+        setAudioPath("/vocab/" + getUserId() + "/" + getId() + "_audio");
+    }
+
     private String userId;
+    private String vocabdeckId;
     private String word;
     private String phonetic;
     private String gender;
@@ -24,6 +37,14 @@ public class Vocab extends AbstractEntity {
 
     public String getUserId() {
         return userId;
+    }
+
+    public String getVocabdeckId() {
+        return vocabdeckId;
+    }
+
+    public void setVocabdeckId(String vocabdeckId) {
+        this.vocabdeckId = vocabdeckId;
     }
 
     public void setUserId(String userId) {

@@ -5,7 +5,7 @@ import org.hibernate.validator.constraints.NotBlank;
 /**
  * @author McFly the Kid
  */
-public class DeckEditIn {
+public class DeckRenameIn {
 
     @NotBlank
     private String deckId;

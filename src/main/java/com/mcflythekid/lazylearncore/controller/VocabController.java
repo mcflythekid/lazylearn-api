@@ -4,6 +4,7 @@ import com.mcflythekid.lazylearncore.entity.Vocab;
 import com.mcflythekid.lazylearncore.indto.SearchIn;
 import com.mcflythekid.lazylearncore.indto.vocab.VocabCreateIn;
 import com.mcflythekid.lazylearncore.indto.vocab.VocabEditIn;
+import com.mcflythekid.lazylearncore.indto.vocab.VocabSearchIn;
 import com.mcflythekid.lazylearncore.outdto.BootstraptableOut;
 import com.mcflythekid.lazylearncore.outdto.JSON;
 import com.mcflythekid.lazylearncore.service.VocabService;
@@ -17,7 +18,7 @@ import javax.validation.Valid;
  */
 @RestController
 @RequestMapping("/vocab")
-public class VocabController extends BaseController{
+public class VocabController extends BaseController {
 
     @Autowired
     private VocabService vocabService;
@@ -28,8 +29,8 @@ public class VocabController extends BaseController{
     }
 
     @PostMapping("/create")
-    public Vocab create(@Valid @RequestBody VocabCreateIn in){
-        return vocabService.create(in);
+    public Vocab create(@Valid @RequestBody VocabCreateIn in) throws Exception{
+        return vocabService.create(in, getUserId());
     }
 
     @PostMapping("/edit")
@@ -40,13 +41,14 @@ public class VocabController extends BaseController{
     }
 
     @PostMapping("/delete/{vocabId}")
-    public JSON delete(@PathVariable String vocabId){
+    public JSON delete(@PathVariable String vocabId) throws Exception{
+        authorizeVocab(vocabId);
         vocabService.delete(vocabId);
         return JSON.ok("Delete success");
     }
 
     @PostMapping("/search")
-    public BootstraptableOut search(@Valid @RequestBody SearchIn in) throws Exception{
-        return vocabService.search(in, getUserId());
+    public BootstraptableOut search(@Valid @RequestBody VocabSearchIn in) throws Exception{
+        return vocabService.search(in);
     }
 }

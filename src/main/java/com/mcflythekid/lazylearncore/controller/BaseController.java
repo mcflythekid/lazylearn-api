@@ -18,14 +18,22 @@ public abstract class BaseController {
 
     @Autowired
     private UserRepo userRepo;
+
     @Autowired
     private DeckRepo deckRepo;
+
     @Autowired
     private CardRepo cardRepo;
+
     @Autowired
     private MinpairRepo minpairRepo;
+
     @Autowired
     private VocabRepo vocabRepo;
+
+    @Autowired
+    private VocabdeckRepo vocabdeckRepo;
+
     @Autowired
     private HttpServletRequest request;
 
@@ -40,14 +48,6 @@ public abstract class BaseController {
         clientData.setData(String.format("IP address: %s - Device: %s %s", ipAddress, os, browser));
 
         return clientData;
-    }
-
-    private String getIpAddress(){
-        String ipAddress = request.getHeader("X-FORWARDED-FOR");
-        if (ipAddress == null || ipAddress.isEmpty()){
-            ipAddress = request.getRemoteAddr();
-        }
-        return ipAddress;
     }
 
     protected String getUserId() throws Exception{
@@ -92,5 +92,13 @@ public abstract class BaseController {
             throw new AppException("It's not you");
         }
         return vocab;
+    }
+
+    protected Vocabdeck authorizeVocabdeck(String vocabdeckId) throws Exception {
+        Vocabdeck vocabdeck = vocabdeckRepo.findOne(vocabdeckId);
+        if (vocabdeck == null || !vocabdeck.getUserId().equals(SecurityUtils.getCurrentUserLogin())){
+            throw new AppException("It's not you");
+        }
+        return vocabdeck;
     }
 }

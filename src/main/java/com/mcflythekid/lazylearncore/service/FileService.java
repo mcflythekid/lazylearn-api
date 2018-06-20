@@ -1,11 +1,11 @@
 package com.mcflythekid.lazylearncore.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import com.mcflythekid.lazylearncore.indto.EncodedFile;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.util.Base64Utils;
 
-import java.io.*;
+import java.io.File;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -27,6 +27,10 @@ public class FileService {
         file.getParentFile().mkdirs();
         Path destinationFile = Paths.get(fullPath);
         Files.write(destinationFile, bytes);
+    }
+
+    public void uploadEncodedFile(String filePathWithoutExt, EncodedFile encodedFile) throws Exception {
+        upload(filePathWithoutExt + "." + encodedFile.getExt(), encodedFile.getContent());
     }
 
     public void delete(String filePath) throws Exception{

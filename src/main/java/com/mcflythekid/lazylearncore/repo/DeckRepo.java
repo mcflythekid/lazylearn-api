@@ -12,5 +12,5 @@ import java.util.List;
  */
 @Repository
 public interface DeckRepo extends JpaRepository<Deck, String> {
-    List<Deck> findAllByVocabId(String vocabId);
+    List<Deck> findAllByVocabdeckId(String vocabdeckId);
 }

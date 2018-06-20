@@ -5,7 +5,7 @@ import com.mcflythekid.lazylearncore.entity.Deck;
 import com.mcflythekid.lazylearncore.entity.DetailedDeck;
 import com.mcflythekid.lazylearncore.indto.SearchIn;
 import com.mcflythekid.lazylearncore.indto.deck.DeckCreateIn;
-import com.mcflythekid.lazylearncore.indto.deck.DeckEditIn;
+import com.mcflythekid.lazylearncore.indto.deck.DeckRenameIn;
 import com.mcflythekid.lazylearncore.outdto.BootstraptableOut;
 import com.mcflythekid.lazylearncore.repo.CardRepo;
 import com.mcflythekid.lazylearncore.repo.DeckRepo;
@@ -30,7 +30,7 @@ public class DeckService {
     private CardRepo cardRepo;
 
     @Transactional(rollbackFor = Exception.class)
-    public void edit(DeckEditIn in) {
+    public void edit(DeckRenameIn in) {
         Deck deck = deckRepo.findOne(in.getDeckId());
         deck.setName(in.getNewName());
         deckRepo.save(deck);

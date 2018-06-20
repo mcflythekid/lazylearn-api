@@ -2,16 +2,19 @@ package com.mcflythekid.lazylearncore.entity;
 
 import com.mcflythekid.lazylearncore.config.Consts;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.Index;
+import javax.persistence.PrePersist;
+import javax.persistence.Table;
 
 /**
  * @author McFly the Kid
  */
 @Entity
-@Table(name="deck", indexes = {
-        @Index(columnList = "userId")
+@Table(name="vocabdeck", indexes = {
+    @Index(columnList = "userId")
 })
-public class Deck extends AbstractEntity {
+public class Vocabdeck extends AbstractEntity {
 
     @PrePersist
     public void prePersist(){
@@ -21,25 +24,6 @@ public class Deck extends AbstractEntity {
     private String userId;
     private String name;
     private Integer archived;
-
-    private String vocabdeckId;
-    private Integer vocabType;
-
-    public String getVocabdeckId() {
-        return vocabdeckId;
-    }
-
-    public void setVocabdeckId(String vocabdeckId) {
-        this.vocabdeckId = vocabdeckId;
-    }
-
-    public Integer getVocabType() {
-        return vocabType;
-    }
-
-    public void setVocabType(Integer vocabType) {
-        this.vocabType = vocabType;
-    }
 
     public String getUserId() {
         return userId;
