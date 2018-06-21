@@ -25,7 +25,7 @@ public class DeckController extends BaseController{
     @PostMapping("/edit")
     public JSON edit(@Valid @RequestBody DeckRenameIn in) throws Exception {
         authorizeDeck(in.getDeckId());
-        deckService.edit(in);
+        deckService.rename(in);
         return JSON.ok("Rename success");
     }
 

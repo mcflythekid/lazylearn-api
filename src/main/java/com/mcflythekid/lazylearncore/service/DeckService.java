@@ -1,6 +1,7 @@
 package com.mcflythekid.lazylearncore.service;
 
 import com.mcflythekid.lazylearncore.config.Consts;
+import com.mcflythekid.lazylearncore.config.exception.AppException;
 import com.mcflythekid.lazylearncore.entity.Deck;
 import com.mcflythekid.lazylearncore.entity.DetailedDeck;
 import com.mcflythekid.lazylearncore.indto.SearchIn;
@@ -10,6 +11,7 @@ import com.mcflythekid.lazylearncore.outdto.BootstraptableOut;
 import com.mcflythekid.lazylearncore.repo.CardRepo;
 import com.mcflythekid.lazylearncore.repo.DeckRepo;
 import com.mcflythekid.lazylearncore.repo.DetailedDeckRepo;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,10 +32,32 @@ public class DeckService {
     private CardRepo cardRepo;
 
     @Transactional(rollbackFor = Exception.class)
-    public void edit(DeckRenameIn in) {
+    public void updateCallback(Deck deck){
+        cardRepo.setArchivedAllByDeckId(deck.getArchived(), deck.getId());
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    public void deleteCallback(String deckId){
+        cardRepo.deleteAllByDeckId(deckId);
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    public void update(Deck deck){
+        deckRepo.save(deck);
+        updateCallback(deck);
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    public void create(Deck deck){
+        deckRepo.save(deck);
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    public void rename(DeckRenameIn in) {
         Deck deck = deckRepo.findOne(in.getDeckId());
         deck.setName(in.getNewName());
         deckRepo.save(deck);
+        //updateCallback(deck);
     }
 
     @Transactional(rollbackFor = Exception.class)
@@ -41,7 +65,7 @@ public class DeckService {
         Deck deck = deckRepo.findOne(deckId);
         deck.setArchived(Consts.CARDDECK_ARCHIVED);
         deckRepo.save(deck);
-        cardRepo.archiveAllByDeckId(deckId);
+        updateCallback(deck);
     }
 
     @Transactional(rollbackFor = Exception.class)
@@ -49,13 +73,13 @@ public class DeckService {
         Deck deck = deckRepo.findOne(deckId);
         deck.setArchived(Consts.CARDDECK_UNARCHIVED);
         deckRepo.save(deck);
-        cardRepo.unarchiveAllByDeckId(deckId);
+        updateCallback(deck);
     }
 
     @Transactional(rollbackFor = Exception.class)
     public void delete(String deckId) {
         deckRepo.delete(deckId);
-        cardRepo.deleteAllByDeckId(deckId);
+        deleteCallback(deckId);
     }
 
     @Transactional(rollbackFor = Exception.class)

@@ -51,4 +51,8 @@ public interface CardRepo extends JpaRepository<Card, String> {
     @Modifying
     @Query("UPDATE Card c SET c.archived = 0 WHERE c.deckId = :deckId")
     void unarchiveAllByDeckId(@Param("deckId") String deckId);
+
+    @Modifying
+    @Query("UPDATE Card c SET c.archived = ?1 WHERE c.deckId = ?2")
+    void setArchivedAllByDeckId(Integer archived, String deckId);
 }

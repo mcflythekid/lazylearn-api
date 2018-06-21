@@ -25,9 +25,32 @@ public class VocabdeckService {
 
     @Autowired
     private VocabdeckRepo vocabdeckRepo;
-
+    @Autowired
+    private DeckService deckService;
     @Autowired
     private DeckRepo deckRepo;
+
+    @Transactional(rollbackFor = Exception.class)
+    public void createCallback(Vocabdeck vocabdeck){
+        for (DeckGenerator deckGenerator : DeckGenerator.getGenerators()){
+            deckService.create(deckGenerator.generate(vocabdeck));
+        }
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    public void updateCallback(Vocabdeck vocabdeck){
+        for (DeckGenerator deckGenerator : DeckGenerator.getGenerators()){
+            Deck deck = deckRepo.findByVocabdeckIdAndVocabType(vocabdeck.getId(), deckGenerator.getVocabType());
+            deckService.update(deckGenerator.generate(vocabdeck, deck));
+        }
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    public void deleteCallback(String vocabdeckId){
+        for (Deck deck: deckRepo.findAllByVocabdeckId(vocabdeckId)) {
+            deckService.delete(deck.getId());
+        }
+    }
 
     @Transactional(rollbackFor = Exception.class)
     public Vocabdeck create(VocabdeckCreateIn in, String userId) throws IOException {
@@ -35,25 +58,14 @@ public class VocabdeckService {
         vocabdeck.setName(in.getName());
         vocabdeck.setUserId(userId);
         vocabdeckRepo.save(vocabdeck);
-
-        for (DeckGenerator deckGenerator : DeckGenerator.getGenerators()){
-            deckRepo.save(deckGenerator.generate(vocabdeck));
-        }
-
+        createCallback(vocabdeck);
         return vocabdeck;
     }
 
     @Transactional(rollbackFor = Exception.class)
     public void delete(String vocabdeckId) {
         vocabdeckRepo.delete(vocabdeckId);
-        // TODo imple
-    }
-
-    private void updateDeck(Vocabdeck vocabdeck){
-        for (DeckGenerator deckGenerator : DeckGenerator.getGenerators()){
-            Deck deck = deckRepo.findByVocabdeckIdAndVocabType(vocabdeck.getId(), deckGenerator.getVocabType());
-            deckRepo.save(deckGenerator.generate(vocabdeck, deck));
-        }
+        deleteCallback(vocabdeckId);
     }
 
     @Transactional(rollbackFor = Exception.class)
@@ -61,7 +73,7 @@ public class VocabdeckService {
         Vocabdeck vocabdeck = vocabdeckRepo.findOne(vocabdeckId);
         vocabdeck.setArchived(Consts.CARDDECK_ARCHIVED);
         vocabdeckRepo.save(vocabdeck);
-        updateDeck(vocabdeck);
+        updateCallback(vocabdeck);
     }
 
     @Transactional(rollbackFor = Exception.class)
@@ -69,7 +81,7 @@ public class VocabdeckService {
         Vocabdeck vocabdeck = vocabdeckRepo.findOne(vocabdeckId);
         vocabdeck.setArchived(Consts.CARDDECK_UNARCHIVED);
         vocabdeckRepo.save(vocabdeck);
-        updateDeck(vocabdeck);
+        updateCallback(vocabdeck);
     }
 
     @Transactional(rollbackFor = Exception.class)
@@ -77,7 +89,7 @@ public class VocabdeckService {
         Vocabdeck vocabdeck = vocabdeckRepo.findOne(in.getVocabdeckId());
         vocabdeck.setName(in.getNewName());
         vocabdeckRepo.save(vocabdeck);
-        updateDeck(vocabdeck);
+        updateCallback(vocabdeck);
     }
 
     public BootstraptableOut search(SearchIn in, String userId) {
