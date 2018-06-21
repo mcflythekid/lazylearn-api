@@ -1,6 +1,8 @@
 package com.mcflythekid.lazylearncore.generator;
 
+import com.mcflythekid.lazylearncore.entity.Card;
 import com.mcflythekid.lazylearncore.entity.Deck;
+import com.mcflythekid.lazylearncore.entity.Vocab;
 import com.mcflythekid.lazylearncore.entity.Vocabdeck;
 
 /**
@@ -18,5 +20,12 @@ public class Writeable extends CardDeckGenerator {
         deck = super.generateDeck(vocabdeck, deck);
         deck.setName(vocabdeck.getName() + " [Writeable]");
         return deck;
+    }
+
+    @Override
+    public Card generateCard(Vocab vocab, Card card, String deckId) {
+        card = super.generateCard(vocab, card, deckId);
+
+        return card;
     }
 }
