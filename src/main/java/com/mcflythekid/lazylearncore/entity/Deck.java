@@ -9,7 +9,9 @@ import javax.persistence.*;
  */
 @Entity
 @Table(name="deck", indexes = {
-        @Index(columnList = "userId")
+    @Index(columnList = "userId"),
+}, uniqueConstraints = {
+    @UniqueConstraint(columnNames = {"vocabdeckId", "vocabType"})
 })
 public class Deck extends AbstractEntity {
 
