@@ -1,6 +1,7 @@
 package com.mcflythekid.lazylearncore.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.mcflythekid.lazylearncore.indto.EncodedFile;
 
 import javax.persistence.Entity;
 import javax.persistence.Index;
@@ -17,13 +18,13 @@ import javax.persistence.Table;
 public class Vocab extends AbstractEntity {
 
     @JsonIgnore
-    public void generateImagePathWithoutExt(){
-        setImagePath("/vocab/" + getUserId() + "/" + getId() + "_image");
+    public void generateImagePath(EncodedFile encodedFile){
+        setImagePath("/vocab/" + getUserId() + "/" + getId() + "_image." + encodedFile.getExt());
     }
 
     @JsonIgnore
-    public void generateAudioPathWithoutExt(){
-        setAudioPath("/vocab/" + getUserId() + "/" + getId() + "_audio");
+    public void generateAudioPath(EncodedFile encodedFile){
+        setAudioPath("/vocab/" + getUserId() + "/" + getId() + "_audio." + encodedFile.getExt());
     }
 
     private String userId;

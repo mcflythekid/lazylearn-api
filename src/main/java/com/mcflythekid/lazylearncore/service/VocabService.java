@@ -37,19 +37,31 @@ public class VocabService {
         vocab.setUserId(userId);
         vocabRepo.save(vocab);
 
-        vocab.generateAudioPathWithoutExt();
-        vocab.generateImagePathWithoutExt();
+        vocab.generateAudioPath(in.getEncodedAudio());
+        vocab.generateImagePath(in.getEncodedImage());
         vocabRepo.save(vocab);
 
-        fileService.uploadEncodedFile(vocab.getAudioPath(), in.getEncodedAudio());
-        fileService.uploadEncodedFile(vocab.getImagePath(), in.getEncodedImage());
+        fileService.uploadEncodedFile(vocab.getAudioPath(), in.getEncodedAudio().getContent());
+        fileService.uploadEncodedFile(vocab.getImagePath(), in.getEncodedImage().getContent());
         return vocab;
     }
 
     @Transactional(rollbackFor = Exception.class)
-    public void edit(VocabEditIn in){
-        // TODO implements
-        throw new RuntimeException("cc");
+    public void edit(VocabEditIn in) throws Exception{
+        Vocab vocab = vocabRepo.findOne(in.getVocabId());
+        BeanUtils.copyProperties(in, vocab);
+
+        if(in.getEncodedAudio() != null){
+            vocab.generateAudioPath(in.getEncodedAudio());
+            fileService.uploadEncodedFile(vocab.getAudioPath(), in.getEncodedAudio().getContent());
+        }
+
+        if(in.getEncodedImage() != null){
+            vocab.generateImagePath(in.getEncodedImage());
+            fileService.uploadEncodedFile(vocab.getImagePath(), in.getEncodedImage().getContent());
+        }
+
+        vocabRepo.save(vocab);;
     }
 
     @Transactional(rollbackFor = Exception.class)

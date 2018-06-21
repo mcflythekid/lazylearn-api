@@ -29,8 +29,8 @@ public class FileService {
         Files.write(destinationFile, bytes);
     }
 
-    public void uploadEncodedFile(String filePathWithoutExt, EncodedFile encodedFile) throws Exception {
-        upload(filePathWithoutExt + "." + encodedFile.getExt(), encodedFile.getContent());
+    public void uploadEncodedFile(String filePath, String encodedFile) throws Exception {
+        upload(filePath, encodedFile);
     }
 
     public void delete(String filePath) throws Exception{

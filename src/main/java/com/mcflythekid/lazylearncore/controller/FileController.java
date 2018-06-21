@@ -1,5 +1,7 @@
 package com.mcflythekid.lazylearncore.controller;
 
+import com.mcflythekid.lazylearncore.util.MimeUtils;
+import org.apache.tika.Tika;
 import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,8 +31,7 @@ public class FileController extends BaseController {
         String fullPath = uploadPath + filePath;
         File file = new File(fullPath);
         InputStream inputStream = new FileInputStream(file);
-        String contentType = new MimetypesFileTypeMap().getContentType(new File(fullPath));
-        response.setContentType(contentType);
+        response.setContentType(new Tika().detect(fullPath));
         IOUtils.copy(inputStream, response.getOutputStream());
         inputStream.close();
     }

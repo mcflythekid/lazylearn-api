@@ -1,7 +1,5 @@
 package com.mcflythekid.lazylearncore.util;
 
-import org.springframework.http.HttpStatus;
-
 import javax.servlet.http.HttpServletRequest;
 
 /**
