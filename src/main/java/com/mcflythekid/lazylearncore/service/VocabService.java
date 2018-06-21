@@ -1,10 +1,13 @@
 package com.mcflythekid.lazylearncore.service;
 
+import com.mcflythekid.lazylearncore.generator.CardDeckGenerator;
+import com.mcflythekid.lazylearncore.entity.Card;
 import com.mcflythekid.lazylearncore.entity.Vocab;
 import com.mcflythekid.lazylearncore.indto.vocab.VocabCreateIn;
 import com.mcflythekid.lazylearncore.indto.vocab.VocabEditIn;
 import com.mcflythekid.lazylearncore.indto.vocab.VocabSearchIn;
 import com.mcflythekid.lazylearncore.outdto.BootstraptableOut;
+import com.mcflythekid.lazylearncore.repo.CardRepo;
 import com.mcflythekid.lazylearncore.repo.DeckRepo;
 import com.mcflythekid.lazylearncore.repo.VocabRepo;
 import org.springframework.beans.BeanUtils;
@@ -12,7 +15,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.io.IOException;
 import java.util.List;
 
 /**
@@ -29,6 +31,32 @@ public class VocabService {
     private DeckRepo deckRepo;
     @Autowired
     private FileService fileService;
+    @Autowired
+    private CardService cardService;
+    @Autowired
+    private CardRepo cardRepo;
+
+    @Transactional(rollbackFor = Exception.class)
+    public void createCallback(Vocab vocab){
+        for (CardDeckGenerator cardDeckGenerator : CardDeckGenerator.getGenerators()){
+            String deckId = deckRepo.findByVocabdeckIdAndVocabType(vocab.getVocabdeckId(), cardDeckGenerator.getVocabType()).getId();
+            cardRepo.save(cardDeckGenerator.generateCard(vocab, null, deckId));
+        }
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    public void updateCallback(Vocab vocab){
+        for (CardDeckGenerator cardDeckGenerator : CardDeckGenerator.getGenerators()){
+            String deckId = deckRepo.findByVocabdeckIdAndVocabType(vocab.getVocabdeckId(), cardDeckGenerator.getVocabType()).getId();
+            Card card = cardRepo.findByDeckIdAndVocabId(deckId, vocab.getId());
+            cardRepo.save(cardDeckGenerator.generateCard(vocab, card, deckId));
+        }
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    public void deleteCallback(String vocabId){
+        cardRepo.deleteAllByVocabId(vocabId);
+    }
 
     @Transactional(rollbackFor = Exception.class)
     public Vocab create(VocabCreateIn in, String userId) throws Exception {
@@ -39,10 +67,11 @@ public class VocabService {
 
         vocab.generateAudioPath(in.getEncodedAudio());
         vocab.generateImagePath(in.getEncodedImage());
-        vocabRepo.save(vocab);
-
         fileService.uploadEncodedFile(vocab.getAudioPath(), in.getEncodedAudio().getContent());
         fileService.uploadEncodedFile(vocab.getImagePath(), in.getEncodedImage().getContent());
+        vocabRepo.save(vocab);
+
+        createCallback(vocab);
         return vocab;
     }
 
@@ -55,19 +84,19 @@ public class VocabService {
             vocab.generateAudioPath(in.getEncodedAudio());
             fileService.uploadEncodedFile(vocab.getAudioPath(), in.getEncodedAudio().getContent());
         }
-
         if(in.getEncodedImage() != null){
             vocab.generateImagePath(in.getEncodedImage());
             fileService.uploadEncodedFile(vocab.getImagePath(), in.getEncodedImage().getContent());
         }
+        vocabRepo.save(vocab);
 
-        vocabRepo.save(vocab);;
+        updateCallback(vocab);
     }
 
     @Transactional(rollbackFor = Exception.class)
     public void delete(String vocabId){
         vocabRepo.delete(vocabId);
-        // TODo imple
+        deleteCallback(vocabId);
     }
 
     public BootstraptableOut search(VocabSearchIn in){

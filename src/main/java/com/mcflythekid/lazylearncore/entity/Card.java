@@ -15,7 +15,8 @@ import java.util.Date;
 @Entity
 @Table(name="card", indexes = {
         @Index(columnList = "userId"),
-        @Index(columnList = "deckId")
+        @Index(columnList = "deckId"),
+        @Index(columnList = "vocabId")
 })
 public class Card extends AbstractEntity{
 
@@ -53,6 +54,16 @@ public class Card extends AbstractEntity{
     private String userId;
     private Integer step;
     private Integer archived;
+
+    private String vocabId;
+
+    public String getVocabId() {
+        return vocabId;
+    }
+
+    public void setVocabId(String vocabId) {
+        this.vocabId = vocabId;
+    }
 
     public Integer getArchived() {
         return archived;

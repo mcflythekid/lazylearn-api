@@ -1,13 +1,12 @@
-package com.mcflythekid.lazylearncore.deckgenerator;
+package com.mcflythekid.lazylearncore.generator;
 
 import com.mcflythekid.lazylearncore.entity.Deck;
-import com.mcflythekid.lazylearncore.entity.Vocab;
 import com.mcflythekid.lazylearncore.entity.Vocabdeck;
 
 /**
  * @author McFly the Kid
  */
-public class Speakable extends DeckGenerator {
+public class Speakable extends CardDeckGenerator {
 
     @Override
     public Integer getVocabType() {
@@ -15,8 +14,8 @@ public class Speakable extends DeckGenerator {
     }
 
     @Override
-    public Deck generate(Vocabdeck vocabdeck, Deck deck) {
-        deck = super.generate(vocabdeck, deck);
+    public Deck generateDeck(Vocabdeck vocabdeck, Deck deck) {
+        deck = super.generateDeck(vocabdeck, deck);
         deck.setName(vocabdeck.getName() + " [Speakable]");
         return deck;
     }

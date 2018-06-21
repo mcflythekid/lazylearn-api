@@ -1,7 +1,7 @@
 package com.mcflythekid.lazylearncore.service;
 
 import com.mcflythekid.lazylearncore.config.Consts;
-import com.mcflythekid.lazylearncore.deckgenerator.DeckGenerator;
+import com.mcflythekid.lazylearncore.generator.CardDeckGenerator;
 import com.mcflythekid.lazylearncore.entity.Deck;
 import com.mcflythekid.lazylearncore.entity.Vocabdeck;
 import com.mcflythekid.lazylearncore.indto.SearchIn;
@@ -32,16 +32,16 @@ public class VocabdeckService {
 
     @Transactional(rollbackFor = Exception.class)
     public void createCallback(Vocabdeck vocabdeck){
-        for (DeckGenerator deckGenerator : DeckGenerator.getGenerators()){
-            deckService.create(deckGenerator.generate(vocabdeck));
+        for (CardDeckGenerator cardDeckGenerator : CardDeckGenerator.getGenerators()){
+            deckService.create(cardDeckGenerator.generateDeck(vocabdeck, null));
         }
     }
 
     @Transactional(rollbackFor = Exception.class)
     public void updateCallback(Vocabdeck vocabdeck){
-        for (DeckGenerator deckGenerator : DeckGenerator.getGenerators()){
-            Deck deck = deckRepo.findByVocabdeckIdAndVocabType(vocabdeck.getId(), deckGenerator.getVocabType());
-            deckService.update(deckGenerator.generate(vocabdeck, deck));
+        for (CardDeckGenerator cardDeckGenerator : CardDeckGenerator.getGenerators()){
+            Deck deck = deckRepo.findByVocabdeckIdAndVocabType(vocabdeck.getId(), cardDeckGenerator.getVocabType());
+            deckService.update(cardDeckGenerator.generateDeck(vocabdeck, deck));
         }
     }
 
