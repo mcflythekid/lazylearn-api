@@ -10,6 +10,7 @@ import javax.persistence.*;
 @Entity
 @Table(name="deck", indexes = {
     @Index(columnList = "userId"),
+    @Index(columnList = "vocabdeckId"),
 }, uniqueConstraints = {
     @UniqueConstraint(columnNames = {"vocabdeckId", "vocabType"})
 })
