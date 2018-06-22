@@ -32,7 +32,7 @@ public class CardController extends BaseController{
 
     @PostMapping("/create")
     public Card create(@Valid @RequestBody CardCreateIn in) throws Exception {
-        authorizeDeck(in.getDeckId());
+        protectGeneratedDeck(authorizeDeck(in.getDeckId()));
         return cardService.create(in, getUserId());
     }
 
