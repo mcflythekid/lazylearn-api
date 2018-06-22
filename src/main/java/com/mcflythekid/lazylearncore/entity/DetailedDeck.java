@@ -18,6 +18,24 @@ public class DetailedDeck extends AbstractEntity{
     @Column(columnDefinition = "decimal(19,0)")
     private Long totalTimeupCard;
     private Integer archived;
+    private String vocabdeckId;
+    private String vocabdeckName;
+
+    public String getVocabdeckName() {
+        return vocabdeckName;
+    }
+
+    public void setVocabdeckName(String vocabdeckName) {
+        this.vocabdeckName = vocabdeckName;
+    }
+
+    public String getVocabdeckId() {
+        return vocabdeckId;
+    }
+
+    public void setVocabdeckId(String vocabdeckId) {
+        this.vocabdeckId = vocabdeckId;
+    }
 
     public Integer getArchived() {
         return archived;
