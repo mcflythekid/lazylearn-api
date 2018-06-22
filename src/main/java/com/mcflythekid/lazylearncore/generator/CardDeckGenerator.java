@@ -42,6 +42,8 @@ public abstract class CardDeckGenerator {
             card.setDeckId(deckId);
         }
         card.setVocabId(vocab.getId());
+        card.setFront("dummy");
+        card.setBack("dummy");
         return card;
     }
 }
