@@ -38,14 +38,14 @@ public class CardController extends BaseController{
 
     @PostMapping("/delete/{cardId}")
     public JSON deleteCard(@PathVariable("cardId") String cardId) throws Exception {
-        authorizeCard(cardId);
+        protectGeneratedCard(authorizeCard(cardId));
         cardService.delete(cardId);
         return JSON.ok("Delete success");
     }
 
     @PostMapping("/edit")
     public JSON edit(@Valid @RequestBody CardEditIn in) throws Exception {
-        authorizeCard(in.getCardId());
+        protectGeneratedCard(authorizeCard(in.getCardId()));
         cardService.edit(in);
         return JSON.ok("Edit success");
     }

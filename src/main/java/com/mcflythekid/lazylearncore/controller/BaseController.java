@@ -7,6 +7,7 @@ import com.mcflythekid.lazylearncore.repo.*;
 import com.mcflythekid.lazylearncore.service.AuthService;
 import com.mcflythekid.lazylearncore.util.HttpServletUtils;
 import com.mcflythekid.lazylearncore.util.SecurityUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.servlet.http.HttpServletRequest;
@@ -100,5 +101,17 @@ public abstract class BaseController {
             throw new AppException("It's not you");
         }
         return vocabdeck;
+    }
+
+    protected void protectGeneratedDeck(Deck deck) throws Exception{
+        if (StringUtils.isNotBlank(deck.getVocabdeckId())){
+            throw new Exception("This deck cannot be modified");
+        }
+    }
+
+    protected void protectGeneratedCard(Card card) throws Exception{
+        if (StringUtils.isNotBlank(card.getVocabId())){
+            throw new Exception("This card cannot be modified");
+        }
     }
 }

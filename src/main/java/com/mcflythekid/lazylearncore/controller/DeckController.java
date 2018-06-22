@@ -23,29 +23,29 @@ public class DeckController extends BaseController{
     private DeckService deckService;
 
     @PostMapping("/edit")
-    public JSON edit(@Valid @RequestBody DeckRenameIn in) throws Exception {
-        authorizeDeck(in.getDeckId());
+    public JSON rename(@Valid @RequestBody DeckRenameIn in) throws Exception {
+        protectGeneratedDeck(authorizeDeck(in.getDeckId()));
         deckService.rename(in);
         return JSON.ok("Rename success");
     }
 
     @PostMapping("/archive/{deckId}")
     public JSON archive(@PathVariable("deckId") String deckId) throws Exception {
-        authorizeDeck(deckId);
+        protectGeneratedDeck(authorizeDeck(deckId));
         deckService.archive(deckId);
         return JSON.ok("Archived");
     }
 
     @PostMapping("/unarchive/{deckId}")
     public JSON unarchive(@PathVariable("deckId") String deckId) throws Exception {
-        authorizeDeck(deckId);
+        protectGeneratedDeck(authorizeDeck(deckId));
         deckService.unarchive(deckId);
         return JSON.ok("Unarchived");
     }
 
     @PostMapping("/delete/{deckId}")
     public JSON delete(@PathVariable("deckId") String deckId) throws Exception {
-        authorizeDeck(deckId);
+        protectGeneratedDeck(authorizeDeck(deckId));
         deckService.delete(deckId);
         return JSON.ok("Delete success");
     }
