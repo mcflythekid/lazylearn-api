@@ -9,6 +9,10 @@ import java.io.IOException;
  */
 public class KnowImage extends CardDeckGenerator {
 
+    public KnowImage(String fileRoot) {
+        super(fileRoot);
+    }
+
     @Override
     public String getPostfix() {
         return "[Know Image]";

@@ -9,6 +9,10 @@ import java.io.IOException;
  */
 public class Speakable extends CardDeckGenerator {
 
+    public Speakable(String fileRoot) {
+        super(fileRoot);
+    }
+
     @Override
     public String getPostfix() {
         return "[Speakable]";

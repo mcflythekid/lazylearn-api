@@ -11,6 +11,7 @@ import com.mcflythekid.lazylearncore.outdto.BootstraptableOut;
 import com.mcflythekid.lazylearncore.repo.DeckRepo;
 import com.mcflythekid.lazylearncore.repo.VocabdeckRepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,17 +30,19 @@ public class VocabdeckService {
     private DeckService deckService;
     @Autowired
     private DeckRepo deckRepo;
+    @Value("${file-root}")
+    private String fileRoot;
 
     @Transactional(rollbackFor = Exception.class)
     public void createCallback(Vocabdeck vocabdeck){
-        for (CardDeckGenerator cardDeckGenerator : CardDeckGenerator.getGenerators()){
+        for (CardDeckGenerator cardDeckGenerator : CardDeckGenerator.getGenerators(fileRoot)){
             deckService.create(cardDeckGenerator.generateDeck(vocabdeck, null));
         }
     }
 
     @Transactional(rollbackFor = Exception.class)
     public void updateCallback(Vocabdeck vocabdeck){
-        for (CardDeckGenerator cardDeckGenerator : CardDeckGenerator.getGenerators()){
+        for (CardDeckGenerator cardDeckGenerator : CardDeckGenerator.getGenerators(fileRoot)){
             Deck deck = deckRepo.findByVocabdeckIdAndVocabType(vocabdeck.getId(), cardDeckGenerator.getVocabType());
             deckService.update(cardDeckGenerator.generateDeck(vocabdeck, deck));
         }

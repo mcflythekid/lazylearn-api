@@ -13,6 +13,7 @@ import com.mcflythekid.lazylearncore.repo.DeckRepo;
 import com.mcflythekid.lazylearncore.repo.VocabRepo;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -38,10 +39,12 @@ public class VocabService {
     private CardService cardService;
     @Autowired
     private CardRepo cardRepo;
+    @Value("${file-root}")
+    private String fileRoot;
 
     @Transactional(rollbackFor = Exception.class)
     public void createCallback(Vocab vocab) throws Exception {
-        for (CardDeckGenerator cardDeckGenerator : CardDeckGenerator.getGenerators()){
+        for (CardDeckGenerator cardDeckGenerator : CardDeckGenerator.getGenerators(fileRoot)){
             String deckId = deckRepo.findByVocabdeckIdAndVocabType(vocab.getVocabdeckId(), cardDeckGenerator.getVocabType()).getId();
             cardRepo.save(cardDeckGenerator.generateCard(vocab, null, deckId));
         }
@@ -49,7 +52,7 @@ public class VocabService {
 
     @Transactional(rollbackFor = Exception.class)
     public void updateCallback(Vocab vocab) throws Exception {
-        for (CardDeckGenerator cardDeckGenerator : CardDeckGenerator.getGenerators()){
+        for (CardDeckGenerator cardDeckGenerator : CardDeckGenerator.getGenerators(fileRoot)){
             String deckId = deckRepo.findByVocabdeckIdAndVocabType(vocab.getVocabdeckId(), cardDeckGenerator.getVocabType()).getId();
             Card card = cardRepo.findByDeckIdAndVocabId(deckId, vocab.getId());
             cardRepo.save(cardDeckGenerator.generateCard(vocab, card, deckId));

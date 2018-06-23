@@ -9,6 +9,10 @@ import java.io.IOException;
  */
 public class Writeable extends CardDeckGenerator {
 
+    public Writeable(String fileRoot) {
+        super(fileRoot);
+    }
+
     @Override
     public String getPostfix() {
         return "[Writeable]";

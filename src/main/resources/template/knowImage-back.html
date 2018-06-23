@@ -1,11 +1,23 @@
-<!-- Latest compiled and minified CSS -->
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" >
-
-
 <div class="row">
-    <div class="col-xs-12">{{gender}} {gender}</div>
+    <div class="col-xs-12 u-text-center">
+        <i>${gender}</i>
+        <strong>${word}</strong>
+    </div>
 </div>
 <div class="row">
-    <div class="col-xs-6">%s</div>
-    <div class="col-xs-6">%s</div>
+    <div class="col-xs-6 u-text-center">
+        <span>${phonetic}</span><br>
+        <audio id="${id}_audio" src="${audioPath}"></audio>
+        <button id="${id}_play" class="btn btn-success btn-sm">
+            <span class="glyphicon glyphicon-play"></span>
+        </button>
+        <script>
+            $('#${id}_play').click(()=>{
+                $('#${id}_audio')[0].play();
+            });
+        </script>
+    </div>
+    <div class="col-xs-6 u-text-center u-elements-center">
+        <i class="">${personalConnection}</i>
+    </div>
 </div>

@@ -16,8 +16,14 @@ import java.util.Map;
  */
 public abstract class CardDeckGenerator {
 
-    public static List<CardDeckGenerator> getGenerators(){
-        return Arrays.asList(new KnowImage(), new KnowWord(), new Speakable(), new Writeable());
+    private String fileRoot;
+
+    protected CardDeckGenerator(String fileRoot) {
+        this.fileRoot = fileRoot;
+    }
+
+    public static List<CardDeckGenerator> getGenerators(String fileRoot){
+        return Arrays.asList(new KnowImage(fileRoot), new KnowWord(fileRoot), new Speakable(fileRoot), new Writeable(fileRoot));
     }
 
     public static final Integer VOCAB_TYPE__KNOW_IMAGE = 1;
@@ -62,12 +68,13 @@ public abstract class CardDeckGenerator {
      */
     public String formatCardContent(String template, Vocab vocab){
         Map<String, String> valuesMap = new HashMap<>();
+        valuesMap.put("id", vocab.getId());
         valuesMap.put("word", vocab.getWord());
         valuesMap.put("phonetic", vocab.getPhonetic());
         valuesMap.put("gender", vocab.getGender());
         valuesMap.put("personalConnection", vocab.getPersonalConnection());
-        valuesMap.put("audioPath", vocab.getAudioPath());
-        valuesMap.put("imagePath", vocab.getImagePath());
+        valuesMap.put("audioPath", fileRoot + vocab.getAudioPath());
+        valuesMap.put("imagePath", fileRoot + vocab.getImagePath());
         StringSubstitutor sub = new StringSubstitutor(valuesMap);
         return sub.replace(template);
     }

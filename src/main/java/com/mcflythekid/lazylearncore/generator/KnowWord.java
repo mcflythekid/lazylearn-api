@@ -9,6 +9,10 @@ import java.io.IOException;
  */
 public class KnowWord extends CardDeckGenerator {
 
+    protected KnowWord(String fileRoot) {
+        super(fileRoot);
+    }
+
     @Override
     public String getPostfix() {
         return "[Know Word]";
