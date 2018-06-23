@@ -23,7 +23,7 @@ public class Speakable extends CardDeckGenerator {
     }
 
     @Override
-    public Card generateCard(Vocab vocab, Card card, String deckId) {
+    public Card generateCard(Vocab vocab, Card card, String deckId) throws Exception {
         card = super.generateCard(vocab, card, deckId);
 
         return card;

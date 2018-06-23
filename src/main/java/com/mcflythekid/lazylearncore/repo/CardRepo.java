@@ -61,4 +61,6 @@ public interface CardRepo extends JpaRepository<Card, String> {
     void deleteAllByVocabId(@Param("vocabId") String vocabId);
 
     Card findByDeckIdAndVocabId(String deckId, String vocabId);
+
+    List<Card> findAllByVocabId(String vocabId);
 }

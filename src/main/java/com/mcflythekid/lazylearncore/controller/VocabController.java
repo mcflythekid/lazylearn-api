@@ -7,6 +7,7 @@ import com.mcflythekid.lazylearncore.indto.vocab.VocabEditIn;
 import com.mcflythekid.lazylearncore.indto.vocab.VocabSearchIn;
 import com.mcflythekid.lazylearncore.outdto.BootstraptableOut;
 import com.mcflythekid.lazylearncore.outdto.JSON;
+import com.mcflythekid.lazylearncore.outdto.vocab.VocabEditOut;
 import com.mcflythekid.lazylearncore.service.VocabService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -34,10 +35,9 @@ public class VocabController extends BaseController {
     }
 
     @PostMapping("/edit")
-    public JSON edit(@Valid @RequestBody VocabEditIn in) throws Exception{
+    public VocabEditOut edit(@Valid @RequestBody VocabEditIn in) throws Exception{
         authorizeVocab(in.getVocabId());
-        vocabService.edit(in);
-        return JSON.ok("Edit success");
+        return vocabService.edit(in);
     }
 
     @PostMapping("/delete/{vocabId}")

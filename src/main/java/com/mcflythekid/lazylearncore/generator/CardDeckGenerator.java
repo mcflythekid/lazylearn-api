@@ -4,9 +4,14 @@ import com.mcflythekid.lazylearncore.entity.Card;
 import com.mcflythekid.lazylearncore.entity.Deck;
 import com.mcflythekid.lazylearncore.entity.Vocab;
 import com.mcflythekid.lazylearncore.entity.Vocabdeck;
+import org.apache.commons.lang3.text.StrSubstitutor;
+import org.apache.commons.text.StringSubstitutor;
 
+import java.io.IOException;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author McFly the Kid
@@ -35,7 +40,7 @@ public abstract class CardDeckGenerator {
         return deck;
     }
 
-    public Card generateCard(Vocab vocab, Card card, String deckId){
+    public Card generateCard(Vocab vocab, Card card, String deckId) throws Exception {
         if (card == null){
             card = new Card();
             card.setUserId(vocab.getUserId());
@@ -45,5 +50,19 @@ public abstract class CardDeckGenerator {
         card.setFront("dummy");
         card.setBack("dummy");
         return card;
+    }
+
+    /**
+     *
+     * @param template   "The ${animal} jumped over the ${target}."
+     * @param vocab
+     * @return
+     */
+    public String format(String template, Vocab vocab){
+        Map<String, String> valuesMap = new HashMap<>();
+        valuesMap.put("animal", "quick brown fox");
+        valuesMap.put("target", "lazy dog");
+        StringSubstitutor sub = new StringSubstitutor(valuesMap);
+        return sub.replace(template);
     }
 }

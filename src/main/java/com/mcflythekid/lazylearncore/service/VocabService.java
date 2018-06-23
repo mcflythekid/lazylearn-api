@@ -7,6 +7,7 @@ import com.mcflythekid.lazylearncore.indto.vocab.VocabCreateIn;
 import com.mcflythekid.lazylearncore.indto.vocab.VocabEditIn;
 import com.mcflythekid.lazylearncore.indto.vocab.VocabSearchIn;
 import com.mcflythekid.lazylearncore.outdto.BootstraptableOut;
+import com.mcflythekid.lazylearncore.outdto.vocab.VocabEditOut;
 import com.mcflythekid.lazylearncore.repo.CardRepo;
 import com.mcflythekid.lazylearncore.repo.DeckRepo;
 import com.mcflythekid.lazylearncore.repo.VocabRepo;
@@ -15,7 +16,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author McFly the Kid
@@ -37,7 +40,7 @@ public class VocabService {
     private CardRepo cardRepo;
 
     @Transactional(rollbackFor = Exception.class)
-    public void createCallback(Vocab vocab){
+    public void createCallback(Vocab vocab) throws Exception {
         for (CardDeckGenerator cardDeckGenerator : CardDeckGenerator.getGenerators()){
             String deckId = deckRepo.findByVocabdeckIdAndVocabType(vocab.getVocabdeckId(), cardDeckGenerator.getVocabType()).getId();
             cardRepo.save(cardDeckGenerator.generateCard(vocab, null, deckId));
@@ -45,7 +48,7 @@ public class VocabService {
     }
 
     @Transactional(rollbackFor = Exception.class)
-    public void updateCallback(Vocab vocab){
+    public void updateCallback(Vocab vocab) throws Exception {
         for (CardDeckGenerator cardDeckGenerator : CardDeckGenerator.getGenerators()){
             String deckId = deckRepo.findByVocabdeckIdAndVocabType(vocab.getVocabdeckId(), cardDeckGenerator.getVocabType()).getId();
             Card card = cardRepo.findByDeckIdAndVocabId(deckId, vocab.getId());
@@ -76,7 +79,7 @@ public class VocabService {
     }
 
     @Transactional(rollbackFor = Exception.class)
-    public void edit(VocabEditIn in) throws Exception{
+    public VocabEditOut edit(VocabEditIn in) throws Exception{
         Vocab vocab = vocabRepo.findOne(in.getVocabId());
         BeanUtils.copyProperties(in, vocab);
 
@@ -91,6 +94,11 @@ public class VocabService {
         vocabRepo.save(vocab);
 
         updateCallback(vocab);
+
+        VocabEditOut vocabEditOut = new VocabEditOut();
+        vocabEditOut.setVocab(vocab);
+        vocabEditOut.setCards(cardRepo.findAllByVocabId(vocab.getId()));
+        return vocabEditOut;
     }
 
     @Transactional(rollbackFor = Exception.class)
