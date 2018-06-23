@@ -44,7 +44,7 @@ public abstract class CardDeckGenerator {
         deck.setArchived(vocabdeck.getArchived());
         deck.setVocabdeckId(vocabdeck.getId());
         deck.setVocabType(getVocabType());
-        deck.setName(deck.getName() + " " + getPostfix());
+        deck.setName(vocabdeck.getName() + " " + getPostfix());
         return deck;
     }
 
