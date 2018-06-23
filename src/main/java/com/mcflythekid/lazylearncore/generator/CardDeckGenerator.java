@@ -4,10 +4,8 @@ import com.mcflythekid.lazylearncore.entity.Card;
 import com.mcflythekid.lazylearncore.entity.Deck;
 import com.mcflythekid.lazylearncore.entity.Vocab;
 import com.mcflythekid.lazylearncore.entity.Vocabdeck;
-import org.apache.commons.lang3.text.StrSubstitutor;
 import org.apache.commons.text.StringSubstitutor;
 
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -27,7 +25,10 @@ public abstract class CardDeckGenerator {
     public static final Integer VOCAB_TYPE__SPEAKABLE = 3;
     public static final Integer VOCAB_TYPE__WRITEABLE = 4;
 
+    public abstract String getPostfix();
     public abstract Integer getVocabType();
+    public abstract String getCardFrontTemplate() throws Exception;
+    public abstract String getCardBackTemplate() throws Exception;
 
     public Deck generateDeck(Vocabdeck vocabdeck, Deck deck){
         if (deck == null){
@@ -37,6 +38,7 @@ public abstract class CardDeckGenerator {
         deck.setArchived(vocabdeck.getArchived());
         deck.setVocabdeckId(vocabdeck.getId());
         deck.setVocabType(getVocabType());
+        deck.setName(deck.getName() + " " + getPostfix());
         return deck;
     }
 
@@ -47,8 +49,8 @@ public abstract class CardDeckGenerator {
             card.setDeckId(deckId);
         }
         card.setVocabId(vocab.getId());
-        card.setFront("dummy");
-        card.setBack("dummy");
+        card.setFront(formatCardContent(getCardFrontTemplate(), vocab));
+        card.setBack(formatCardContent(getCardBackTemplate(), vocab));
         return card;
     }
 
@@ -58,7 +60,7 @@ public abstract class CardDeckGenerator {
      * @param vocab
      * @return
      */
-    public String format(String template, Vocab vocab){
+    public String formatCardContent(String template, Vocab vocab){
         Map<String, String> valuesMap = new HashMap<>();
         valuesMap.put("word", vocab.getWord());
         valuesMap.put("phonetic", vocab.getPhonetic());

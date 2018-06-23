@@ -1,9 +1,8 @@
 package com.mcflythekid.lazylearncore.generator;
 
-import com.mcflythekid.lazylearncore.entity.Card;
-import com.mcflythekid.lazylearncore.entity.Deck;
-import com.mcflythekid.lazylearncore.entity.Vocab;
-import com.mcflythekid.lazylearncore.entity.Vocabdeck;
+import com.mcflythekid.lazylearncore.util.ResouresUtils;
+
+import java.io.IOException;
 
 /**
  * @author McFly the Kid
@@ -11,21 +10,22 @@ import com.mcflythekid.lazylearncore.entity.Vocabdeck;
 public class Writeable extends CardDeckGenerator {
 
     @Override
+    public String getPostfix() {
+        return "[Writeable]";
+    }
+
+    @Override
     public Integer getVocabType() {
         return VOCAB_TYPE__WRITEABLE;
     }
 
     @Override
-    public Deck generateDeck(Vocabdeck vocabdeck, Deck deck) {
-        deck = super.generateDeck(vocabdeck, deck);
-        deck.setName(vocabdeck.getName() + " [Writeable]");
-        return deck;
+    public String getCardFrontTemplate() throws IOException {
+        return ResouresUtils.read("/template/writeable-front.html");
     }
 
     @Override
-    public Card generateCard(Vocab vocab, Card card, String deckId) throws Exception {
-        card = super.generateCard(vocab, card, deckId);
-
-        return card;
+    public String getCardBackTemplate() throws IOException {
+        return ResouresUtils.read("/template/writeable-back.html");
     }
 }
