@@ -60,8 +60,12 @@ public abstract class CardDeckGenerator {
      */
     public String format(String template, Vocab vocab){
         Map<String, String> valuesMap = new HashMap<>();
-        valuesMap.put("animal", "quick brown fox");
-        valuesMap.put("target", "lazy dog");
+        valuesMap.put("word", vocab.getWord());
+        valuesMap.put("phonetic", vocab.getPhonetic());
+        valuesMap.put("gender", vocab.getGender());
+        valuesMap.put("personalConnection", vocab.getPersonalConnection());
+        valuesMap.put("audioPath", vocab.getAudioPath());
+        valuesMap.put("imagePath", vocab.getImagePath());
         StringSubstitutor sub = new StringSubstitutor(valuesMap);
         return sub.replace(template);
     }
