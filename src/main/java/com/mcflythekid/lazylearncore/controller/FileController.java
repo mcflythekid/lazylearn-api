@@ -27,7 +27,7 @@ public class FileController extends BaseController {
     @RequestMapping("/file/**")
     public void getFile(HttpServletResponse response, HttpServletRequest request) throws Exception{
         String filePath = (String) request.getAttribute(HandlerMapping.PATH_WITHIN_HANDLER_MAPPING_ATTRIBUTE);
-        filePath = filePath.substring(5);
+        filePath = filePath.substring("file".length() + 1);
         String fullPath = uploadPath + filePath;
         File file = new File(fullPath);
         InputStream inputStream = new FileInputStream(file);
