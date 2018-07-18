@@ -44,10 +44,9 @@ public class CardController extends BaseController{
     }
 
     @PostMapping("/edit")
-    public JSON edit(@Valid @RequestBody CardEditIn in) throws Exception {
+    public Card edit(@Valid @RequestBody CardEditIn in) throws Exception {
         protectGeneratedCard(authorizeCard(in.getCardId()));
-        cardService.edit(in);
-        return JSON.ok("Edit success");
+        return cardService.edit(in);
     }
 
     @GetMapping("/get/{cardId}")

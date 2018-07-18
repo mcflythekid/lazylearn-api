@@ -43,10 +43,10 @@ public class CardService {
     }
 
     @Transactional(rollbackFor = Exception.class)
-    public void edit(CardEditIn in) {
+    public Card edit(CardEditIn in) {
         Card card = cardRepo.findOne(in.getCardId());
         card.setFront(in.getFront());
         card.setBack(in.getBack());
-        cardRepo.save(card);
+        return cardRepo.save(card);
     }
 }
