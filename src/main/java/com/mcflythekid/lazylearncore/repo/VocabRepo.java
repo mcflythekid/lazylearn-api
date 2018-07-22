@@ -29,4 +29,8 @@ public interface VocabRepo extends JpaRepository<Vocab, String> {
             "OR LOWER(v.personalConnection) LIKE LOWER(CONCAT('%', ?2, '%'))" +
             ")")
     Long countByVocabdeckIdAndSearch(String vocabdeckId, String search);
+
+    Vocab findByWordAndUserId(String word, String userId);
+
+    Vocab findByIdNotAndWordAndUserId(String restrictedId, String word, String userId);
 }

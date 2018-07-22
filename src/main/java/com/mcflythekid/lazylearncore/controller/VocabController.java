@@ -37,7 +37,7 @@ public class VocabController extends BaseController {
     @PostMapping("/edit")
     public VocabEditOut edit(@Valid @RequestBody VocabEditIn in) throws Exception{
         authorizeVocab(in.getVocabId());
-        return vocabService.edit(in);
+        return vocabService.edit(in, getUserId());
     }
 
     @PostMapping("/delete/{vocabId}")

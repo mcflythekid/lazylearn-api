@@ -1,5 +1,6 @@
 package com.mcflythekid.lazylearncore.service;
 
+import com.mcflythekid.lazylearncore.config.exception.AppException;
 import com.mcflythekid.lazylearncore.generator.CardDeckGenerator;
 import com.mcflythekid.lazylearncore.entity.Card;
 import com.mcflythekid.lazylearncore.entity.Vocab;
@@ -14,6 +15,7 @@ import com.mcflythekid.lazylearncore.repo.VocabRepo;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -66,6 +68,11 @@ public class VocabService {
 
     @Transactional(rollbackFor = Exception.class)
     public Vocab create(VocabCreateIn in, String userId) throws Exception {
+
+        if (vocabRepo.findByWordAndUserId(in.getWord(), userId) != null){
+            throw new AppException(HttpStatus.CONFLICT.value(), in.getWord() + " is already existed");
+        }
+
         Vocab vocab = new Vocab();
         BeanUtils.copyProperties(in, vocab);
         vocab.setUserId(userId);
@@ -82,7 +89,12 @@ public class VocabService {
     }
 
     @Transactional(rollbackFor = Exception.class)
-    public VocabEditOut edit(VocabEditIn in) throws Exception{
+    public VocabEditOut edit(VocabEditIn in, String userId) throws Exception{
+
+        if (vocabRepo.findByIdNotAndWordAndUserId(in.getVocabId(), in.getWord(), userId) != null){
+            throw new AppException(HttpStatus.CONFLICT.value(), in.getWord() + " is already existed");
+        }
+
         Vocab vocab = vocabRepo.findOne(in.getVocabId());
         BeanUtils.copyProperties(in, vocab);
 
