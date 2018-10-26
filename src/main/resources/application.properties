@@ -1,8 +1,0 @@
-format.reset-password-url=https://lazylearn.com/auth/reset-password.php?id=%s
-jwt.secret=cho.an.cut.co.thay.ngon.khog.ha.con
-upload.path=/opt/lazylearn/upload
-mysql.server-port=localhost
-mysql.database=lazylearn_api
-mysql.username=root
-mysql.password=root
-file-root=https://lazylearn.com:8081/lazylearn-api/file

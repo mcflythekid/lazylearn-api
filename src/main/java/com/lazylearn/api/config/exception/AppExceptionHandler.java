@@ -1,7 +1,7 @@
-package com.mcflythekid.lazylearncore.config.exception;
+package com.lazylearn.api.config.exception;
 
-import com.mcflythekid.lazylearncore.outdto.JSON;
-import com.mcflythekid.lazylearncore.util.ReflectionUtils;
+import com.lazylearn.api.outdto.JSON;
+import com.lazylearn.api.util.ReflectionUtils;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.springframework.http.HttpStatus;

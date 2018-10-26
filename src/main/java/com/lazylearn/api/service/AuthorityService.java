@@ -1,10 +1,7 @@
-package com.mcflythekid.lazylearncore.service;
+package com.lazylearn.api.service;
 
-import com.mcflythekid.lazylearncore.config.exception.AppException;
-import com.mcflythekid.lazylearncore.entity.User;
-import com.mcflythekid.lazylearncore.entity.UserAuthority;
-import com.mcflythekid.lazylearncore.repo.UserAuthorityRepo;
-import com.mcflythekid.lazylearncore.repo.UserRepo;
+import com.lazylearn.api.entity.UserAuthority;
+import com.lazylearn.api.repo.UserAuthorityRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

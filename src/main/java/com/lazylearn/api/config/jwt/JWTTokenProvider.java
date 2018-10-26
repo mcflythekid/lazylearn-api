@@ -1,14 +1,12 @@
-package com.mcflythekid.lazylearncore.config.jwt;
+package com.lazylearn.api.config.jwt;
 
-import com.mcflythekid.lazylearncore.config.Consts;
-import com.mcflythekid.lazylearncore.config.exception.ExpiredJwtVersionException;
-import com.mcflythekid.lazylearncore.entity.Session;
-import com.mcflythekid.lazylearncore.entity.UserAuthority;
-import com.mcflythekid.lazylearncore.indto.ClientData;
-import com.mcflythekid.lazylearncore.repo.SessionRepo;
-import com.mcflythekid.lazylearncore.repo.UserAuthorityRepo;
-import com.mcflythekid.lazylearncore.repo.UserRepo;
-import com.mcflythekid.lazylearncore.service.AuthorityService;
+import com.lazylearn.api.config.exception.ExpiredJwtVersionException;
+import com.lazylearn.api.entity.Session;
+import com.lazylearn.api.service.AuthorityService;
+import com.lazylearn.api.config.Consts;
+import com.lazylearn.api.indto.ClientData;
+import com.lazylearn.api.repo.SessionRepo;
+import com.lazylearn.api.repo.UserRepo;
 import io.jsonwebtoken.*;
 import org.apache.commons.lang3.time.DateUtils;
 import org.slf4j.Logger;
@@ -25,7 +23,6 @@ import org.springframework.stereotype.Component;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 /**
@@ -46,7 +43,7 @@ public class JWTTokenProvider {
     @Autowired
     private SessionRepo sessionRepo;
 
-    public String createToken(com.mcflythekid.lazylearncore.entity.User user, ClientData clientData) {
+    public String createToken(com.lazylearn.api.entity.User user, ClientData clientData) {
         Session session = new Session();
         session.setUserId(user.getId());
         session.setClientData(clientData.getData());
@@ -77,7 +74,7 @@ public class JWTTokenProvider {
     public boolean validateToken(String jwtToken) {
         try {
             Claims claims = Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(jwtToken).getBody();
-            com.mcflythekid.lazylearncore.entity.User user = userRepo.findOne(claims.getSubject());
+            com.lazylearn.api.entity.User user = userRepo.findOne(claims.getSubject());
             String accessTokenVersion = (String) claims.get(KEY__ACCESS_TOKEN_VERSION);
             if (!user.getSessionKey().equals(accessTokenVersion)) throw new ExpiredJwtVersionException();
             return true;

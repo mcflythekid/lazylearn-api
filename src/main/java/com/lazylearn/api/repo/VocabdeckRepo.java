@@ -1,6 +1,6 @@
-package com.mcflythekid.lazylearncore.repo;
+package com.lazylearn.api.repo;
 
-import com.mcflythekid.lazylearncore.entity.Vocabdeck;
+import com.lazylearn.api.entity.Vocabdeck;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

@@ -1,6 +1,6 @@
-package com.mcflythekid.lazylearncore.indto.card;
+package com.lazylearn.api.indto.card;
 
-import com.mcflythekid.lazylearncore.indto.SearchIn;
+import com.lazylearn.api.indto.SearchIn;
 import org.hibernate.validator.constraints.NotBlank;
 
 /**

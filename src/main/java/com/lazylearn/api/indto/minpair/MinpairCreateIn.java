@@ -1,4 +1,4 @@
-package com.mcflythekid.lazylearncore.indto.minpair;
+package com.lazylearn.api.indto.minpair;
 
 import org.hibernate.validator.constraints.NotBlank;
 

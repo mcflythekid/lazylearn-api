@@ -1,4 +1,4 @@
-package com.mcflythekid.lazylearncore.config.exception;
+package com.lazylearn.api.config.exception;
 
 import org.springframework.http.HttpStatus;
 

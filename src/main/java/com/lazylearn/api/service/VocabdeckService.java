@@ -1,15 +1,15 @@
-package com.mcflythekid.lazylearncore.service;
+package com.lazylearn.api.service;
 
-import com.mcflythekid.lazylearncore.config.Consts;
-import com.mcflythekid.lazylearncore.generator.CardDeckGenerator;
-import com.mcflythekid.lazylearncore.entity.Deck;
-import com.mcflythekid.lazylearncore.entity.Vocabdeck;
-import com.mcflythekid.lazylearncore.indto.SearchIn;
-import com.mcflythekid.lazylearncore.indto.vocabdeck.VocabdeckCreateIn;
-import com.mcflythekid.lazylearncore.indto.vocabdeck.VocabdeckRenameIn;
-import com.mcflythekid.lazylearncore.outdto.BootstraptableOut;
-import com.mcflythekid.lazylearncore.repo.DeckRepo;
-import com.mcflythekid.lazylearncore.repo.VocabdeckRepo;
+import com.lazylearn.api.generator.CardDeckGenerator;
+import com.lazylearn.api.config.Consts;
+import com.lazylearn.api.entity.Deck;
+import com.lazylearn.api.entity.Vocabdeck;
+import com.lazylearn.api.indto.SearchIn;
+import com.lazylearn.api.indto.vocabdeck.VocabdeckCreateIn;
+import com.lazylearn.api.indto.vocabdeck.VocabdeckRenameIn;
+import com.lazylearn.api.outdto.BootstraptableOut;
+import com.lazylearn.api.repo.DeckRepo;
+import com.lazylearn.api.repo.VocabdeckRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;

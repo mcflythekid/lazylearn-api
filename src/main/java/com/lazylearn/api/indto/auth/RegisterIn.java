@@ -1,4 +1,4 @@
-package com.mcflythekid.lazylearncore.indto.auth;
+package com.lazylearn.api.indto.auth;
 
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
