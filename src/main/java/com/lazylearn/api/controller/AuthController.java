@@ -1,7 +1,6 @@
 package com.lazylearn.api.controller;
 
 import com.lazylearn.api.indto.auth.*;
-import com.mcflythekid.lazylearncore.indto.auth.*;
 import com.lazylearn.api.outdto.JSON;
 import com.lazylearn.api.outdto.LoginOut;
 import com.lazylearn.api.service.AuthService;

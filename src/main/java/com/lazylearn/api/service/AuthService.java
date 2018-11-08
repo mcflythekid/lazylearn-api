@@ -8,8 +8,6 @@ import com.lazylearn.api.entity.Session;
 import com.lazylearn.api.entity.User;
 import com.lazylearn.api.indto.ClientData;
 import com.lazylearn.api.indto.auth.*;
-import com.mcflythekid.lazylearncore.indto.*;
-import com.mcflythekid.lazylearncore.indto.auth.*;
 import com.lazylearn.api.outdto.LoginOut;
 import com.lazylearn.api.outdto.UserData;
 import com.lazylearn.api.repo.ForgetPasswordRepo;

@@ -1,14 +1,12 @@
 package com.lazylearn.api.controller;
 
 import com.lazylearn.api.entity.Card;
-import com.lazylearn.api.service.CardService;
-import com.mcflythekid.lazylearncore.indto.*;
 import com.lazylearn.api.indto.card.CardCreateIn;
 import com.lazylearn.api.indto.card.CardEditIn;
 import com.lazylearn.api.indto.card.CardSearchIn;
 import com.lazylearn.api.outdto.BootstraptableOut;
 import com.lazylearn.api.outdto.JSON;
-import com.mcflythekid.lazylearncore.service.*;
+import com.lazylearn.api.service.CardService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
