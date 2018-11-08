@@ -1,11 +1,9 @@
 package com.lazylearn.api.controller;
 
-import com.lazylearn.api.entity.*;
-import com.lazylearn.api.repo.*;
-import com.mcflythekid.lazylearncore.entity.*;
 import com.lazylearn.api.config.exception.AppException;
+import com.lazylearn.api.entity.*;
 import com.lazylearn.api.indto.ClientData;
-import com.mcflythekid.lazylearncore.repo.*;
+import com.lazylearn.api.repo.*;
 import com.lazylearn.api.util.HttpServletUtils;
 import com.lazylearn.api.util.SecurityUtils;
 import org.apache.commons.lang3.StringUtils;
