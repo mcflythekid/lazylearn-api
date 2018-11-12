@@ -23,11 +23,10 @@ public abstract class CardDeckGenerator {
     }
 
     public static List<CardDeckGenerator> getGenerators(String fileRoot){
-        return Arrays.asList(new KnowImage(fileRoot), new KnowWord(fileRoot), new Speakable(fileRoot), new Writeable(fileRoot));
+        return Arrays.asList(new KnowImage(fileRoot), new Speakable(fileRoot), new Writeable(fileRoot));
     }
 
     public static final Integer VOCAB_TYPE__KNOW_IMAGE = 1;
-    public static final Integer VOCAB_TYPE__KNOW_WORD = 2;
     public static final Integer VOCAB_TYPE__SPEAKABLE = 3;
     public static final Integer VOCAB_TYPE__WRITEABLE = 4;
 
