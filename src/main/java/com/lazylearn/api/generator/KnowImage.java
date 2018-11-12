@@ -25,11 +25,11 @@ public class KnowImage extends CardDeckGenerator {
 
     @Override
     public String getCardFrontTemplate() throws IOException {
-        return ResouresUtils.read("/template/knowImage-front.html");
+        return ResouresUtils.read("./template/knowImage-front.html");
     }
 
     @Override
     public String getCardBackTemplate() throws IOException {
-        return ResouresUtils.read("/template/knowImage-back.html");
+        return ResouresUtils.read("./template/knowImage-back.html");
     }
 }

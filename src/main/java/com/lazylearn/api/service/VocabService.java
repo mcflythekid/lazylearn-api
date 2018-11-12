@@ -1,5 +1,6 @@
 package com.lazylearn.api.service;
 
+import com.lazylearn.api.entity.Deck;
 import com.lazylearn.api.generator.CardDeckGenerator;
 import com.lazylearn.api.config.exception.AppException;
 import com.lazylearn.api.entity.Card;
@@ -53,7 +54,11 @@ public class VocabService {
     @Transactional(rollbackFor = Exception.class)
     public void updateCallback(Vocab vocab) throws Exception {
         for (CardDeckGenerator cardDeckGenerator : CardDeckGenerator.getGenerators(fileRoot)){
-            String deckId = deckRepo.findByVocabdeckIdAndVocabType(vocab.getVocabdeckId(), cardDeckGenerator.getVocabType()).getId();
+            Deck deck = deckRepo.findByVocabdeckIdAndVocabType(vocab.getVocabdeckId(), cardDeckGenerator.getVocabType());
+            if ( deck == null){
+                continue;
+            }
+            String deckId = deck.getId();
             Card card = cardRepo.findByDeckIdAndVocabId(deckId, vocab.getId());
             cardRepo.save(cardDeckGenerator.generateCard(vocab, card, deckId));
         }

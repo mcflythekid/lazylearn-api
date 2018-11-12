@@ -25,11 +25,11 @@ public class Speakable extends CardDeckGenerator {
 
     @Override
     public String getCardFrontTemplate() throws IOException {
-        return ResouresUtils.read("/template/speakable-front.html");
+        return ResouresUtils.read("./template/speakable-front.html");
     }
 
     @Override
     public String getCardBackTemplate() throws IOException {
-        return ResouresUtils.read("/template/speakable-back.html");
+        return ResouresUtils.read("./template/speakable-back.html");
     }
 }

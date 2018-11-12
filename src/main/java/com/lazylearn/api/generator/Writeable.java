@@ -25,11 +25,11 @@ public class Writeable extends CardDeckGenerator {
 
     @Override
     public String getCardFrontTemplate() throws IOException {
-        return ResouresUtils.read("/template/writeable-front.html");
+        return ResouresUtils.read("./template/writeable-front.html");
     }
 
     @Override
     public String getCardBackTemplate() throws IOException {
-        return ResouresUtils.read("/template/writeable-back.html");
+        return ResouresUtils.read("./template/writeable-back.html");
     }
 }
