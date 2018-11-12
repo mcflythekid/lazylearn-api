@@ -1,6 +1,9 @@
 package com.lazylearn.api.controller;
 
+import com.lazylearn.api.config.exception.AppException;
 import com.lazylearn.api.entity.Card;
+import com.lazylearn.api.entity.Deck;
+import com.lazylearn.api.indto.card.CardChangeDeckIn;
 import com.lazylearn.api.indto.card.CardCreateIn;
 import com.lazylearn.api.indto.card.CardEditIn;
 import com.lazylearn.api.indto.card.CardSearchIn;
@@ -50,5 +53,16 @@ public class CardController extends BaseController{
     @GetMapping("/get/{cardId}")
     public Card get(@PathVariable("cardId") String cardId) throws Exception {
         return authorizeCard(cardId);
+    }
+
+    @PostMapping("/change-deck")
+    public Card changeDeck(@Valid @RequestBody CardChangeDeckIn in) throws Exception{
+        protectGeneratedCard(authorizeCard(in.getCardId()));
+        Deck deck = authorizeDeck(in.getDeckId());
+        Card card = authorizeCard(in.getCardId());
+        if (card.getDeckId().equals(deck.getId())){
+            throw new AppException(403, "Cannot move to the same deck it self");
+        }
+        return cardService.changeDeck(in);
     }
 }
