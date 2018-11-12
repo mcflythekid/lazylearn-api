@@ -2,6 +2,7 @@ package com.lazylearn.api.controller;
 
 import com.lazylearn.api.indto.SearchIn;
 import com.lazylearn.api.outdto.BootstraptableOut;
+import com.lazylearn.api.outdto.JSON;
 import com.lazylearn.api.service.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,5 +23,10 @@ public class AdminController extends BaseController {
     @PostMapping("/search-user")
     public BootstraptableOut searchUser(@RequestBody SearchIn in){
         return adminService.search(in);
+    }
+
+    @PostMapping("/refresh-all-vocab")
+    public JSON refreshAllVocab() throws Exception {
+        return adminService.refreshAllVocab();
     }
 }

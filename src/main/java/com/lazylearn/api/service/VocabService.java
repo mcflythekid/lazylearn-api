@@ -15,6 +15,7 @@ import com.lazylearn.api.repo.VocabRepo;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -42,8 +43,7 @@ public class VocabService {
     @Value("${file-root}")
     private String fileRoot;
 
-    @Transactional(rollbackFor = Exception.class)
-    public void createCallback(Vocab vocab) throws Exception {
+    private void createCallback(Vocab vocab) throws Exception {
         for (CardDeckGenerator cardDeckGenerator : CardDeckGenerator.getGenerators(fileRoot)){
             String deckId = deckRepo.findByVocabdeckIdAndVocabType(vocab.getVocabdeckId(), cardDeckGenerator.getVocabType()).getId();
             cardRepo.save(cardDeckGenerator.generateCard(vocab, null, deckId));
@@ -59,8 +59,7 @@ public class VocabService {
         }
     }
 
-    @Transactional(rollbackFor = Exception.class)
-    public void deleteCallback(String vocabId){
+    private void deleteCallback(String vocabId){
         cardRepo.deleteAllByVocabId(vocabId);
     }
 
