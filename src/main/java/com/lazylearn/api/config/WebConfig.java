@@ -55,7 +55,6 @@ public class WebConfig extends WebMvcConfigurerAdapter {
                         }
                 );
             }
-            container.setPort(Consts.PARAM_PORT);
         });
     }
 

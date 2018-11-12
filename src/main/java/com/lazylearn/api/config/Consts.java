@@ -7,7 +7,6 @@ import java.util.Map;
  * @author McFly the Kid
  */
 public final class Consts {
-    public static final Integer PARAM_PORT = 8084;
     public static final String PARAM_JSON_DATETIMEFORMAT = "yyyy-MM-dd HH:mm:ss";
     public static final String PARAM_JSON_TIMEZONE = "GMT+7";
     public static final int PARAM_POST_MAXSIZE = 10000000;
