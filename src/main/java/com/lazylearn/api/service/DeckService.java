@@ -10,10 +10,12 @@ import com.lazylearn.api.outdto.BootstraptableOut;
 import com.lazylearn.api.repo.CardRepo;
 import com.lazylearn.api.repo.DeckRepo;
 import com.lazylearn.api.repo.DetailedDeckRepo;
+import com.lazylearn.api.util.ResouresUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -28,6 +30,8 @@ public class DeckService {
     private DetailedDeckRepo detailedDeckRepo;
     @Autowired
     private CardRepo cardRepo;
+    @Autowired
+    private CardService cardService;
 
     @Transactional(rollbackFor = Exception.class)
     public void updateCallback(Deck deck){
@@ -55,7 +59,6 @@ public class DeckService {
         Deck deck = deckRepo.findOne(in.getDeckId());
         deck.setName(in.getNewName());
         deckRepo.save(deck);
-        //updateCallback(deck);
     }
 
     @Transactional(rollbackFor = Exception.class)
@@ -82,10 +85,7 @@ public class DeckService {
 
     @Transactional(rollbackFor = Exception.class)
     public Deck create(DeckCreateIn in, String userId){
-        Deck deck = new Deck();
-        deck.setName(in.getName());
-        deck.setUserId(userId);
-        return deckRepo.save(deck);
+        return create(in.getName(), userId);
     }
 
     public Deck get(String deckId) {
@@ -96,5 +96,34 @@ public class DeckService {
         List<DetailedDeck> rows = detailedDeckRepo.findAllByUserIdAndNameContainingIgnoreCase(userId, in.getSearch(), in.getPageable());
         Long total = detailedDeckRepo.countByUserIdAndNameContainingIgnoreCase(userId, in.getSearch());
         return new BootstraptableOut(rows, total);
+    }
+
+    private Deck create(String deckName, String userId){
+        Deck deck = new Deck();
+        deck.setName(deckName);
+        deck.setUserId(userId);
+        return deckRepo.save(deck);
+    }
+
+    private Deck create(String deckName, String userId, String trackingId){
+        Deck deck = create(deckName, userId);
+        deck.setTrackingId(trackingId);
+        return deckRepo.save(deck);
+    }
+
+    private Deck importDeck(String deckName, List<String> cardLines, String userId, String trackingId){
+        Deck deck = create(deckName, userId, trackingId);
+        cardService.importCards(cardLines, deck);
+        return deck;
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    public Deck importDeck(String resourceName, String userId, String trackingId) throws IOException {
+        List<String> lines = ResouresUtils.readLineByLine(resourceName);
+
+        String deckName = lines.get(0);
+        lines.remove(0);
+
+        return importDeck(deckName, lines, userId, trackingId);
     }
 }

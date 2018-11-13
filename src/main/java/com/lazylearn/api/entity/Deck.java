@@ -24,6 +24,7 @@ public class Deck extends AbstractEntity {
     private String userId;
     private String name;
     private Integer archived;
+    private String trackingId;
 
     private String vocabdeckId;
     private Integer vocabType;
@@ -66,5 +67,13 @@ public class Deck extends AbstractEntity {
 
     public void setArchived(Integer archived) {
         this.archived = archived;
+    }
+
+    public String getTrackingId() {
+        return trackingId;
+    }
+
+    public void setTrackingId(String trackingId) {
+        this.trackingId = trackingId;
     }
 }

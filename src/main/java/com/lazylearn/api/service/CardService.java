@@ -9,8 +9,10 @@ import com.lazylearn.api.indto.card.CardSearchIn;
 import com.lazylearn.api.outdto.BootstraptableOut;
 import com.lazylearn.api.repo.CardRepo;
 import com.lazylearn.api.repo.DeckRepo;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
@@ -36,12 +38,7 @@ public class CardService {
 
     @Transactional(rollbackFor = Exception.class)
     public Card create(CardCreateIn in, String userId) {
-        Card card = new Card();
-        card.setFront(in.getFront());
-        card.setBack(in.getBack());
-        card.setDeckId(in.getDeckId());
-        card.setUserId(userId);
-        return cardRepo.save(card);
+        return create(in.getFront(), in.getBack(), in.getDeckId(), userId);
     }
 
     @Transactional(rollbackFor = Exception.class)
@@ -72,6 +69,29 @@ public class CardService {
         deckRepo.save(oldDeck);
         deckRepo.save(newDeck);
 
+        return cardRepo.save(card);
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    public void importCards(List<String> cardLines, Deck deck){
+        for (String cardLine: cardLines){
+            if(StringUtils.isBlank(cardLine)){
+                continue;
+            }
+            String[] sides = cardLine.split("\\t");
+            if (sides.length < 2){
+                continue;
+            }
+            create(sides[0], sides[1], deck.getId(), deck.getUserId());
+        }
+    }
+
+    private Card create(String front, String back, String deckId, String userId){
+        Card card = new Card();
+        card.setFront(front);
+        card.setBack(back);
+        card.setDeckId(deckId);
+        card.setUserId(userId);
         return cardRepo.save(card);
     }
 }
