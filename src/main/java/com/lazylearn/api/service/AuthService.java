@@ -179,7 +179,7 @@ public class AuthService {
     }
 
     private Deck createTemplateDeck(String userId) throws IOException {
-        final String TEMPLATE_ID = "./deck/3000.txt";
+        final String TEMPLATE_ID = "./deck/100.txt";
         return deckService.importDeck(TEMPLATE_ID, userId);
     }
 }
