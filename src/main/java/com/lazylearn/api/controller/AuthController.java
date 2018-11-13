@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
+import java.io.IOException;
 import java.util.Collection;
 
 /**
@@ -35,7 +36,7 @@ public class AuthController extends BaseController{
     }
 
     @PostMapping("/register")
-    public LoginOut register(@Valid @RequestBody RegisterIn in){
+    public LoginOut register(@Valid @RequestBody RegisterIn in) throws IOException {
         return authService.register(in, getClientData());
     }
 
@@ -45,7 +46,7 @@ public class AuthController extends BaseController{
     }
 
     @PostMapping("/login-facebook")
-    public LoginOut loginFacebook(@Valid @RequestBody LoginFacebookIn in){
+    public LoginOut loginFacebook(@Valid @RequestBody LoginFacebookIn in) throws IOException {
         return authService.loginFacebook(in, getClientData());
     }
 
