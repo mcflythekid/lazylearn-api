@@ -63,12 +63,11 @@ public class AdminService {
 
     public JSON massiveImportDeck(String templateName) throws IOException {
         final String DATE_FORMAT = "yyyyMMdd HHmmss";
-        final String TEMPLATE_PREFIX = "./deck/";
         String trackingId = templateName + " " + new SimpleDateFormat(DATE_FORMAT).format(new Date());
 
         List<User> userList = userRepo.findAll();
         for(User user : userList){
-            deckService.importDeck(TEMPLATE_PREFIX + templateName, user.getId(), trackingId);
+            deckService.importDeck(templateName, user.getId(), trackingId);
         }
         return JSON.ok(String.format("Decks imported. Affected user: %s. Tracking id: %s", userList.size(),
                 trackingId));
