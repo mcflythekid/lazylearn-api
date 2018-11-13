@@ -126,4 +126,9 @@ public class DeckService {
 
         return importDeck(deckName, lines, userId, trackingId);
     }
+
+    @Transactional(rollbackFor = Exception.class)
+    public Deck importDeck(String resourceName, String userId) throws IOException {
+        return importDeck(resourceName, userId, "");
+    }
 }

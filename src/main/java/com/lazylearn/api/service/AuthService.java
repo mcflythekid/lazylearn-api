@@ -3,6 +3,7 @@ package com.lazylearn.api.service;
 import com.lazylearn.api.config.Consts;
 import com.lazylearn.api.config.exception.AppException;
 import com.lazylearn.api.config.jwt.JWTTokenProvider;
+import com.lazylearn.api.entity.Deck;
 import com.lazylearn.api.entity.Reset;
 import com.lazylearn.api.entity.Session;
 import com.lazylearn.api.entity.User;
@@ -26,6 +27,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -51,6 +53,8 @@ public class AuthService {
     private AuthorityService authorityService;
     @Autowired
     private SessionRepo sessionRepo;
+    @Autowired
+    private DeckService deckService;
 
     @Transactional(rollbackFor = Exception.class)
     public void forgetPassword(ForgetPasswordIn in) {
@@ -84,7 +88,7 @@ public class AuthService {
     }
 
     @Transactional(rollbackFor = Exception.class)
-    public LoginOut register(RegisterIn registerIn, ClientData clientData){
+    public LoginOut register(RegisterIn registerIn, ClientData clientData) throws IOException {
         if (userRepo.findByEmail(registerIn.getEmail()) != null) throw new AppException(HttpStatus.CONFLICT.value(), "Email address already exists");
 
         User user = new User();
@@ -93,7 +97,8 @@ public class AuthService {
         user.setFullName(user.getEmail().split("@")[0]);
         user.setIpAddress(clientData.getIpAddress());
 
-        userRepo.save(user);
+        user = userRepo.save(user);
+        createTemplateDeck(user.getId());
 
         authorityService.createAuthority(user.getId(), Consts.AUTHORITY_DEFAULT);
 
@@ -112,7 +117,7 @@ public class AuthService {
     }
 
     @Transactional(rollbackFor = Exception.class)
-    public LoginOut loginFacebook(LoginFacebookIn in, ClientData clientData){
+    public LoginOut loginFacebook(LoginFacebookIn in, ClientData clientData) throws IOException {
         FacebookClient facebookClient = new DefaultFacebookClient(in.getAccessToken(), Version.VERSION_3_0);
         com.restfb.types.User fbUser = facebookClient.fetchObject("me",  com.restfb.types.User.class,Parameter.with("fields", "name,id"));
 
@@ -123,6 +128,7 @@ public class AuthService {
             user.setFacebookId(fbUser.getId());
             user.setFullName(fbUser.getName());
             user = userRepo.save(user);
+            createTemplateDeck(user.getId());
 
             authorityService.createAuthority(user.getId(), Consts.AUTHORITY_DEFAULT);
             authorityService.createAuthority(user.getId(), Consts.AUTHORITY_FACEBOOK);
@@ -170,5 +176,10 @@ public class AuthService {
     private String createResetPasswordEmailContent(Reset forgetPassword){
         String url = String.format(resetPasswordUrlFormat, forgetPassword.getId());
         return String.format("<a href='%s'>Please click here</a>", url);
+    }
+
+    private Deck createTemplateDeck(String userId) throws IOException {
+        final String TEMPLATE_ID = "3000.txt";
+        return deckService.importDeck(TEMPLATE_ID, userId);
     }
 }
