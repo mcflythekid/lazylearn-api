@@ -15,10 +15,18 @@ import java.util.List;
 public interface MinpairRepo extends JpaRepository<Minpair, String> {
 
     @Query("SELECT m FROM Minpair m WHERE m.userId = ?1 AND" +
-            " (LOWER(m.word1) LIKE LOWER(CONCAT('%', ?2, '%')) OR LOWER(m.word2) LIKE LOWER(CONCAT('%', ?2, '%')))")
+            "(" +
+            " LOWER(m.word1) LIKE LOWER(CONCAT('%', ?2, '%'))" +
+            " OR LOWER(m.word2) LIKE LOWER(CONCAT('%', ?2, '%'))" +
+            " OR LOWER(m.language) LIKE LOWER(CONCAT('%', ?2, '%'))" +
+            ")")
     List<Minpair> findAllByUserIdAndSearch(String deckId, String search, Pageable pageable);
 
     @Query("SELECT COUNT(m) FROM Minpair m WHERE m.userId = ?1 AND" +
-            " (LOWER(m.word1) LIKE LOWER(CONCAT('%', ?2, '%')) OR LOWER(m.word2) LIKE LOWER(CONCAT('%', ?2, '%')))")
+            " (" +
+            " LOWER(m.word1) LIKE LOWER(CONCAT('%', ?2, '%')) " +
+            " OR LOWER(m.word2) LIKE LOWER(CONCAT('%', ?2, '%'))" +
+            " OR LOWER(m.language) LIKE LOWER(CONCAT('%', ?2, '%'))" +
+            ")")
     Long countByUserIdAndSearch(String deckId, String search);
 }
