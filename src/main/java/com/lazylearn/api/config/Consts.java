@@ -55,6 +55,9 @@ public final class Consts {
     public static final Integer CARDDECK_ARCHIVED = 1;
     public static final Integer CARDDECK_UNARCHIVED = 0;
 
+    public static final Integer CARDDECK_SHARED = 1;
+    public static final Integer CARDDECK_UNSHARED = 0;
+
     public static final String DEFAUL_ERR_FORMAT = "Cannot process request. ID:%s";
 
 

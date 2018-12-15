@@ -19,12 +19,14 @@ public class Deck extends AbstractEntity {
     @PrePersist
     public void prePersist(){
         setArchived(Consts.CARDDECK_UNARCHIVED);
+        setShared(Consts.CARDDECK_UNSHARED);
     }
 
     private String userId;
     private String name;
     private Integer archived;
     private String trackingId;
+    private Integer shared;
 
     private String vocabdeckId;
     private Integer vocabType;
@@ -75,5 +77,13 @@ public class Deck extends AbstractEntity {
 
     public void setTrackingId(String trackingId) {
         this.trackingId = trackingId;
+    }
+
+    public Integer getShared() {
+        return shared;
+    }
+
+    public void setShared(Integer shared) {
+        this.shared = shared;
     }
 }

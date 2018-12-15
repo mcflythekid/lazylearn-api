@@ -78,6 +78,20 @@ public class DeckService {
     }
 
     @Transactional(rollbackFor = Exception.class)
+    public void share(String deckId) {
+        Deck deck = deckRepo.findOne(deckId);
+        deck.setShared(Consts.CARDDECK_SHARED);
+        deckRepo.save(deck);
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    public void unshare(String deckId) {
+        Deck deck = deckRepo.findOne(deckId);
+        deck.setShared(Consts.CARDDECK_UNSHARED);
+        deckRepo.save(deck);
+    }
+
+    @Transactional(rollbackFor = Exception.class)
     public void delete(String deckId) {
         deckRepo.delete(deckId);
         deleteCallback(deckId);
