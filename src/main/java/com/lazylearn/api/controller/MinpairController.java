@@ -36,7 +36,6 @@ public class MinpairController extends BaseController{
 
     @PostMapping("/delete/{minpairId}")
     public JSON delete(@PathVariable String minpairId) throws Exception{
-        authorizeMinpair(minpairId);
         minpairService.delete(minpairId);
         return JSON.ok("Delete success");
     }
