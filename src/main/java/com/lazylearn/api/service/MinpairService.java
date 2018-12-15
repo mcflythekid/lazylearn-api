@@ -80,7 +80,9 @@ public class MinpairService {
         }
         Card card = cardRepo.findByDeckIdAndFront(deck.getId(), minpairId);
         if(card == null){
-            cardService.create(minpairId, "", deck.getId(), userId);
+            card = cardService.create(minpairId, "", deck.getId(), userId);
+            card.setMinpairLanguage(minpair.getLanguage());
+            cardRepo.save(card);
         } else {
             throw new AppException(401, "This minpair is already get");
         }

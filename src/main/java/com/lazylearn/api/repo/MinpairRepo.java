@@ -19,14 +19,14 @@ public interface MinpairRepo extends JpaRepository<Minpair, String> {
             " LOWER(m.word1) LIKE LOWER(CONCAT('%', ?2, '%'))" +
             " OR LOWER(m.word2) LIKE LOWER(CONCAT('%', ?2, '%'))" +
             " OR LOWER(m.language) LIKE LOWER(CONCAT('%', ?2, '%'))" +
-            ")")
-    List<Minpair> findAllByUserIdAndSearch(String deckId, String search, Pageable pageable);
+            ") AND m.id NOT IN (SELECT c.front FROM Card c WHERE c.userId = ?1 AND c.minpairLanguage <> '')")
+    List<Minpair> findAllByUserIdAndSearch(String userId, String search, Pageable pageable);
 
     @Query("SELECT COUNT(m) FROM Minpair m WHERE m.userId = ?1 AND" +
             " (" +
             " LOWER(m.word1) LIKE LOWER(CONCAT('%', ?2, '%')) " +
             " OR LOWER(m.word2) LIKE LOWER(CONCAT('%', ?2, '%'))" +
             " OR LOWER(m.language) LIKE LOWER(CONCAT('%', ?2, '%'))" +
-            ")")
-    Long countByUserIdAndSearch(String deckId, String search);
+            ") AND m.id NOT IN (SELECT c.front FROM Card c WHERE c.userId = ?1 AND c.minpairLanguage <> '')")
+    Long countByUserIdAndSearch(String userId, String search);
 }

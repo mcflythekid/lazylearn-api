@@ -54,6 +54,15 @@ public class Card extends AbstractEntity{
     private Integer archived;
 
     private String vocabId;
+    private String minpairLanguage;
+
+    public String getMinpairLanguage() {
+        return minpairLanguage;
+    }
+
+    public void setMinpairLanguage(String minpairLanguage) {
+        this.minpairLanguage = minpairLanguage;
+    }
 
     public String getVocabId() {
         return vocabId;
