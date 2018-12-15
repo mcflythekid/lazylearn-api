@@ -20,6 +20,15 @@ public class DetailedDeck extends AbstractEntity{
     private Integer archived;
     private String vocabdeckId;
     private String vocabdeckName;
+    private String minpairLanguage;
+
+    public String getMinpairLanguage() {
+        return minpairLanguage;
+    }
+
+    public void setMinpairLanguage(String minpairLanguage) {
+        this.minpairLanguage = minpairLanguage;
+    }
 
     public String getVocabdeckName() {
         return vocabdeckName;
