@@ -106,6 +106,9 @@ public abstract class BaseController {
         if (StringUtils.isNotBlank(deck.getVocabdeckId())){
             throw new AppException(403, "This deck cannot be modified");
         }
+        if (StringUtils.isNotBlank(deck.getMinpairLanguage())){
+            throw new AppException(403, "This deck cannot be modified");
+        }
     }
 
     protected void protectGeneratedCard(Card card) throws Exception{

@@ -112,7 +112,7 @@ public class DeckService {
         return new BootstraptableOut(rows, total);
     }
 
-    private Deck create(String deckName, String userId){
+    public Deck create(String deckName, String userId){
         Deck deck = new Deck();
         deck.setName(deckName);
         deck.setUserId(userId);

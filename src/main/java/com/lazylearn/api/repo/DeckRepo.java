@@ -13,4 +13,5 @@ import java.util.List;
 public interface DeckRepo extends JpaRepository<Deck, String> {
     List<Deck> findAllByVocabdeckId(String vocabdeckId);
     Deck findByVocabdeckIdAndVocabType(String vocabdeckId, Integer vocabType);
+    Deck findByMinpairLanguageAndUserId(String minpairLanguage, String userId);
 }

@@ -31,6 +31,16 @@ public class Deck extends AbstractEntity {
     private String vocabdeckId;
     private Integer vocabType;
 
+    private String minpairLanguage;
+
+    public String getMinpairLanguage() {
+        return minpairLanguage;
+    }
+
+    public void setMinpairLanguage(String minpairLanguage) {
+        this.minpairLanguage = minpairLanguage;
+    }
+
     public String getVocabdeckId() {
         return vocabdeckId;
     }

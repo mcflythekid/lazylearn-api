@@ -1,15 +1,18 @@
 package com.lazylearn.api.service;
 
+import com.lazylearn.api.entity.Deck;
 import com.lazylearn.api.entity.Minpair;
 import com.lazylearn.api.indto.minpair.MinpairCreateIn;
 import com.lazylearn.api.indto.SearchIn;
 import com.lazylearn.api.outdto.BootstraptableOut;
+import com.lazylearn.api.repo.DeckRepo;
 import com.lazylearn.api.repo.MinpairRepo;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.print.attribute.standard.MediaSize;
 import java.util.List;
 
 /**
@@ -22,6 +25,10 @@ public class MinpairService {
     private FileService fileService;
     @Autowired
     private MinpairRepo minpairRepo;
+    @Autowired
+    private DeckRepo deckRepo;
+    @Autowired
+    private DeckService deckService;
 
     @Transactional(rollbackFor = Exception.class)
     public Minpair create(MinpairCreateIn in, String userId) throws Exception{
@@ -51,6 +58,21 @@ public class MinpairService {
         fileService.delete(minpair.getAudioPath1());
         fileService.delete(minpair.getAudioPath2());
         minpairRepo.delete(minpairId);
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    public Deck sendToDeck(String minpairId, String userId) throws Exception{
+        final String NAME_REFIX = "Minpair #";
+        Minpair minpair = minpairRepo.findOne(minpairId);
+
+        Deck deck = deckRepo.findByMinpairLanguageAndUserId(minpair.getLanguage(), userId);
+        if (deck == null){
+            deck = deckService.create(NAME_REFIX + minpair.getLanguage(), userId);
+            deck.setMinpairLanguage(minpair.getLanguage());
+            deckRepo.save(deck);
+        }
+
+        return deck;
     }
 
     public BootstraptableOut search(SearchIn in, String userId){
