@@ -86,7 +86,7 @@ public class CardService {
         }
     }
 
-    private Card create(String front, String back, String deckId, String userId){
+    public Card create(String front, String back, String deckId, String userId){
         Card card = new Card();
         card.setFront(front);
         card.setBack(back);

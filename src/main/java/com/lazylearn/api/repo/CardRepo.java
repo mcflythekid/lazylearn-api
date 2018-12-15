@@ -62,4 +62,6 @@ public interface CardRepo extends JpaRepository<Card, String> {
     Card findByDeckIdAndVocabId(String deckId, String vocabId);
 
     List<Card> findAllByVocabId(String vocabId);
+
+    Card findByDeckIdAndFront(String deckId, String front);
 }

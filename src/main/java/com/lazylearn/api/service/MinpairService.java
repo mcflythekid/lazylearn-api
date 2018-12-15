@@ -1,10 +1,13 @@
 package com.lazylearn.api.service;
 
+import com.lazylearn.api.config.exception.AppException;
+import com.lazylearn.api.entity.Card;
 import com.lazylearn.api.entity.Deck;
 import com.lazylearn.api.entity.Minpair;
 import com.lazylearn.api.indto.minpair.MinpairCreateIn;
 import com.lazylearn.api.indto.SearchIn;
 import com.lazylearn.api.outdto.BootstraptableOut;
+import com.lazylearn.api.repo.CardRepo;
 import com.lazylearn.api.repo.DeckRepo;
 import com.lazylearn.api.repo.MinpairRepo;
 import org.springframework.beans.BeanUtils;
@@ -29,6 +32,10 @@ public class MinpairService {
     private DeckRepo deckRepo;
     @Autowired
     private DeckService deckService;
+    @Autowired
+    private CardService cardService;
+    @Autowired
+    private CardRepo cardRepo;
 
     @Transactional(rollbackFor = Exception.class)
     public Minpair create(MinpairCreateIn in, String userId) throws Exception{
@@ -70,6 +77,12 @@ public class MinpairService {
             deck = deckService.create(NAME_REFIX + minpair.getLanguage(), userId);
             deck.setMinpairLanguage(minpair.getLanguage());
             deckRepo.save(deck);
+        }
+        Card card = cardRepo.findByDeckIdAndFront(deck.getId(), minpairId);
+        if(card == null){
+            cardService.create(minpairId, "", deck.getId(), userId);
+        } else {
+            throw new AppException(401, "This minpair is already get");
         }
 
         return deck;
