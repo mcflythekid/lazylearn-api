@@ -2,6 +2,8 @@ package com.lazylearn.api.indto.minpair;
 
 import org.hibernate.validator.constraints.NotBlank;
 
+import javax.validation.constraints.Pattern;
+
 /**
  * @author McFly the Kid
  */
@@ -24,6 +26,10 @@ public class MinpairCreateIn {
 
     @NotBlank
     private String phonetic2;
+
+    @NotBlank
+    @Pattern(regexp = "^[a-z]{2,10}$")
+    private String language;
 
     public String getAudio1() {
         return audio1;
@@ -71,5 +77,13 @@ public class MinpairCreateIn {
 
     public void setPhonetic2(String phonetic2) {
         this.phonetic2 = phonetic2;
+    }
+
+    public String getLanguage() {
+        return language;
+    }
+
+    public void setLanguage(String language) {
+        this.language = language;
     }
 }

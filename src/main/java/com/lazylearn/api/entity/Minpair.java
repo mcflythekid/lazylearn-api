@@ -40,6 +40,15 @@ public class Minpair extends AbstractEntity {
     private String phonetic2;
     private String audioPath1;
     private String audioPath2;
+    private String language;
+
+    public String getLanguage() {
+        return language;
+    }
+
+    public void setLanguage(String language) {
+        this.language = language;
+    }
 
     public String getUserId() {
         return userId;
