@@ -43,7 +43,6 @@ public class MinpairController extends BaseController{
 
     @PostMapping("/send-to-deck/{minpairId}")
     public Deck sendToDeck(@PathVariable String minpairId) throws Exception {
-        authorizeMinpair(minpairId);
         return minpairService.sendToDeck(minpairId, getUserId());
     }
 
