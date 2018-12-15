@@ -28,7 +28,7 @@ public class MinpairCreateIn {
     private String phonetic2;
 
     @NotBlank
-    @Pattern(regexp = "^[a-z]{2,10}$")
+    @Pattern(regexp = "^([a-z]{2,10})$", message = "Invalid language name. Allows: a-z")
     private String language;
 
     public String getAudio1() {
