@@ -53,13 +53,6 @@ public class MinpairService {
     }
 
     @Transactional(rollbackFor = Exception.class)
-    public void learned(String minpairId){
-        Minpair minpair = minpairRepo.findOne(minpairId);
-        minpair.increaseLearnedCount();
-        minpairRepo.save(minpair);
-    }
-
-    @Transactional(rollbackFor = Exception.class)
     public void delete(String minpairId) throws Exception{
         Minpair minpair = minpairRepo.findOne(minpairId);
         fileService.delete(minpair.getAudioPath1());

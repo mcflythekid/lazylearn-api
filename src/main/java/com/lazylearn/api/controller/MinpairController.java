@@ -27,13 +27,6 @@ public class MinpairController extends BaseController{
         return minpairService.create(in, getUserId());
     }
 
-    @PostMapping("/learned/{minpairId}")
-    public JSON learned(@PathVariable String minpairId) throws Exception{
-        authorizeMinpair(minpairId);
-        minpairService.learned(minpairId);
-        return JSON.ok("Update success");
-    }
-
     @PostMapping("/delete/{minpairId}")
     public JSON delete(@PathVariable String minpairId) throws Exception{
         minpairService.delete(minpairId);

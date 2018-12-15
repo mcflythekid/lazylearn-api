@@ -22,18 +22,7 @@ public class Minpair extends AbstractEntity {
         setAudioPath2("/minpair/" + getUserId() + "/" + getId() + "_audio2.mp3");
     }
 
-    @JsonIgnore
-    public void increaseLearnedCount(){
-        setLearnedCount(getLearnedCount() + 1);
-    }
-
-    @PrePersist
-    public void prePersist(){
-        setLearnedCount(0);
-    }
-
     private String userId;
-    private Integer learnedCount;
     private String word1;
     private String word2;
     private String phonetic1;
@@ -56,14 +45,6 @@ public class Minpair extends AbstractEntity {
 
     public void setUserId(String userId) {
         this.userId = userId;
-    }
-
-    public Integer getLearnedCount() {
-        return learnedCount;
-    }
-
-    public void setLearnedCount(Integer learnedCount) {
-        this.learnedCount = learnedCount;
     }
 
     public String getWord1() {
