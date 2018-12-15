@@ -1,0 +1,20 @@
+NameVirtualHost *:443
+
+<VirtualHost *:443>
+    DocumentRoot "D:\project\lazylearn-web"
+	ServerName local.lazylearn.com
+	<Directory "D:\project\lazylearn-web">
+        Options Indexes FollowSymLinks MultiViews
+        AllowOverride all
+        Order Deny,Allow
+        Allow from all
+        Require all granted
+    </Directory>
+	SSLEngine on
+	SSLCertificateFile D:\project\lazylearn-web\cert\fullchain.pem
+	SSLCertificateKeyFile D:\project\lazylearn-web\cert\privkey.pem
+</VirtualHost>
+
+
+
+#run("C:\Program Files (x86)\Notepad++\notepad++.exe D:\xampp\apache\conf\extra\httpd-vhosts.conf")
