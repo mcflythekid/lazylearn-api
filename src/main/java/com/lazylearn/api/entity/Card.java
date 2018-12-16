@@ -26,11 +26,6 @@ public class Card extends AbstractEntity{
     }
 
     @JsonIgnore
-    public boolean isReadyToArchive(){
-        return step >= Consts.CARD_STEP_END;
-    }
-
-    @JsonIgnore
     public void increaseStep(){
         step++;
     }
@@ -55,6 +50,15 @@ public class Card extends AbstractEntity{
 
     private String vocabId;
     private String minpairLanguage;
+    private String articleCategory;
+
+    public String getArticleCategory() {
+        return articleCategory;
+    }
+
+    public void setArticleCategory(String articleCategory) {
+        this.articleCategory = articleCategory;
+    }
 
     public String getMinpairLanguage() {
         return minpairLanguage;

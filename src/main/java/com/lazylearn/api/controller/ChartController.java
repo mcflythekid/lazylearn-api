@@ -1,5 +1,6 @@
 package com.lazylearn.api.controller;
 
+import com.lazylearn.api.entity.Deck;
 import com.lazylearn.api.service.ChartService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,7 +26,7 @@ public class ChartController extends BaseController {
 
     @GetMapping("/get-deck/{deckId}")
     public Object deckChart(@PathVariable("deckId") String deckId) throws Exception {
-        authorizeDeck(deckId);
-        return chartService.deckChart(deckId);
+        Deck deck = authorizeDeck(deckId);
+        return chartService.deckChart(deck);
     }
 }

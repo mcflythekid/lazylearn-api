@@ -29,6 +29,9 @@ public abstract class BaseController {
     private MinpairRepo minpairRepo;
 
     @Autowired
+    private ArticleRepo articleRepo;
+
+    @Autowired
     private VocabRepo vocabRepo;
 
     @Autowired
@@ -84,6 +87,14 @@ public abstract class BaseController {
             throw new AppException("It's not you");
         }
         return minpair;
+    }
+
+    protected Article authorizeArticle(String articleId) throws Exception {
+        Article article = articleRepo.findOne(articleId);
+        if (article == null || !article.getUserId().equals(SecurityUtils.getCurrentUserLogin())){
+            throw new AppException("It's not you");
+        }
+        return article;
     }
 
     protected Vocab authorizeVocab(String vocabId) throws Exception {

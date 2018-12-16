@@ -18,6 +18,7 @@ public class Deck extends AbstractEntity {
 
     @PrePersist
     public void prePersist(){
+        setProgramId(Consts.STEP_PROGRAM__PIMSLEUR);
         setArchived(Consts.CARDDECK_UNARCHIVED);
         setShared(Consts.CARDDECK_UNSHARED);
     }
@@ -32,6 +33,25 @@ public class Deck extends AbstractEntity {
     private Integer vocabType;
 
     private String minpairLanguage;
+    private String articleCategory;
+
+    private String programId;
+
+    public String getProgramId() {
+        return programId;
+    }
+
+    public void setProgramId(String programId) {
+        this.programId = programId;
+    }
+
+    public String getArticleCategory() {
+        return articleCategory;
+    }
+
+    public void setArticleCategory(String articleCategory) {
+        this.articleCategory = articleCategory;
+    }
 
     public String getMinpairLanguage() {
         return minpairLanguage;

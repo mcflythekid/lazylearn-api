@@ -5,6 +5,7 @@ import com.lazylearn.api.entity.Card;
 import com.lazylearn.api.entity.Deck;
 import com.lazylearn.api.outdto.LearnOut;
 import com.lazylearn.api.repo.CardRepo;
+import com.lazylearn.api.repo.DeckRepo;
 import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,16 +22,22 @@ public class LearnService {
 
     @Autowired
     private CardRepo cardRepo;
+    @Autowired
+    private ProgramService programService;
+    @Autowired
+    private DeckRepo deckRepo;
 
     @Transactional(rollbackFor = Exception.class)
     public void markCorrect(Card card) {
+        String programId = deckRepo.findOne(card.getDeckId()).getProgramId();
+
         card.increaseStep();
         card.setLearnedOn(new Date());
 
-        if (card.isReadyToArchive()){
+        if (card.getStep() >= programService.getCardStepEnd(programId)){
             card.setWakeupOn(null);
         } else {
-            card.setWakeupOn(getWakeupOn(card.getStep()));
+            card.setWakeupOn(getWakeupOn(card.getStep(), programId));
         }
         cardRepo.save(card);
     }
@@ -66,7 +73,7 @@ public class LearnService {
         return learnOut;
     }
 
-    private Date getWakeupOn(Integer step){
-        return DateUtils.addDays(new Date(), Consts.CARD_STEP_MAP.get(step));
+    private Date getWakeupOn(Integer step, String programId){
+        return DateUtils.addDays(new Date(), programService.getDays(programId, step));
     }
 }
