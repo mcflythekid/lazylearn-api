@@ -21,6 +21,24 @@ public class DetailedDeck extends AbstractEntity{
     private String vocabdeckId;
     private String vocabdeckName;
     private String minpairLanguage;
+    private String articleCategory;
+    private String programId;
+
+    public String getArticleCategory() {
+        return articleCategory;
+    }
+
+    public void setArticleCategory(String articleCategory) {
+        this.articleCategory = articleCategory;
+    }
+
+    public String getProgramId() {
+        return programId;
+    }
+
+    public void setProgramId(String programId) {
+        this.programId = programId;
+    }
 
     public String getMinpairLanguage() {
         return minpairLanguage;
