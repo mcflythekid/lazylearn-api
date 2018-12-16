@@ -111,6 +111,8 @@ SET character_set_client = utf8;
  1 AS `archived`,
  1 AS `vocabdeckid`,
  1 AS `minpairlanguage`,
+ 1 AS `articlecategory`,
+ 1 AS `programid`,
  1 AS `vocabdeckname`,
  1 AS `totalcard`,
  1 AS `totaltimeupcard`*/;
@@ -322,7 +324,7 @@ CREATE TABLE `vocabdeck` (
 /*!50001 SET collation_connection      = utf8_general_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
 /*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
-/*!50001 VIEW `detailed_deck` AS select `d`.`id` AS `id`,`d`.`userid` AS `userid`,`d`.`name` AS `name`,`d`.`createddate` AS `createddate`,`d`.`updateddate` AS `updateddate`,`d`.`archived` AS `archived`,`d`.`vocabdeckid` AS `vocabdeckid`,`d`.`minpairlanguage` AS `minpairlanguage`,`vd`.`name` AS `vocabdeckname`,count(`c`.`id`) AS `totalcard`,sum(if((`c`.`wakeupon` < now()),1,0)) AS `totaltimeupcard` from ((`deck` `d` left join `card` `c` on((`d`.`id` = `c`.`deckid`))) left join `vocabdeck` `vd` on((`d`.`vocabdeckid` = `vd`.`id`))) group by `d`.`id`,`d`.`userid`,`d`.`name`,`d`.`createddate`,`d`.`updateddate`,`d`.`archived`,`d`.`vocabdeckid`,`vd`.`name` */;
+/*!50001 VIEW `detailed_deck` AS select `d`.`id` AS `id`,`d`.`userid` AS `userid`,`d`.`name` AS `name`,`d`.`createddate` AS `createddate`,`d`.`updateddate` AS `updateddate`,`d`.`archived` AS `archived`,`d`.`vocabdeckid` AS `vocabdeckid`,`d`.`minpairlanguage` AS `minpairlanguage`,`d`.`articlecategory` AS `articlecategory`,`d`.`programid` AS `programid`,`vd`.`name` AS `vocabdeckname`,count(`c`.`id`) AS `totalcard`,sum(if((`c`.`wakeupon` < now()),1,0)) AS `totaltimeupcard` from ((`deck` `d` left join `card` `c` on((`d`.`id` = `c`.`deckid`))) left join `vocabdeck` `vd` on((`d`.`vocabdeckid` = `vd`.`id`))) group by `d`.`id`,`d`.`userid`,`d`.`name`,`d`.`createddate`,`d`.`updateddate`,`d`.`archived`,`d`.`vocabdeckid`,`vd`.`name`,`d`.`minpairlanguage`,`d`.`articlecategory`,`d`.`programid` */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
 /*!50001 SET collation_connection      = @saved_col_connection */;
@@ -354,4 +356,4 @@ CREATE TABLE `vocabdeck` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-12-16 15:34:49
+-- Dump completed on 2018-12-16 16:07:15
