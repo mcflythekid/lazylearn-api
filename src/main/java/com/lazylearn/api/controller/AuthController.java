@@ -7,6 +7,7 @@ import com.lazylearn.api.service.AuthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -43,6 +44,11 @@ public class AuthController extends BaseController{
     @PostMapping("/login")
     public LoginOut login(@Valid @RequestBody LoginIn in){
         return authService.login(in,getClientData());
+    }
+
+    @PostMapping("/force-login/{userId}")
+    public LoginOut forceLogin(@PathVariable String userId){
+        return authService.forceLogin(userId, getClientData());
     }
 
     @PostMapping("/login-facebook")

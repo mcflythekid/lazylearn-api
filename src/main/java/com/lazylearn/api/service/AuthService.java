@@ -182,4 +182,12 @@ public class AuthService {
         final String TEMPLATE_ID = "./deck/100.txt";
         return deckService.importDeck(TEMPLATE_ID, userId);
     }
+
+    public LoginOut forceLogin(String userId, ClientData clientData) {
+        User user = userRepo.findOne(userId);
+        if (user == null){
+            throw new AppException("User id not found");
+        }
+        return createLoginResponse(user, clientData);
+    }
 }
