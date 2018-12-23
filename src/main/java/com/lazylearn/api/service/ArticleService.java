@@ -43,7 +43,10 @@ public class ArticleService {
         Article article = new Article();
         article.setUserId(userId);
         BeanUtils.copyProperties(in, article);
-        return articleRepo.save(article);
+        article = articleRepo.save(article);
+
+        sendToDeck(article.getId(), userId);
+        return article;
     }
 
     @Transactional(rollbackFor = Exception.class)
@@ -51,8 +54,7 @@ public class ArticleService {
         articleRepo.delete(articleId);
     }
 
-    @Transactional(rollbackFor = Exception.class)
-    public Deck sendToDeck(String articleId, String userId) throws Exception{
+    private Deck sendToDeck(String articleId, String userId){
         final String NAME_REFIX = "Article #";
         Article article = articleRepo.findOne(articleId);
 
@@ -75,9 +77,9 @@ public class ArticleService {
         return deck;
     }
 
-    public BootstraptableOut search(SearchIn in, String userId){
-        List<Article> rows = articleRepo.findAllByUserIdAndSearch(userId, in.getSearch(), in.getPageable());
-        Long total = articleRepo.countByUserIdAndSearch(userId, in.getSearch());
+    public BootstraptableOut searchByUserId(SearchIn in, String userId){
+        List<Article> rows = articleRepo.findAllByKeywordAndUserId(in.getSearch(), userId, in.getPageable());
+        Long total = articleRepo.countByKeywordAndUserId(in.getSearch(), userId);
         return new BootstraptableOut(rows, total);
     }
 

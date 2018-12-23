@@ -17,19 +17,19 @@ public interface ArticleRepo extends JpaRepository<Article, String> {
 
     @Query("SELECT m FROM Article m WHERE " +
             "(" +
-            " LOWER(m.name) LIKE LOWER(CONCAT('%', ?2, '%'))" +
-            " OR LOWER(m.content) LIKE LOWER(CONCAT('%', ?2, '%'))" +
-            " OR LOWER(m.category) LIKE LOWER(CONCAT('%', ?2, '%'))" +
-            ") AND m.id NOT IN (SELECT c.front FROM Card c WHERE c.userId = ?1 AND c.articleCategory <> '')")
-    List<Article> findAllByUserIdAndSearch(String userId, String search, Pageable pageable);
+            " LOWER(m.name) LIKE LOWER(CONCAT('%', ?1, '%'))" +
+            " OR LOWER(m.content) LIKE LOWER(CONCAT('%', ?1, '%'))" +
+            " OR LOWER(m.category) LIKE LOWER(CONCAT('%', ?1, '%'))" +
+            ") AND m.userId = ?2")
+    List<Article> findAllByKeywordAndUserId(String keyword, String userId, Pageable pageable);
 
     @Query("SELECT COUNT(m) FROM Article m WHERE " +
             " (" +
-            " LOWER(m.name) LIKE LOWER(CONCAT('%', ?2, '%')) " +
-            " OR LOWER(m.content) LIKE LOWER(CONCAT('%', ?2, '%'))" +
-            " OR LOWER(m.category) LIKE LOWER(CONCAT('%', ?2, '%'))" +
-            ") AND m.id NOT IN (SELECT c.front FROM Card c WHERE c.userId = ?1 AND c.articleCategory <> '')")
-    Long countByUserIdAndSearch(String userId, String search);
+            " LOWER(m.name) LIKE LOWER(CONCAT('%', ?1, '%')) " +
+            " OR LOWER(m.content) LIKE LOWER(CONCAT('%', ?1, '%'))" +
+            " OR LOWER(m.category) LIKE LOWER(CONCAT('%', ?1, '%'))" +
+            ")  AND m.userId = ?2")
+    Long countByKeywordAndUserId(String keyword, String userId);
 
     @Query("SELECT m FROM Article m WHERE " +
             "(" +

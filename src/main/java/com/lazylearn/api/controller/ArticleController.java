@@ -37,14 +37,9 @@ public class ArticleController extends BaseController{
         return JSON.ok("Delete success");
     }
 
-    @PostMapping("/send-to-deck/{articleId}")
-    public Deck sendToDeck(@PathVariable String articleId) throws Exception {
-        return articleService.sendToDeck(articleId, getUserId());
-    }
-
     @PostMapping("/search")
     public BootstraptableOut search(@RequestBody SearchIn in) throws Exception {
-        return articleService.search(in, getUserId());
+        return articleService.searchByUserId(in, getUserId());
     }
 
     @PostMapping("/admin/search")

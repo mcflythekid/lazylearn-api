@@ -19,14 +19,6 @@ import java.util.Date;
 })
 public class Card extends AbstractEntity{
 
-    public String getProgramId(){
-        return getDeck().getProgramId();
-    }
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "deckid")
-    private Deck deck;
-
     @PrePersist
     public void prePersist(){
         setWakeupOn(new Date());
@@ -67,15 +59,6 @@ public class Card extends AbstractEntity{
     private String articleCategory;
     private Double sm2Ef;
     private Integer sm2LatestSpace;
-
-
-    public Deck getDeck() {
-        return deck;
-    }
-
-    public void setDeck(Deck deck) {
-        this.deck = deck;
-    }
 
     public Double getSm2Ef() {
         return sm2Ef;
