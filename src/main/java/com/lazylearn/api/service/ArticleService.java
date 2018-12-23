@@ -80,4 +80,10 @@ public class ArticleService {
         Long total = articleRepo.countByUserIdAndSearch(userId, in.getSearch());
         return new BootstraptableOut(rows, total);
     }
+
+    public BootstraptableOut searchAll(SearchIn in){
+        List<Article> rows = articleRepo.findAllByKeyword(in.getSearch(), in.getPageable());
+        Long total = articleRepo.countByKeyword(in.getSearch());
+        return new BootstraptableOut(rows, total);
+    }
 }

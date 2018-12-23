@@ -30,6 +30,18 @@ public class Article extends AbstractEntity {
     private String category;
     private Integer shared;
 
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "userid")
+    private User user;
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
     public String getUserId() {
         return userId;
     }

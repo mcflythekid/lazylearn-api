@@ -1,5 +1,7 @@
 package com.lazylearn.api.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.UUID;
 
@@ -19,10 +21,19 @@ public class User extends AbstractEntity{
     }
 
     private String email;
+
+    @JsonIgnore
     private String encodedPassword;
+
+    @JsonIgnore
     private String ipAddress;
+
+    @JsonIgnore
     private String sessionKey;
+
+    @JsonIgnore
     private String facebookId;
+
     private String fullName;
 
     public String getFullName() {

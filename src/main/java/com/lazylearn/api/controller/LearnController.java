@@ -4,11 +4,15 @@ import com.lazylearn.api.config.Consts;
 import com.lazylearn.api.config.exception.AppException;
 import com.lazylearn.api.entity.Card;
 import com.lazylearn.api.entity.Deck;
+import com.lazylearn.api.indto.learn.QualityIn;
 import com.lazylearn.api.outdto.JSON;
 import com.lazylearn.api.outdto.LearnOut;
+import com.lazylearn.api.service.AnswerProcessService;
 import com.lazylearn.api.service.LearnService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 
 /**
  * @author McFly the Kid
@@ -19,6 +23,9 @@ public class LearnController extends BaseController{
 
     @Autowired
     private LearnService learnService;
+
+    @Autowired
+    private AnswerProcessService answerProcessService;
 
     @GetMapping("/get-deck")
     public LearnOut get(@RequestParam("deckId") String deckId, @RequestParam("learnType") String learnType) throws Exception {
@@ -34,16 +41,23 @@ public class LearnController extends BaseController{
     }
 
     @PostMapping("/correct/{cardId}")
-    public JSON correct(@PathVariable("cardId") String cardId) throws Exception {
+    public JSON setCorrect(@PathVariable("cardId") String cardId) throws Exception {
         Card card = authorizeCard(cardId);
-        learnService.markCorrect(card);
+        answerProcessService.setCorrect(card);
         return JSON.ok();
     }
 
     @PostMapping("/incorrect/{cardId}")
-    public JSON incorrect(@PathVariable("cardId") String cardId) throws Exception {
+    public JSON setIncorrect(@PathVariable("cardId") String cardId) throws Exception {
         Card card = authorizeCard(cardId);
-        learnService.markIncorrect(card);
+        answerProcessService.setIncorrect(card);
+        return JSON.ok();
+    }
+
+    @PostMapping("/quality")
+    public JSON setQuality(@Valid @RequestBody QualityIn payload) throws Exception {
+        Card card = authorizeCard(payload.getCardId());
+        answerProcessService.setQuality(card, payload.getQuality());
         return JSON.ok();
     }
 }

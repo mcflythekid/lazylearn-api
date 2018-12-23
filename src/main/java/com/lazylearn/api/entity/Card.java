@@ -3,6 +3,7 @@ package com.lazylearn.api.entity;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.lazylearn.api.config.Consts;
+import org.apache.commons.lang3.time.DateUtils;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -18,6 +19,14 @@ import java.util.Date;
 })
 public class Card extends AbstractEntity{
 
+    public String getProgramId(){
+        return getDeck().getProgramId();
+    }
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "deckid")
+    private Deck deck;
+
     @PrePersist
     public void prePersist(){
         setWakeupOn(new Date());
@@ -25,12 +34,17 @@ public class Card extends AbstractEntity{
         setArchived(Consts.CARDDECK_UNARCHIVED);
     }
 
-    @JsonIgnore
-    public void increaseStep(){
-        step++;
+    public void setWakeupDays(Integer days){
+        setWakeupOn(DateUtils.addDays(new Date(), days));
     }
 
-    @JsonIgnore
+    public void increaseStep(){
+        if (getStep() == null || getStep() < Consts.CARD_STEP_BEGIN){
+            setStep(Consts.CARD_STEP_BEGIN);
+        }
+        setStep(getStep() + 1);
+    }
+
     public void resetStep(){
         step = Consts.CARD_STEP_BEGIN;
     }
@@ -51,6 +65,33 @@ public class Card extends AbstractEntity{
     private String vocabId;
     private String minpairLanguage;
     private String articleCategory;
+    private Double sm2Ef;
+    private Integer sm2LatestSpace;
+
+
+    public Deck getDeck() {
+        return deck;
+    }
+
+    public void setDeck(Deck deck) {
+        this.deck = deck;
+    }
+
+    public Double getSm2Ef() {
+        return sm2Ef;
+    }
+
+    public void setSm2Ef(Double sm2Ef) {
+        this.sm2Ef = sm2Ef;
+    }
+
+    public Integer getSm2LatestSpace() {
+        return sm2LatestSpace;
+    }
+
+    public void setSm2LatestSpace(Integer sm2LatestSpace) {
+        this.sm2LatestSpace = sm2LatestSpace;
+    }
 
     public String getArticleCategory() {
         return articleCategory;

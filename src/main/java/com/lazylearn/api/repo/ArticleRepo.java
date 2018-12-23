@@ -30,4 +30,20 @@ public interface ArticleRepo extends JpaRepository<Article, String> {
             " OR LOWER(m.category) LIKE LOWER(CONCAT('%', ?2, '%'))" +
             ") AND m.id NOT IN (SELECT c.front FROM Card c WHERE c.userId = ?1 AND c.articleCategory <> '')")
     Long countByUserIdAndSearch(String userId, String search);
+
+    @Query("SELECT m FROM Article m WHERE " +
+            "(" +
+            " LOWER(m.name) LIKE LOWER(CONCAT('%', ?1, '%'))" +
+            " OR LOWER(m.content) LIKE LOWER(CONCAT('%', ?1, '%'))" +
+            " OR LOWER(m.category) LIKE LOWER(CONCAT('%', ?1, '%'))" +
+            ")")
+    List<Article> findAllByKeyword(String keyword, Pageable pageable);
+
+    @Query("SELECT COUNT(m) FROM Article m WHERE " +
+            " (" +
+            " LOWER(m.name) LIKE LOWER(CONCAT('%', ?1, '%')) " +
+            " OR LOWER(m.content) LIKE LOWER(CONCAT('%', ?1, '%'))" +
+            " OR LOWER(m.category) LIKE LOWER(CONCAT('%', ?1, '%'))" +
+            ")")
+    Long countByKeyword(String keyword);
 }

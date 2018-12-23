@@ -21,3 +21,5 @@ target/
 rebel.xml
 /bin/
 node_modules/
+
+.vscode/

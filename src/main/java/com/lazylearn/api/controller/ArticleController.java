@@ -47,6 +47,11 @@ public class ArticleController extends BaseController{
         return articleService.search(in, getUserId());
     }
 
+    @PostMapping("/admin/search")
+    public BootstraptableOut adminSearch(@RequestBody SearchIn in) throws Exception {
+        return articleService.searchAll(in);
+    }
+
     @GetMapping("/get/{articleId}")
     public Article create(@PathVariable String articleId) throws Exception{
         return authorizeArticle(articleId);

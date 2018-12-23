@@ -49,6 +49,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/minpair/create", "/minpair/delete/**").hasAuthority(Consts.AUTHORITY_ADMIN)
                 .antMatchers("/article/create", "/minpair/article/**").hasAuthority(Consts.AUTHORITY_ADMIN)
                 .antMatchers("/force-login/*").hasAuthority(Consts.AUTHORITY_ADMIN)
+                .antMatchers("/article/admin/**").hasAuthority(Consts.AUTHORITY_ADMIN)
                 .antMatchers("/file/**").permitAll()
                 .anyRequest().hasAuthority(Consts.AUTHORITY_DEFAULT)
             .and()

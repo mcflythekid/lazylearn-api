@@ -7,6 +7,15 @@ import java.util.Map;
  * @author McFly the Kid
  */
 public final class Consts {
+
+    public static final Double SM2_EF_MIN = 1.3D;
+    public static final Double SM2_EF_INIT = 2.5D;
+    public static final Double SM2_EF_MAX = 4D;
+    public static final Integer[] SM2_SPACE_STEP = new Integer[]{0, 1, 6};
+    public static final Integer[] SM2_ALLOWS_CORRECT_QUALITY = new Integer[]{3,4,5};
+    public static final Integer SM2_INCORRECT_QUALITY = 0;
+    public static final Integer SM2_CORRECT_QUALITY_DEFAULT = 5;
+
     public static final String PARAM_JSON_DATETIMEFORMAT = "yyyy-MM-dd HH:mm:ss";
     public static final String PARAM_JSON_TIMEZONE = "GMT+7";
     public static final int PARAM_POST_MAXSIZE = 10000000;
@@ -28,6 +37,7 @@ public final class Consts {
     public static final String CARD_STEP_BEGIN__LABEL = "NOW";
     public static final String CARD_STEP_END__LABEL = "DONE";
 
+    public static final String STEP_PROGRAM__SM2 = "sm2";
     public static final String STEP_PROGRAM__PIMSLEUR = "pimsleur";
     public static final String STEP_PROGRAM__EFFORTLESS = "effortless";
     public static final String STEP_PROGRAM_BIGGEST = STEP_PROGRAM__EFFORTLESS;
