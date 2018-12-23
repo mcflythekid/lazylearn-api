@@ -20,7 +20,6 @@ public class Article extends AbstractEntity {
         setShared(Consts.CARDDECK_UNSHARED);
     }
 
-    private String userId;
     private String name;
 
     @Lob
@@ -30,12 +29,29 @@ public class Article extends AbstractEntity {
     private String category;
     private Integer shared;
 
-    public String getUserId() {
-        return userId;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "userid")
+    private User user;
+
+    public String getUserId(){
+        return getUser() == null ? null : getUser().getId();
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
+    public void setUserId(String userId){
+        if (getUser() == null){
+            setUser(new User());
+        }
+        if (getUser().getId() == null){
+            getUser().setId(userId);
+        }
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public String getName() {
