@@ -40,6 +40,13 @@ public class LearnController extends BaseController{
         throw new AppException(404, "Learn type not found: " + learnType);
     }
 
+    @GetMapping("/learnable-count/{deckId}")
+    public Integer checkLearnable(@PathVariable String deckId) throws Exception {
+        Deck deck = authorizeDeck(deckId);
+        LearnOut data = learnService.getByLearn(deck);
+        return data.getCards().size();
+    }
+
     @PostMapping("/correct/{cardId}")
     public JSON setCorrect(@PathVariable("cardId") String cardId) throws Exception {
         Card card = authorizeCard(cardId);
