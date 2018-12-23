@@ -115,13 +115,25 @@ public abstract class BaseController {
 
     protected void protectGeneratedDeck(Deck deck) throws Exception{
         if (StringUtils.isNotBlank(deck.getVocabdeckId())){
-            throw new AppException(403, "This deck cannot be modified");
+            throw new AppException(403, "VOCABDECK protected");
+        }
+        if (StringUtils.isNotBlank(deck.getMinpairLanguage())){
+            throw new AppException(403, "MINPAIR protected");
+        }
+        if (StringUtils.isNotBlank(deck.getArticleCategory())){
+            throw new AppException(403, "TOPIC protected");
         }
     }
 
     protected void protectGeneratedCard(Card card) throws Exception{
         if (StringUtils.isNotBlank(card.getVocabId())){
-            throw new AppException(403, "This card cannot be modified");
+            throw new AppException(403, "VOCABDECK protected");
+        }
+        if (StringUtils.isNotBlank(card.getMinpairLanguage())){
+            throw new AppException(403, "MINPAIR protected");
+        }
+        if (StringUtils.isNotBlank(card.getArticleCategory())){
+            throw new AppException(403, "TOPIC protected");
         }
     }
 }

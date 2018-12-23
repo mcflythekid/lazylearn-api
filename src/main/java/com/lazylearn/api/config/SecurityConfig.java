@@ -46,10 +46,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/forget-password", "/reset-password", "/register", "/login", "/login-facebook").permitAll()
                 .antMatchers("/admin/**").hasAuthority(Consts.AUTHORITY_ADMIN)
-                .antMatchers("/minpair/delete/**").hasAuthority(Consts.AUTHORITY_ADMIN)
+
+                .antMatchers("/minpair/admin/**").hasAuthority(Consts.AUTHORITY_ADMIN)
+
+
                 .antMatchers("/force-login/*").hasAuthority(Consts.AUTHORITY_ADMIN)
 
-                .antMatchers("/article/delete/**").hasAuthority(Consts.AUTHORITY_ADMIN)
                 .antMatchers("/article/admin/**").hasAuthority(Consts.AUTHORITY_ADMIN)
 
                 .antMatchers("/file/**").permitAll()

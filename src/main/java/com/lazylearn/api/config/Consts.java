@@ -34,8 +34,8 @@ public final class Consts {
     public static final String LEARNTYPE_REVIEW = "review";
 
     public static final Integer CARD_STEP_BEGIN = 0;
-    public static final String CARD_STEP_BEGIN__LABEL = "NOW";
-    public static final String CARD_STEP_END__LABEL = "DONE";
+    public static final String CARD_STEP_BEGIN__LABEL = "Today";
+    public static final String CARD_STEP_END__LABEL = "∞";
 
     public static final String STEP_PROGRAM__SM2 = "sm2";
     public static final String STEP_PROGRAM__PIMSLEUR = "pimsleur";
@@ -47,6 +47,8 @@ public final class Consts {
 
     public static final Integer CARDDECK_SHARED = 1;
     public static final Integer CARDDECK_UNSHARED = 0;
+
+    public static final String DO_NOT_CHANGE = "Do not modify this card";
 
 
 }

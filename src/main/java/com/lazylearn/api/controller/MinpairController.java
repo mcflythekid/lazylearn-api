@@ -39,8 +39,13 @@ public class MinpairController extends BaseController{
     }
 
     @PostMapping("/search")
-    public BootstraptableOut search(@RequestBody SearchIn in) throws Exception {
-        return minpairService.search(in, getUserId());
+    public BootstraptableOut searchByUserId(@RequestBody SearchIn in) throws Exception {
+        return minpairService.searchByKeywordAndUserId(in, getUserId());
+    }
+
+    @PostMapping("/admin/search")
+    public BootstraptableOut searchAll(@RequestBody SearchIn in) throws Exception {
+        return minpairService.searchByKeyword(in);
     }
 
     @GetMapping("/get/{minpairId}")

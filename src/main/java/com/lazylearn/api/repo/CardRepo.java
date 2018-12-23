@@ -64,4 +64,6 @@ public interface CardRepo extends JpaRepository<Card, String> {
     List<Card> findAllByVocabId(String vocabId);
 
     Card findByDeckIdAndFront(String deckId, String front);
+
+    Long countAllByDeckId(String deckId);
 }

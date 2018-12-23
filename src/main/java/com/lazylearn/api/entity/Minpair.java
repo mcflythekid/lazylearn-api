@@ -2,10 +2,7 @@ package com.lazylearn.api.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import javax.persistence.Entity;
-import javax.persistence.Index;
-import javax.persistence.PrePersist;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 /**
  * @author McFly the Kid
@@ -22,7 +19,6 @@ public class Minpair extends AbstractEntity {
         setAudioPath2("/minpair/" + getUserId() + "/" + getId() + "_audio2.mp3");
     }
 
-    private String userId;
     private String word1;
     private String word2;
     private String phonetic1;
@@ -31,20 +27,38 @@ public class Minpair extends AbstractEntity {
     private String audioPath2;
     private String language;
 
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "userid")
+    private User user;
+
+    public String getUserId(){
+        return getUser() == null ? null : getUser().getId();
+    }
+
+    public void setUserId(String userId){
+        if (getUser() == null){
+            setUser(new User());
+        }
+        if (getUser().getId() == null){
+            getUser().setId(userId);
+        }
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+
     public String getLanguage() {
         return language;
     }
 
     public void setLanguage(String language) {
         this.language = language;
-    }
-
-    public String getUserId() {
-        return userId;
-    }
-
-    public void setUserId(String userId) {
-        this.userId = userId;
     }
 
     public String getWord1() {

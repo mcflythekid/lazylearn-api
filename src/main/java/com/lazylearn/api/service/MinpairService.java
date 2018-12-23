@@ -83,9 +83,15 @@ public class MinpairService {
         return deck;
     }
 
-    public BootstraptableOut search(SearchIn in, String userId){
-        List<Minpair> rows = minpairRepo.findAllByUserIdAndSearch(userId, in.getSearch(), in.getPageable());
-        Long total = minpairRepo.countByUserIdAndSearch(userId, in.getSearch());
+    public BootstraptableOut searchByKeywordAndUserId(SearchIn in, String userId){
+        List<Minpair> rows = minpairRepo.findAllByKeywordAndUserId( in.getSearch(), userId, in.getPageable());
+        Long total = minpairRepo.countByKeywordAndUserId(in.getSearch(), userId);
+        return new BootstraptableOut(rows, total);
+    }
+
+    public BootstraptableOut searchByKeyword(SearchIn in){
+        List<Minpair> rows = minpairRepo.findAllByKeyword(in.getSearch(), in.getPageable());
+        Long total = minpairRepo.countByKeyword(in.getSearch());
         return new BootstraptableOut(rows, total);
     }
 }

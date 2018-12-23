@@ -16,17 +16,33 @@ public interface MinpairRepo extends JpaRepository<Minpair, String> {
 
     @Query("SELECT m FROM Minpair m WHERE " +
             "(" +
-            " LOWER(m.word1) LIKE LOWER(CONCAT('%', ?2, '%'))" +
-            " OR LOWER(m.word2) LIKE LOWER(CONCAT('%', ?2, '%'))" +
-            " OR LOWER(m.language) LIKE LOWER(CONCAT('%', ?2, '%'))" +
-            ") AND m.id NOT IN (SELECT c.front FROM Card c WHERE c.userId = ?1 AND c.minpairLanguage <> '')")
-    List<Minpair> findAllByUserIdAndSearch(String userId, String search, Pageable pageable);
+            " LOWER(m.word1) LIKE LOWER(CONCAT('%', ?1, '%'))" +
+            " OR LOWER(m.word2) LIKE LOWER(CONCAT('%', ?1, '%'))" +
+            " OR LOWER(m.language) LIKE LOWER(CONCAT('%', ?1, '%'))" +
+            ") AND m.user.id = ?2")
+    List<Minpair> findAllByKeywordAndUserId(String keyword, String userId, Pageable pageable);
 
     @Query("SELECT COUNT(m) FROM Minpair m WHERE " +
             " (" +
-            " LOWER(m.word1) LIKE LOWER(CONCAT('%', ?2, '%')) " +
-            " OR LOWER(m.word2) LIKE LOWER(CONCAT('%', ?2, '%'))" +
-            " OR LOWER(m.language) LIKE LOWER(CONCAT('%', ?2, '%'))" +
-            ") AND m.id NOT IN (SELECT c.front FROM Card c WHERE c.userId = ?1 AND c.minpairLanguage <> '')")
-    Long countByUserIdAndSearch(String userId, String search);
+            " LOWER(m.word1) LIKE LOWER(CONCAT('%', ?1, '%')) " +
+            " OR LOWER(m.word2) LIKE LOWER(CONCAT('%', ?1, '%'))" +
+            " OR LOWER(m.language) LIKE LOWER(CONCAT('%', ?1, '%'))" +
+            ") AND m.user.id = ?2")
+    Long countByKeywordAndUserId(String keyword, String userId);
+
+    @Query("SELECT m FROM Minpair m WHERE " +
+            "(" +
+            " LOWER(m.word1) LIKE LOWER(CONCAT('%', ?1, '%'))" +
+            " OR LOWER(m.word2) LIKE LOWER(CONCAT('%', ?1, '%'))" +
+            " OR LOWER(m.language) LIKE LOWER(CONCAT('%', ?1, '%'))" +
+            ")")
+    List<Minpair> findAllByKeyword(String keyword, Pageable pageable);
+
+    @Query("SELECT COUNT(m) FROM Minpair m WHERE " +
+            " (" +
+            " LOWER(m.word1) LIKE LOWER(CONCAT('%', ?1, '%')) " +
+            " OR LOWER(m.word2) LIKE LOWER(CONCAT('%', ?1, '%'))" +
+            " OR LOWER(m.language) LIKE LOWER(CONCAT('%', ?1, '%'))" +
+            ")")
+    Long countByKeyword(String keyword);
 }

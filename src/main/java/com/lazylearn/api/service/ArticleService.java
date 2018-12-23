@@ -49,8 +49,19 @@ public class ArticleService {
         return article;
     }
 
-    @Transactional(rollbackFor = Exception.class)
+    @Transactional
     public void delete(String articleId){
+
+        Article article = articleRepo.findOne(articleId);
+
+        Deck deck = deckRepo.findByArticleCategoryAndUserId(article.getCategory(), article.getUserId());
+        Card card = cardRepo.findByDeckIdAndFront(deck.getId(), articleId);
+        cardRepo.delete(card);
+
+        if (cardRepo.countAllByDeckId(deck.getId()) == 0){
+            deckRepo.delete(deck);
+        }
+
         articleRepo.delete(articleId);
     }
 
@@ -67,7 +78,7 @@ public class ArticleService {
         }
         Card card = cardRepo.findByDeckIdAndFront(deck.getId(), articleId);
         if(card == null){
-            card = cardService.create(articleId, "", deck.getId(), userId);
+            card = cardService.create(articleId, Consts.DO_NOT_CHANGE, deck.getId(), userId);
             card.setArticleCategory(article.getCategory());
             cardRepo.save(card);
         } else {
