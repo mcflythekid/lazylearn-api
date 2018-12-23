@@ -6,14 +6,12 @@ import com.lazylearn.api.entity.Card;
 import com.lazylearn.api.repo.CardRepo;
 import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 
-@Service
-@Qualifier(Consts.STEP_PROGRAM__SM2)
+@Service(Consts.STEP_PROGRAM__SM2)
 public class Sm2Program implements LearnProgram {
 
     @Autowired
