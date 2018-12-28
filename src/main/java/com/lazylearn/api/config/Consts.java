@@ -39,8 +39,7 @@ public final class Consts {
 
     public static final String STEP_PROGRAM__SM2 = "sm2";
     public static final String STEP_PROGRAM__PIMSLEUR = "pimsleur";
-    public static final String STEP_PROGRAM__EFFORTLESS = "effortless";
-    public static final String STEP_PROGRAM_BIGGEST = STEP_PROGRAM__EFFORTLESS;
+    public static final String STEP_PROGRAM_BIGGEST = STEP_PROGRAM__PIMSLEUR;
 
     public static final Integer CARDDECK_ARCHIVED = 1;
     public static final Integer CARDDECK_UNARCHIVED = 0;
