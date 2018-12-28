@@ -19,11 +19,23 @@ public class Vocabdeck extends AbstractEntity {
     @PrePersist
     public void prePersist(){
         setArchived(Consts.CARDDECK_UNARCHIVED);
+        setLanguage(Consts.VOCABDECK_LANGUAGE);
     }
 
     private String userId;
     private String name;
     private Integer archived;
+    private String language;
+
+    //////////////////////////////////////////////////////////////////////////
+
+    public String getLanguage() {
+        return language;
+    }
+
+    public void setLanguage(String language) {
+        this.language = language;
+    }
 
     public String getUserId() {
         return userId;

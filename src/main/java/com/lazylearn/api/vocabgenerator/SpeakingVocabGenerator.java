@@ -15,7 +15,7 @@ public class SpeakingVocabGenerator extends VocabGenerator {
 
     @Override
     public String getPrefix() {
-        return "[Speaking]";
+        return "[Speaking Vocab]";
     }
 
     @Override

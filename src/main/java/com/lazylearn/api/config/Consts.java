@@ -50,4 +50,8 @@ public final class Consts {
     public static final String DO_NOT_CHANGE = "Do not modify this card";
 
 
+
+    public static final String VOCABDECK_LANGUAGE = "english";
+
+
 }

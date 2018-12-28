@@ -15,7 +15,7 @@ public class WritingVocabGenerator extends VocabGenerator {
 
     @Override
     public String getPrefix() {
-        return "[Writing]";
+        return "[Writing Vocab]";
     }
 
     @Override
