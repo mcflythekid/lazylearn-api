@@ -24,7 +24,8 @@ public class VocabCreateIn {
     @NotBlank
     private String personalConnection;
 
-    private String gender;
+    @NotBlank
+    private String phrase;
 
     @NotNull
     private EncodedFile encodedImage;
@@ -82,13 +83,7 @@ public class VocabCreateIn {
         this.phonetic = phonetic;
     }
 
-    public String getGender() {
-        return gender;
-    }
-
-    public void setGender(String gender) {
-        this.gender = gender;
-    }
+    
 
     public String getPersonalConnection() {
         return personalConnection;
@@ -96,5 +91,19 @@ public class VocabCreateIn {
 
     public void setPersonalConnection(String personalConnection) {
         this.personalConnection = personalConnection;
+    }
+
+    /**
+     * @return the phrase
+     */
+    public String getPhrase() {
+        return phrase;
+    }
+
+    /**
+     * @param phrase the phrase to set
+     */
+    public void setPhrase(String phrase) {
+        this.phrase = phrase;
     }
 }

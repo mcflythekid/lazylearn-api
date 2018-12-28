@@ -31,7 +31,7 @@ public class Vocab extends AbstractEntity {
     private String vocabdeckId;
     private String word;
     private String phonetic;
-    private String gender;
+    private String phrase;
     private String imagePath;
     private String audioPath;
     private String personalConnection;
@@ -68,12 +68,18 @@ public class Vocab extends AbstractEntity {
         this.phonetic = phonetic;
     }
 
-    public String getGender() {
-        return gender;
+    /**
+     * @return the phrase
+     */
+    public String getPhrase() {
+        return phrase;
     }
 
-    public void setGender(String gender) {
-        this.gender = gender;
+    /**
+     * @param phrase the phrase to set
+     */
+    public void setPhrase(String phrase) {
+        this.phrase = phrase;
     }
 
     public String getImagePath() {

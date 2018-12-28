@@ -7,29 +7,29 @@ import java.io.IOException;
 /**
  * @author McFly the Kid
  */
-public class KnowImage extends CardDeckGenerator {
+public class ImagingGenerator extends CardDeckGenerator {
 
-    public KnowImage(String fileRoot) {
+    public ImagingGenerator(String fileRoot) {
         super(fileRoot);
     }
 
     @Override
     public String getPostfix() {
-        return "[Know Image]";
+        return "[Imagine]";
     }
 
     @Override
     public Integer getVocabType() {
-        return VOCAB_TYPE__KNOW_IMAGE;
+        return VOCAB_TYPE__IMAGING;
     }
 
     @Override
     public String getCardFrontTemplate() throws IOException {
-        return ResouresUtils.read("./template/knowImage-front.html");
+        return ResouresUtils.read("./template/imaging-front.html");
     }
 
     @Override
     public String getCardBackTemplate() throws IOException {
-        return ResouresUtils.read("./template/knowImage-back.html");
+        return ResouresUtils.read("./template/imaging-back.html");
     }
 }

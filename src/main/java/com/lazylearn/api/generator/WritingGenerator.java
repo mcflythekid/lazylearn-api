@@ -7,29 +7,29 @@ import java.io.IOException;
 /**
  * @author McFly the Kid
  */
-public class Speakable extends CardDeckGenerator {
+public class WritingGenerator extends CardDeckGenerator {
 
-    public Speakable(String fileRoot) {
+    public WritingGenerator(String fileRoot) {
         super(fileRoot);
     }
 
     @Override
     public String getPostfix() {
-        return "[Speakable]";
+        return "[Writing]";
     }
 
     @Override
     public Integer getVocabType() {
-        return VOCAB_TYPE__SPEAKABLE;
+        return VOCAB_TYPE__WRITING;
     }
 
     @Override
     public String getCardFrontTemplate() throws IOException {
-        return ResouresUtils.read("./template/speakable-front.html");
+        return ResouresUtils.read("./template/writing-front.html");
     }
 
     @Override
     public String getCardBackTemplate() throws IOException {
-        return ResouresUtils.read("./template/speakable-back.html");
+        return ResouresUtils.read("./template/writing-back.html");
     }
 }

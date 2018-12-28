@@ -23,7 +23,8 @@ public class VocabEditIn {
     @NotBlank
     private String personalConnection;
 
-    private String gender;
+    @NotBlank
+    private String phrase;
 
     private EncodedFile encodedImage;
 
@@ -78,13 +79,7 @@ public class VocabEditIn {
         this.phonetic = phonetic;
     }
 
-    public String getGender() {
-        return gender;
-    }
-
-    public void setGender(String gender) {
-        this.gender = gender;
-    }
+    
 
     public String getPersonalConnection() {
         return personalConnection;
@@ -101,5 +96,19 @@ public class VocabEditIn {
 
     public void setVocabId(String vocabId) {
         this.vocabId = vocabId;
+    }
+
+    /**
+     * @return the phrase
+     */
+    public String getPhrase() {
+        return phrase;
+    }
+
+    /**
+     * @param phrase the phrase to set
+     */
+    public void setPhrase(String phrase) {
+        this.phrase = phrase;
     }
 }
