@@ -1,4 +1,4 @@
-package com.lazylearn.api.generator;
+package com.lazylearn.api.vocabgenerator;
 
 import com.lazylearn.api.util.ResouresUtils;
 
@@ -7,29 +7,29 @@ import java.io.IOException;
 /**
  * @author McFly the Kid
  */
-public class SpeakingGenerator extends CardDeckGenerator {
+public class ImagingVocabGenerator extends VocabGenerator {
 
-    public SpeakingGenerator(String fileRoot) {
+    public ImagingVocabGenerator(String fileRoot) {
         super(fileRoot);
     }
 
     @Override
     public String getPrefix() {
-        return "[Speaking]";
+        return "[Imaging]";
     }
 
     @Override
     public Integer getVocabType() {
-        return VOCAB_TYPE__SPEAKING;
+        return VOCAB_TYPE__IMAGING;
     }
 
     @Override
     public String getCardFrontTemplate() throws IOException {
-        return ResouresUtils.read("./template/speaking-front.html");
+        return ResouresUtils.read("./template/imaging-front.html");
     }
 
     @Override
     public String getCardBackTemplate() throws IOException {
-        return ResouresUtils.read("./template/speaking-back.html");
+        return ResouresUtils.read("./template/imaging-back.html");
     }
 }

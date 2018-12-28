@@ -1,7 +1,7 @@
 package com.lazylearn.api.service;
 
 import com.lazylearn.api.entity.Deck;
-import com.lazylearn.api.generator.CardDeckGenerator;
+import com.lazylearn.api.vocabgenerator.VocabGenerator;
 import com.lazylearn.api.config.exception.AppException;
 import com.lazylearn.api.entity.Card;
 import com.lazylearn.api.entity.Vocab;
@@ -16,7 +16,6 @@ import com.lazylearn.api.repo.VocabRepo;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -45,22 +44,22 @@ public class VocabService {
     private String fileRoot;
 
     private void createCallback(Vocab vocab) throws Exception {
-        for (CardDeckGenerator cardDeckGenerator : CardDeckGenerator.getGenerators(fileRoot)){
-            String deckId = deckRepo.findByVocabdeckIdAndVocabType(vocab.getVocabdeckId(), cardDeckGenerator.getVocabType()).getId();
-            cardRepo.save(cardDeckGenerator.generateCard(vocab, null, deckId));
+        for (VocabGenerator vocabGenerator : VocabGenerator.getGenerators(fileRoot)){
+            String deckId = deckRepo.findByVocabdeckIdAndVocabType(vocab.getVocabdeckId(), vocabGenerator.getVocabType()).getId();
+            cardRepo.save(vocabGenerator.generateCard(vocab, null, deckId));
         }
     }
 
     @Transactional(rollbackFor = Exception.class)
     public void updateCallback(Vocab vocab) throws Exception {
-        for (CardDeckGenerator cardDeckGenerator : CardDeckGenerator.getGenerators(fileRoot)){
-            Deck deck = deckRepo.findByVocabdeckIdAndVocabType(vocab.getVocabdeckId(), cardDeckGenerator.getVocabType());
+        for (VocabGenerator vocabGenerator : VocabGenerator.getGenerators(fileRoot)){
+            Deck deck = deckRepo.findByVocabdeckIdAndVocabType(vocab.getVocabdeckId(), vocabGenerator.getVocabType());
             if ( deck == null){
                 continue;
             }
             String deckId = deck.getId();
             Card card = cardRepo.findByDeckIdAndVocabId(deckId, vocab.getId());
-            cardRepo.save(cardDeckGenerator.generateCard(vocab, card, deckId));
+            cardRepo.save(vocabGenerator.generateCard(vocab, card, deckId));
         }
     }
 

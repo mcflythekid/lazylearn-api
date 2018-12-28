@@ -1,6 +1,6 @@
 package com.lazylearn.api.service;
 
-import com.lazylearn.api.generator.CardDeckGenerator;
+import com.lazylearn.api.vocabgenerator.VocabGenerator;
 import com.lazylearn.api.config.Consts;
 import com.lazylearn.api.entity.Deck;
 import com.lazylearn.api.entity.Vocabdeck;
@@ -35,16 +35,16 @@ public class VocabdeckService {
 
     @Transactional(rollbackFor = Exception.class)
     public void createCallback(Vocabdeck vocabdeck){
-        for (CardDeckGenerator cardDeckGenerator : CardDeckGenerator.getGenerators(fileRoot)){
-            deckService.create(cardDeckGenerator.generateDeck(vocabdeck, null));
+        for (VocabGenerator vocabGenerator : VocabGenerator.getGenerators(fileRoot)){
+            deckService.create(vocabGenerator.generateDeck(vocabdeck, null));
         }
     }
 
     @Transactional(rollbackFor = Exception.class)
     public void updateCallback(Vocabdeck vocabdeck){
-        for (CardDeckGenerator cardDeckGenerator : CardDeckGenerator.getGenerators(fileRoot)){
-            Deck deck = deckRepo.findByVocabdeckIdAndVocabType(vocabdeck.getId(), cardDeckGenerator.getVocabType());
-            deckService.update(cardDeckGenerator.generateDeck(vocabdeck, deck));
+        for (VocabGenerator vocabGenerator : VocabGenerator.getGenerators(fileRoot)){
+            Deck deck = deckRepo.findByVocabdeckIdAndVocabType(vocabdeck.getId(), vocabGenerator.getVocabType());
+            deckService.update(vocabGenerator.generateDeck(vocabdeck, deck));
         }
     }
 

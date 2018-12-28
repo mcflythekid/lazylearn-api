@@ -1,4 +1,4 @@
-package com.lazylearn.api.generator;
+package com.lazylearn.api.vocabgenerator;
 
 import com.lazylearn.api.entity.Card;
 import com.lazylearn.api.entity.Deck;
@@ -14,16 +14,16 @@ import java.util.Map;
 /**
  * @author McFly the Kid
  */
-public abstract class CardDeckGenerator {
+public abstract class VocabGenerator {
 
     private String fileRoot;
 
-    protected CardDeckGenerator(String fileRoot) {
+    protected VocabGenerator(String fileRoot) {
         this.fileRoot = fileRoot;
     }
 
-    public static List<CardDeckGenerator> getGenerators(String fileRoot){
-        return Arrays.asList(new ImagingGenerator(fileRoot), new SpeakingGenerator(fileRoot), new WritingGenerator(fileRoot));
+    public static List<VocabGenerator> getGenerators(String fileRoot){
+        return Arrays.asList(new ImagingVocabGenerator(fileRoot), new SpeakingVocabGenerator(fileRoot), new WritingVocabGenerator(fileRoot));
     }
 
     public static final Integer VOCAB_TYPE__IMAGING = 1;
