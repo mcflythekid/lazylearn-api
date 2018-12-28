@@ -1,4 +1,4 @@
-package com.lazylearn.api.learnprogram;
+package com.lazylearn.api.program;
 
 import com.lazylearn.api.config.exception.AppException;
 import com.lazylearn.api.entity.Card;

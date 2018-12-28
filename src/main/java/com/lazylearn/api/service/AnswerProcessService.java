@@ -3,7 +3,7 @@ package com.lazylearn.api.service;
 import com.lazylearn.api.config.exception.AppException;
 import com.lazylearn.api.entity.Card;
 import com.lazylearn.api.entity.Deck;
-import com.lazylearn.api.learnprogram.Program;
+import com.lazylearn.api.program.Program;
 import com.lazylearn.api.repo.DeckRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
