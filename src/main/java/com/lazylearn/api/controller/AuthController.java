@@ -1,9 +1,10 @@
 package com.lazylearn.api.controller;
 
-import com.lazylearn.api.indto.auth.*;
-import com.lazylearn.api.outdto.JSON;
-import com.lazylearn.api.outdto.LoginOut;
-import com.lazylearn.api.service.AuthService;
+import java.io.IOException;
+import java.util.Collection;
+
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -12,9 +13,15 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.validation.Valid;
-import java.io.IOException;
-import java.util.Collection;
+import com.lazylearn.api.indto.auth.ChangePasswordIn;
+import com.lazylearn.api.indto.auth.ForgetPasswordIn;
+import com.lazylearn.api.indto.auth.LoginFacebookIn;
+import com.lazylearn.api.indto.auth.LoginIn;
+import com.lazylearn.api.indto.auth.RegisterIn;
+import com.lazylearn.api.indto.auth.ResetPasswordIn;
+import com.lazylearn.api.outdto.JSON;
+import com.lazylearn.api.outdto.LoginOut;
+import com.lazylearn.api.service.AuthService;
 
 /**
  * @author McFly the Kid

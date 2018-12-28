@@ -1,19 +1,21 @@
 package com.lazylearn.api.controller;
 
+import javax.validation.Valid;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
 import com.lazylearn.api.entity.Article;
-import com.lazylearn.api.entity.Deck;
-import com.lazylearn.api.entity.Minpair;
 import com.lazylearn.api.indto.SearchIn;
 import com.lazylearn.api.indto.article.ArticleCreateIn;
-import com.lazylearn.api.indto.minpair.MinpairCreateIn;
 import com.lazylearn.api.outdto.BootstraptableOut;
 import com.lazylearn.api.outdto.JSON;
 import com.lazylearn.api.service.ArticleService;
-import com.lazylearn.api.service.MinpairService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
-
-import javax.validation.Valid;
 
 /**
  * @author McFly the Kid
