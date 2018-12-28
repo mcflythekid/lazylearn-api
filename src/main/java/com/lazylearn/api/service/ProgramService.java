@@ -12,13 +12,13 @@ public class ProgramService {
     private JdbcTemplate jdbcTemplate;
 
     public int getCardStepEnd(String programId){
-        final String format = "select max(step) + 1 from step where programid = '%s'";
+        final String format = "select max(step) + 1 from staticstep where programid = '%s'";
         int ccc = jdbcTemplate.queryForObject(String.format(format, programId), Integer.class);
         return ccc;
     }
 
     public int getCardStepEndForUser(){
-        final String sql = "select max(step) + 1 from step";
+        final String sql = "select max(step) + 1 from staticstep";
         int ccc = jdbcTemplate.queryForObject(sql, Integer.class);
         return ccc;
     }
@@ -33,7 +33,7 @@ public class ProgramService {
             return Consts.CARD_STEP_END__LABEL;
         }
 
-        final String format = "select name from step where programid = '%s' and step = %s";
+        final String format = "select name from staticstep where programid = '%s' and step = %s";
         String ccc = jdbcTemplate.queryForObject(String.format(format, programId, stepValue), String.class);
         return ccc;
     }
@@ -52,7 +52,7 @@ public class ProgramService {
     }
 
     public Integer getDays(String programId, int stepValue){
-        final String format = "select days from step where programid = '%s' and step = %s";
+        final String format = "select days from staticstep where programid = '%s' and step = %s";
         Integer ccc = jdbcTemplate.queryForObject(String.format(format, programId, stepValue), Integer.class);
         return ccc;
     }
