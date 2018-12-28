@@ -5,18 +5,17 @@ import com.lazylearn.api.entity.Card;
 import com.lazylearn.api.entity.Deck;
 import com.lazylearn.api.repo.CardRepo;
 import com.lazylearn.api.repo.DeckRepo;
-import com.lazylearn.api.service.ProgramService;
-import org.apache.commons.lang3.NotImplementedException;
+import com.lazylearn.api.service.StaticStepProgramService;
 import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 
-public abstract class StaticLearnProgram implements LearnProgram{
+public abstract class StaticStepProgram implements Program {
 
     @Autowired
-    private ProgramService programService;
+    private StaticStepProgramService staticStepProgramService;
 
     @Autowired
     private CardRepo cardRepo;
@@ -31,7 +30,7 @@ public abstract class StaticLearnProgram implements LearnProgram{
         card.increaseStep();
         card.setLearnedOn(new Date());
 
-        if (card.getStep() >= programService.getCardStepEnd(deck.getProgramId())){
+        if (card.getStep() >= staticStepProgramService.getCardStepEnd(deck.getProgramId())){
             card.setWakeupOn(null);
         } else {
             card.setWakeupOn(getWakeupOn(card.getStep(), deck.getProgramId()));
@@ -55,6 +54,6 @@ public abstract class StaticLearnProgram implements LearnProgram{
     }
 
     private Date getWakeupOn(Integer step, String programId){
-        return DateUtils.addDays(new Date(), programService.getDays(programId, step));
+        return DateUtils.addDays(new Date(), staticStepProgramService.getDays(programId, step));
     }
 }

@@ -3,7 +3,7 @@ package com.lazylearn.api.service;
 import com.lazylearn.api.config.exception.AppException;
 import com.lazylearn.api.entity.Card;
 import com.lazylearn.api.entity.Deck;
-import com.lazylearn.api.learnprogram.LearnProgram;
+import com.lazylearn.api.learnprogram.Program;
 import com.lazylearn.api.repo.DeckRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -19,9 +19,9 @@ public class AnswerProcessService {
     @Autowired
     private DeckRepo deckRepo;
 
-    private LearnProgram getLearnProgram(Card card){
+    private Program getLearnProgram(Card card){
         Deck deck = deckRepo.findOne(card.getDeckId());
-        LearnProgram program = (LearnProgram) context.getBean(deck.getProgramId());
+        Program program = (Program) context.getBean(deck.getProgramId());
         if (program == null){
             throw new AppException("Learn program not found: " + deck.getProgramId());
         }

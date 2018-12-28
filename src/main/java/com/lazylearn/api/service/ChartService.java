@@ -20,13 +20,13 @@ public class ChartService {
     @Autowired
     private CardRepo cardRepo;
     @Autowired
-    private ProgramService programService;
+    private StaticStepProgramService staticStepProgramService;
 
     public List<ChartRow> deckChart(Deck deck){
         List<ChartRow> out = new ArrayList<>();
-        for (int step = 0; step <= programService.getCardStepEnd(deck.getProgramId()); step++){
+        for (int step = 0; step <= staticStepProgramService.getCardStepEnd(deck.getProgramId()); step++){
             out.add(new ChartRow(
-                programService.getLabel(deck.getProgramId(), step),
+                staticStepProgramService.getLabel(deck.getProgramId(), step),
                 countCorrectByDeckAndStep(deck.getId(), step, deck.getProgramId()),
                 countTimeupByDeckAndStep(deck.getId(), step, deck.getProgramId())
             ));
@@ -36,9 +36,9 @@ public class ChartService {
 
     public List<ChartRow> userChart(String userId){
         List<ChartRow> out = new ArrayList<>();
-        for (int step = 0; step <= programService.getCardStepEndForUser(); step++){
+        for (int step = 0; step <= staticStepProgramService.getCardStepEndForUser(); step++){
             out.add(new ChartRow(
-                    programService.getLabelForUser(step),
+                    staticStepProgramService.getLabelForUser(step),
                     countCorrectByUserAndStep(userId, step, Consts.STEP_PROGRAM_BIGGEST),
                     countTimeupByUserAndStep(userId, step, Consts.STEP_PROGRAM_BIGGEST)
             ));
@@ -47,19 +47,19 @@ public class ChartService {
     }
 
     private Long countCorrectByUserAndStep(String userId, Integer step, String programId){
-        if (step == programService.getCardStepEnd(programId)) return cardRepo.countAllByUserIdAndStepAndArchived(userId, step, Consts.CARDDECK_UNARCHIVED);
+        if (step == staticStepProgramService.getCardStepEnd(programId)) return cardRepo.countAllByUserIdAndStepAndArchived(userId, step, Consts.CARDDECK_UNARCHIVED);
         return cardRepo.countAllByUserIdAndStepAndWakeupOnAfterAndArchived(userId, step, new Date(), Consts.CARDDECK_UNARCHIVED);
     }
     private Long countTimeupByUserAndStep(String userId, Integer step, String programId){
-        if (step == programService.getCardStepEnd(programId)) return 0L;
+        if (step == staticStepProgramService.getCardStepEnd(programId)) return 0L;
         return cardRepo.countAllByUserIdAndStepAndWakeupOnBeforeAndArchived(userId, step, new Date(), Consts.CARDDECK_UNARCHIVED);
     }
     private Long countCorrectByDeckAndStep(String deckId, Integer step, String programId){
-        if (step == programService.getCardStepEnd(programId)) return cardRepo.countAllByDeckIdAndStepAndArchived(deckId, step, Consts.CARDDECK_UNARCHIVED);
+        if (step == staticStepProgramService.getCardStepEnd(programId)) return cardRepo.countAllByDeckIdAndStepAndArchived(deckId, step, Consts.CARDDECK_UNARCHIVED);
         return cardRepo.countAllByDeckIdAndStepAndWakeupOnAfterAndArchived(deckId, step, new Date(), Consts.CARDDECK_UNARCHIVED);
     }
     private Long countTimeupByDeckAndStep(String deckId, Integer step, String programId){
-        if (step == programService.getCardStepEnd(programId)) return 0L;
+        if (step == staticStepProgramService.getCardStepEnd(programId)) return 0L;
         return cardRepo.countAllByDeckIdAndStepAndWakeupOnBeforeAndArchived(deckId, step, new Date(), Consts.CARDDECK_UNARCHIVED);
     }
 }
