@@ -14,7 +14,7 @@ public class SpeakingGenerator extends CardDeckGenerator {
     }
 
     @Override
-    public String getPostfix() {
+    public String getPrefix() {
         return "[Speaking]";
     }
 

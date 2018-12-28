@@ -14,7 +14,7 @@ public class ImagingGenerator extends CardDeckGenerator {
     }
 
     @Override
-    public String getPostfix() {
+    public String getPrefix() {
         return "[Imaging]";
     }
 

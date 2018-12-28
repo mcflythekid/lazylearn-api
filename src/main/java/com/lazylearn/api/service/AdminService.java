@@ -1,24 +1,24 @@
 package com.lazylearn.api.service;
 
-import com.lazylearn.api.config.exception.AppException;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
+
 import com.lazylearn.api.entity.User;
 import com.lazylearn.api.entity.Vocab;
+import com.lazylearn.api.entity.Vocabdeck;
 import com.lazylearn.api.indto.SearchIn;
 import com.lazylearn.api.outdto.BootstraptableOut;
 import com.lazylearn.api.outdto.JSON;
 import com.lazylearn.api.repo.DetailedUserRepo;
 import com.lazylearn.api.repo.UserRepo;
 import com.lazylearn.api.repo.VocabRepo;
+import com.lazylearn.api.repo.VocabdeckRepo;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
 
 /**
  * @author McFly the Kid
@@ -33,7 +33,13 @@ public class AdminService {
     private VocabService vocabService;
 
     @Autowired
+    private VocabdeckService vocabdeckService;
+
+    @Autowired
     private VocabRepo vocabRepo;
+
+    @Autowired
+    private VocabdeckRepo vocabdeckRepo;
 
     @Autowired
     private UserRepo userRepo;
@@ -59,6 +65,20 @@ public class AdminService {
         }
 
         return JSON.ok(count + " Vocabs refreshed");
+    }
+
+    public JSON refreshAllVocabdeck() throws Exception{
+        final int SIZE = 50;
+        long count = vocabdeckRepo.count();
+        Double totalPage = Math.ceil(count * 1.0 / SIZE);
+        for (int page = 0; page < totalPage; page++){
+            List<Vocabdeck> vocabdecks = vocabdeckRepo.findAll(new PageRequest(page, SIZE)).getContent();
+            for (Vocabdeck vocabdeck : vocabdecks){
+                vocabdeckService.updateCallback(vocabdeck);
+            }
+        }
+
+        return JSON.ok(count + " Vocabdecks refreshed");
     }
 
     public JSON massiveImportDeck(String templateName) throws IOException {

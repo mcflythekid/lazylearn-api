@@ -30,7 +30,7 @@ public abstract class CardDeckGenerator {
     public static final Integer VOCAB_TYPE__SPEAKING = 3;
     public static final Integer VOCAB_TYPE__WRITING = 4;
 
-    public abstract String getPostfix();
+    public abstract String getPrefix();
     public abstract Integer getVocabType();
     public abstract String getCardFrontTemplate() throws Exception;
     public abstract String getCardBackTemplate() throws Exception;
@@ -43,7 +43,7 @@ public abstract class CardDeckGenerator {
         deck.setArchived(vocabdeck.getArchived());
         deck.setVocabdeckId(vocabdeck.getId());
         deck.setVocabType(getVocabType());
-        deck.setName(vocabdeck.getName() + " " + getPostfix());
+        deck.setName(getPrefix() + " " + vocabdeck.getName());
         return deck;
     }
 
