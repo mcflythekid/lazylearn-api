@@ -46,8 +46,8 @@ public class DeckService {
     }
 
     @Transactional(rollbackFor = Exception.class)
-    public void create(Deck deck){
-        deckRepo.save(deck);
+    public Deck create(Deck deck){
+        return deckRepo.save(deck);
     }
 
     @Transactional(rollbackFor = Exception.class)

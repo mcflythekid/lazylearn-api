@@ -5,10 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
-import com.lazylearn.api.entity.Article;
-import com.lazylearn.api.entity.User;
-import com.lazylearn.api.entity.Vocab;
-import com.lazylearn.api.entity.Vocabdeck;
+import com.lazylearn.api.entity.*;
 import com.lazylearn.api.indto.SearchIn;
 import com.lazylearn.api.outdto.BootstraptableOut;
 import com.lazylearn.api.outdto.JSON;
@@ -50,6 +47,12 @@ public class AdminService {
 
     @Autowired
     private ArticleService articleService;
+
+    @Autowired
+    private MinpairRepo minpairRepo;
+
+    @Autowired
+    private MinpairService minpairService;
 
     public BootstraptableOut search(SearchIn in){
         List rows = detailedUserRepo.findAllByEmail(in.getSearch(), in.getPageable());
@@ -97,6 +100,20 @@ public class AdminService {
         }
 
         return JSON.ok(count + " Topics refreshed");
+    }
+
+    public JSON refreshAllMinpair() throws Exception{
+        final int SIZE = 50;
+        long count = minpairRepo.count();
+        Double totalPage = Math.ceil(count * 1.0 / SIZE);
+        for (int page = 0; page < totalPage; page++){
+            List<Minpair> minpairs = minpairRepo.findAll(new PageRequest(page, SIZE)).getContent();
+            for (Minpair minpair : minpairs){
+                minpairService.updateCardAndDeckCallBack(minpair.getId());
+            }
+        }
+
+        return JSON.ok(count + " Minpairs refreshed");
     }
 
     public JSON massiveImportDeck(String templateName) throws IOException {

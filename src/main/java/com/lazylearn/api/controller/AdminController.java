@@ -44,6 +44,11 @@ public class AdminController extends BaseController {
         return adminService.refreshAllTopic();
     }
 
+    @PostMapping("/refresh-all-minpair")
+    public JSON refreshAllMinpair() throws Exception {
+        return adminService.refreshAllMinpair();
+    }
+
     @PostMapping("/massive-import-deck")
     public JSON massiveImportDeck(@Valid @RequestBody BasicIn payload) throws Exception {
         return adminService.massiveImportDeck(payload.getData());

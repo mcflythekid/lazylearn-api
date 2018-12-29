@@ -1,5 +1,6 @@
 package com.lazylearn.api.vocabgenerator;
 
+import com.lazylearn.api.config.Consts;
 import com.lazylearn.api.entity.Card;
 import com.lazylearn.api.entity.Deck;
 import com.lazylearn.api.entity.Vocab;

@@ -1,9 +1,8 @@
 package com.lazylearn.api.controller;
 
-import com.lazylearn.api.entity.Deck;
 import com.lazylearn.api.entity.Minpair;
-import com.lazylearn.api.indto.minpair.MinpairCreateIn;
 import com.lazylearn.api.indto.SearchIn;
+import com.lazylearn.api.indto.minpair.MinpairCreateIn;
 import com.lazylearn.api.outdto.BootstraptableOut;
 import com.lazylearn.api.outdto.JSON;
 import com.lazylearn.api.service.MinpairService;
@@ -31,11 +30,6 @@ public class MinpairController extends BaseController{
     public JSON delete(@PathVariable String minpairId) throws Exception{
         minpairService.delete(minpairId);
         return JSON.ok("Delete success");
-    }
-
-    @PostMapping("/send-to-deck/{minpairId}")
-    public Deck sendToDeck(@PathVariable String minpairId) throws Exception {
-        return minpairService.sendToDeck(minpairId, getUserId());
     }
 
     @PostMapping("/search")

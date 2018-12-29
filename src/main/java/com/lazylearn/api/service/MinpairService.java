@@ -1,5 +1,6 @@
 package com.lazylearn.api.service;
 
+import com.lazylearn.api.config.Consts;
 import com.lazylearn.api.config.exception.AppException;
 import com.lazylearn.api.entity.Card;
 import com.lazylearn.api.entity.Deck;
@@ -49,6 +50,9 @@ public class MinpairService {
 
         fileService.upload(minpair.getAudioPath1(), in.getAudio1());
         fileService.upload(minpair.getAudioPath2(), in.getAudio2());
+
+        updateCardAndDeckCallBack(minpair.getId());
+
         return minpair;
     }
 
@@ -61,24 +65,24 @@ public class MinpairService {
     }
 
     @Transactional(rollbackFor = Exception.class)
-    public Deck sendToDeck(String minpairId, String userId) throws Exception{
+    public Deck updateCardAndDeckCallBack(String minpairId) throws Exception{
         final String NAME_REFIX = "Minpair #";
         Minpair minpair = minpairRepo.findOne(minpairId);
 
-        Deck deck = deckRepo.findByMinpairLanguageAndUserId(minpair.getLanguage(), userId);
+        Deck deck = deckRepo.findByMinpairLanguageAndUserId(minpair.getLanguage(), minpair.getUserId());
         if (deck == null){
-            deck = deckService.create(NAME_REFIX + minpair.getLanguage(), userId);
+            deck = deckService.create(NAME_REFIX + minpair.getLanguage(), minpair.getUserId());
             deck.setMinpairLanguage(minpair.getLanguage());
-            deckRepo.save(deck);
         }
+        deck.setType(Consts.DECKTYPE__MINPAIR);
+        deckRepo.save(deck);
         Card card = cardRepo.findByDeckIdAndFront(deck.getId(), minpairId);
         if(card == null){
-            card = cardService.create(minpairId, "", deck.getId(), userId);
-            card.setMinpairLanguage(minpair.getLanguage());
-            cardRepo.save(card);
-        } else {
-            throw new AppException(401, "This minpair is already get");
+            card = cardService.create(minpairId, "", deck.getId(), minpair.getUserId());
         }
+        card.setMinpairLanguage(minpair.getLanguage());
+        card.setFront(minpairId);
+        cardRepo.save(card);
 
         return deck;
     }

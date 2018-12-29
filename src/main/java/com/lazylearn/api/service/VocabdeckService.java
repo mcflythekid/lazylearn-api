@@ -36,7 +36,9 @@ public class VocabdeckService {
     @Transactional(rollbackFor = Exception.class)
     public void createCallback(Vocabdeck vocabdeck){
         for (VocabGenerator vocabGenerator : VocabGenerator.getGenerators(fileRoot)){
-            deckService.create(vocabGenerator.generateDeck(vocabdeck, null));
+            Deck deck = deckService.create(vocabGenerator.generateDeck(vocabdeck, null));
+            deck.setType(Consts.DECKTYPE__VOCAB);
+            deckRepo.save(deck);
         }
     }
 
@@ -44,6 +46,8 @@ public class VocabdeckService {
     public void updateCallback(Vocabdeck vocabdeck){
         for (VocabGenerator vocabGenerator : VocabGenerator.getGenerators(fileRoot)){
             Deck deck = deckRepo.findByVocabdeckIdAndVocabType(vocabdeck.getId(), vocabGenerator.getVocabType());
+            deck.setType(Consts.DECKTYPE__VOCAB);
+            deckRepo.save(deck);
             deckService.update(vocabGenerator.generateDeck(vocabdeck, deck));
         }
     }
