@@ -9,6 +9,7 @@ import com.lazylearn.api.indto.card.CardEditIn;
 import com.lazylearn.api.indto.card.CardSearchIn;
 import com.lazylearn.api.outdto.BootstraptableOut;
 import com.lazylearn.api.outdto.JSON;
+import com.lazylearn.api.repo.CardRepo;
 import com.lazylearn.api.service.CardService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -24,6 +25,9 @@ public class CardController extends BaseController{
 
     @Autowired
     private CardService cardService;
+
+    @Autowired
+    private CardRepo cardRepo;
 
     @PostMapping("/search")
     public BootstraptableOut searchDeck(@Valid @RequestBody CardSearchIn in) throws Exception {
@@ -53,6 +57,15 @@ public class CardController extends BaseController{
     @GetMapping("/get/{cardId}")
     public Card get(@PathVariable("cardId") String cardId) throws Exception {
         return authorizeCard(cardId);
+    }
+
+    @GetMapping("/get/by-articleid/{articleId}")
+    public Card getByArticleId(@PathVariable("articleId") String articleId) throws Exception {
+        Card card = cardRepo.findByArticleId(articleId);
+        if (card == null){
+            return null;
+        }
+        return authorizeCard(card.getId());
     }
 
     @PostMapping("/change-deck")
