@@ -78,16 +78,18 @@ public class ArticleService {
             deckRepo.save(deck);
         }
 
-        String url = "";
-
         Card card = cardRepo.findByArticleId(articleId);
         if(card == null) {
-            card = cardService.create(article.getName(), url, deck.getId(), article.getUserId());
+            card = cardService.create("", "", deck.getId(), article.getUserId());
             card.setArticleId(articleId);
-        } else {
-            card.setFront(article.getName());
-            card.setBack(url);
         }
+
+        String urlF = "<a href='/article/learn.php?type=review&id=%s&cardid=%s'>%s</a>";
+        String url = String.format(urlF, article.getId(), card.getId(), article.getName());
+
+        card.setFront(url);
+        card.setBack("");
+
         cardRepo.save(card);
 
         return deck;
