@@ -33,17 +33,13 @@ public final class Consts {
     public static final String LEARNTYPE_LEARN = "learn";
     public static final String LEARNTYPE_REVIEW = "review";
 
-    public static final Integer CARD_STEP_BEGIN = 0;
-    public static final String CARD_STEP_BEGIN__LABEL = "Today";
-    public static final String CARD_STEP_END__LABEL = "∞";
+    public static final Integer STEP_BEGIN = 0;
 
-    public static final String STEP_PROGRAM__SM2 = "sm2";
-    public static final String STEP_PROGRAM__PIMSLEUR = "pimsleur";
-    public static final String STEP_PROGRAM_BIGGEST = STEP_PROGRAM__PIMSLEUR;
+    public static final String PROGRAM__SM2 = "sm2";
+    public static final String PROGRAM__DEFAULT = "sm2";
 
     public static final Integer CARDDECK_ARCHIVED = 1;
     public static final Integer CARDDECK_UNARCHIVED = 0;
-
     public static final Integer CARDDECK_SHARED = 1;
     public static final Integer CARDDECK_UNSHARED = 0;
 

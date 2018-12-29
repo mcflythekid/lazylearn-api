@@ -18,7 +18,7 @@ public class Deck extends AbstractEntity {
 
     @PrePersist
     public void prePersist(){
-        setProgramId(Consts.STEP_PROGRAM__PIMSLEUR);
+        setProgramId(Consts.PROGRAM__SM2);
         setArchived(Consts.CARDDECK_UNARCHIVED);
         setShared(Consts.CARDDECK_UNSHARED);
     }

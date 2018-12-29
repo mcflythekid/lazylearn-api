@@ -72,7 +72,7 @@ public class ArticleService {
         Deck deck = deckRepo.findByArticleCategoryAndUserId(article.getCategory(), userId);
         if (deck == null){
             deck = deckService.create(NAME_REFIX + article.getCategory(), userId);
-            deck.setProgramId(Consts.STEP_PROGRAM__PIMSLEUR);
+            deck.setProgramId(Consts.PROGRAM__DEFAULT);
             deck.setArticleCategory(article.getCategory());
             deckRepo.save(deck);
         }

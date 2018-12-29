@@ -11,7 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 
-@Service(Consts.STEP_PROGRAM__SM2)
+@Service(Consts.PROGRAM__SM2)
 public class Sm2Program implements Program {
 
     @Autowired

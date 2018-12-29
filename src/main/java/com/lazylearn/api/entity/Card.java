@@ -3,7 +3,10 @@ package com.lazylearn.api.entity;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.lazylearn.api.config.Consts;
+import com.lazylearn.api.util.CustomDateUtils;
 import org.apache.commons.lang3.time.DateUtils;
+import org.joda.time.Days;
+import org.joda.time.LocalDate;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -19,10 +22,27 @@ import java.util.Date;
 })
 public class Card extends AbstractEntity{
 
+    @JsonIgnore
+    public boolean isInBegin(){
+        return getStep() == Consts.STEP_BEGIN;
+    }
+
+    public long getExpiredDays(){
+        if (getWakeupOn().before(new Date())){
+            return 0;
+        }
+        return CustomDateUtils.getDifferenceDays(getWakeupOn(), new Date());
+    }
+
+    ///////////////////////////////////////
+    ///////////////////////////////////////
+    ///////////////////////////////////////
+
     @PrePersist
     public void prePersist(){
+        setSm2Ef(Consts.SM2_EF_INIT);
         setWakeupOn(new Date());
-        setStep(Consts.CARD_STEP_BEGIN);
+        setStep(Consts.STEP_BEGIN);
         setArchived(Consts.CARDDECK_UNARCHIVED);
     }
 
@@ -31,14 +51,14 @@ public class Card extends AbstractEntity{
     }
 
     public void increaseStep(){
-        if (getStep() == null || getStep() < Consts.CARD_STEP_BEGIN){
-            setStep(Consts.CARD_STEP_BEGIN);
+        if (getStep() == null || getStep() < Consts.STEP_BEGIN){
+            setStep(Consts.STEP_BEGIN);
         }
         setStep(getStep() + 1);
     }
 
     public void resetStep(){
-        step = Consts.CARD_STEP_BEGIN;
+        step = Consts.STEP_BEGIN;
     }
 
     @Lob
