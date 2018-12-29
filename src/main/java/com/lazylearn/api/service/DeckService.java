@@ -2,14 +2,12 @@ package com.lazylearn.api.service;
 
 import com.lazylearn.api.config.Consts;
 import com.lazylearn.api.entity.Deck;
-import com.lazylearn.api.entity.DetailedDeck;
 import com.lazylearn.api.indto.SearchIn;
 import com.lazylearn.api.indto.deck.DeckCreateIn;
 import com.lazylearn.api.indto.deck.DeckRenameIn;
 import com.lazylearn.api.outdto.BootstraptableOut;
 import com.lazylearn.api.repo.CardRepo;
 import com.lazylearn.api.repo.DeckRepo;
-import com.lazylearn.api.repo.DetailedDeckRepo;
 import com.lazylearn.api.util.ResouresUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,8 +24,6 @@ public class DeckService {
 
     @Autowired
     private DeckRepo deckRepo;
-    @Autowired
-    private DetailedDeckRepo detailedDeckRepo;
     @Autowired
     private CardRepo cardRepo;
     @Autowired
@@ -78,20 +74,6 @@ public class DeckService {
     }
 
     @Transactional(rollbackFor = Exception.class)
-    public void share(String deckId) {
-        Deck deck = deckRepo.findOne(deckId);
-        deck.setShared(Consts.CARDDECK_SHARED);
-        deckRepo.save(deck);
-    }
-
-    @Transactional(rollbackFor = Exception.class)
-    public void unshare(String deckId) {
-        Deck deck = deckRepo.findOne(deckId);
-        deck.setShared(Consts.CARDDECK_UNSHARED);
-        deckRepo.save(deck);
-    }
-
-    @Transactional(rollbackFor = Exception.class)
     public void delete(String deckId) {
         deckRepo.delete(deckId);
         deleteCallback(deckId);
@@ -107,8 +89,8 @@ public class DeckService {
     }
 
     public BootstraptableOut search(SearchIn in, String userId){
-        List<DetailedDeck> rows = detailedDeckRepo.findAllByUserIdAndNameContainingIgnoreCase(userId, in.getSearch(), in.getPageable());
-        Long total = detailedDeckRepo.countByUserIdAndNameContainingIgnoreCase(userId, in.getSearch());
+        List<Deck> rows = deckRepo.findAllByUserIdAndNameContainingIgnoreCase(userId, in.getSearch(), in.getPageable());
+        Long total = deckRepo.countByUserIdAndNameContainingIgnoreCase(userId, in.getSearch());
         return new BootstraptableOut(rows, total);
     }
 

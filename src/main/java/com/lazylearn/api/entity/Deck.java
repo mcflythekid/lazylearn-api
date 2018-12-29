@@ -18,24 +18,32 @@ public class Deck extends AbstractEntity {
 
     @PrePersist
     public void prePersist(){
-        setProgramId(Consts.PROGRAM__SM2);
+        setType("default");
+        setProgramId(Consts.PROGRAM__DEFAULT);
         setArchived(Consts.CARDDECK_UNARCHIVED);
-        setShared(Consts.CARDDECK_UNSHARED);
     }
 
     private String userId;
     private String name;
     private Integer archived;
     private String trackingId;
-    private Integer shared;
 
     private String vocabdeckId;
     private Integer vocabType;
 
     private String minpairLanguage;
-    private String articleCategory;
 
     private String programId;
+
+    private String type;
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
 
     public String getProgramId() {
         return programId;
@@ -43,14 +51,6 @@ public class Deck extends AbstractEntity {
 
     public void setProgramId(String programId) {
         this.programId = programId;
-    }
-
-    public String getArticleCategory() {
-        return articleCategory;
-    }
-
-    public void setArticleCategory(String articleCategory) {
-        this.articleCategory = articleCategory;
     }
 
     public String getMinpairLanguage() {
@@ -109,11 +109,4 @@ public class Deck extends AbstractEntity {
         this.trackingId = trackingId;
     }
 
-    public Integer getShared() {
-        return shared;
-    }
-
-    public void setShared(Integer shared) {
-        this.shared = shared;
-    }
 }

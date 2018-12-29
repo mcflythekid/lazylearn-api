@@ -19,7 +19,6 @@ public interface ArticleRepo extends JpaRepository<Article, String> {
             "(" +
             " LOWER(m.name) LIKE LOWER(CONCAT('%', ?1, '%'))" +
             " OR LOWER(m.content) LIKE LOWER(CONCAT('%', ?1, '%'))" +
-            " OR LOWER(m.category) LIKE LOWER(CONCAT('%', ?1, '%'))" +
             ") AND m.user.id = ?2")
     List<Article> findAllByKeywordAndUserId(String keyword, String userId, Pageable pageable);
 
@@ -27,7 +26,6 @@ public interface ArticleRepo extends JpaRepository<Article, String> {
             " (" +
             " LOWER(m.name) LIKE LOWER(CONCAT('%', ?1, '%')) " +
             " OR LOWER(m.content) LIKE LOWER(CONCAT('%', ?1, '%'))" +
-            " OR LOWER(m.category) LIKE LOWER(CONCAT('%', ?1, '%'))" +
             ")  AND m.user.id = ?2")
     Long countByKeywordAndUserId(String keyword, String userId);
 
@@ -35,7 +33,6 @@ public interface ArticleRepo extends JpaRepository<Article, String> {
             "(" +
             " LOWER(m.name) LIKE LOWER(CONCAT('%', ?1, '%'))" +
             " OR LOWER(m.content) LIKE LOWER(CONCAT('%', ?1, '%'))" +
-            " OR LOWER(m.category) LIKE LOWER(CONCAT('%', ?1, '%'))" +
             ")")
     List<Article> findAllByKeyword(String keyword, Pageable pageable);
 
@@ -43,7 +40,6 @@ public interface ArticleRepo extends JpaRepository<Article, String> {
             " (" +
             " LOWER(m.name) LIKE LOWER(CONCAT('%', ?1, '%')) " +
             " OR LOWER(m.content) LIKE LOWER(CONCAT('%', ?1, '%'))" +
-            " OR LOWER(m.category) LIKE LOWER(CONCAT('%', ?1, '%'))" +
             ")")
     Long countByKeyword(String keyword);
 }

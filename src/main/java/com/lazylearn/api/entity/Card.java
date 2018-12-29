@@ -60,9 +60,18 @@ public class Card extends AbstractEntity{
 
     private String vocabId;
     private String minpairLanguage;
-    private String articleCategory;
     private Double sm2Ef;
     private Integer sm2LatestSpace;
+
+    private String articleId;
+
+    public String getArticleId() {
+        return articleId;
+    }
+
+    public void setArticleId(String articleId) {
+        this.articleId = articleId;
+    }
 
     public Double getSm2Ef() {
         return sm2Ef;
@@ -78,14 +87,6 @@ public class Card extends AbstractEntity{
 
     public void setSm2LatestSpace(Integer sm2LatestSpace) {
         this.sm2LatestSpace = sm2LatestSpace;
-    }
-
-    public String getArticleCategory() {
-        return articleCategory;
-    }
-
-    public void setArticleCategory(String articleCategory) {
-        this.articleCategory = articleCategory;
     }
 
     public String getMinpairLanguage() {

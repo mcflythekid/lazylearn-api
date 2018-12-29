@@ -18,10 +18,6 @@ public class ArticleCreateIn {
 
     private String url;
 
-    @NotBlank
-    @Pattern(regexp = "^([a-z]{2,10})$", message = "Invalid language name. Allows: a-z")
-    private String category;
-
     public String getName() {
         return name;
     }
@@ -46,11 +42,4 @@ public class ArticleCreateIn {
         this.url = url;
     }
 
-    public String getCategory() {
-        return category;
-    }
-
-    public void setCategory(String category) {
-        this.category = category;
-    }
 }

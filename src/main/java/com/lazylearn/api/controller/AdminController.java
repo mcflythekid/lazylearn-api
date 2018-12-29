@@ -39,6 +39,11 @@ public class AdminController extends BaseController {
         return adminService.refreshAllVocabdeck();
     }
 
+    @PostMapping("/refresh-all-topic")
+    public JSON refreshAllTopic() throws Exception {
+        return adminService.refreshAllTopic();
+    }
+
     @PostMapping("/massive-import-deck")
     public JSON massiveImportDeck(@Valid @RequestBody BasicIn payload) throws Exception {
         return adminService.massiveImportDeck(payload.getData());

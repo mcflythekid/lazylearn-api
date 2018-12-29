@@ -1,5 +1,6 @@
 package com.lazylearn.api.controller;
 
+import com.lazylearn.api.config.Consts;
 import com.lazylearn.api.config.exception.AppException;
 import com.lazylearn.api.entity.*;
 import com.lazylearn.api.indto.ClientData;
@@ -120,7 +121,7 @@ public abstract class BaseController {
         if (StringUtils.isNotBlank(deck.getMinpairLanguage())){
             throw new AppException(403, "MINPAIR protected");
         }
-        if (StringUtils.isNotBlank(deck.getArticleCategory())){
+        if (deck.getType() != null && deck.getType().equalsIgnoreCase(Consts.DECKTYPE__TOPIC)){
             throw new AppException(403, "TOPIC protected");
         }
     }
@@ -132,7 +133,7 @@ public abstract class BaseController {
         if (StringUtils.isNotBlank(card.getMinpairLanguage())){
             throw new AppException(403, "MINPAIR protected");
         }
-        if (StringUtils.isNotBlank(card.getArticleCategory())){
+        if (StringUtils.isNotBlank(card.getArticleId())){
             throw new AppException(403, "TOPIC protected");
         }
     }

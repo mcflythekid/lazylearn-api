@@ -48,5 +48,8 @@ public final class Consts {
 
     public static final String VOCABDECK_LANGUAGE = "english";
 
+    public static final String DECKTYPE__TOPIC = "topic";
+    public static final String DECKTYPE__VOCAB = "vocab";
+
 
 }

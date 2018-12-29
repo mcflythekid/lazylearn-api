@@ -17,7 +17,6 @@ public class Article extends AbstractEntity {
 
     @PrePersist
     public void prePersist(){
-        setShared(Consts.CARDDECK_UNSHARED);
     }
 
     private String name;
@@ -26,8 +25,6 @@ public class Article extends AbstractEntity {
     private String content;
 
     private String url;
-    private String category;
-    private Integer shared;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "userid")
@@ -78,19 +75,4 @@ public class Article extends AbstractEntity {
         this.url = url;
     }
 
-    public String getCategory() {
-        return category;
-    }
-
-    public void setCategory(String category) {
-        this.category = category;
-    }
-
-    public Integer getShared() {
-        return shared;
-    }
-
-    public void setShared(Integer shared) {
-        this.shared = shared;
-    }
 }

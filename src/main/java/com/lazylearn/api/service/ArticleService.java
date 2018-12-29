@@ -45,7 +45,7 @@ public class ArticleService {
         BeanUtils.copyProperties(in, article);
         article = articleRepo.save(article);
 
-        sendToDeck(article.getId(), userId);
+        refreshCard(article.getId());
         return article;
     }
 
@@ -54,39 +54,41 @@ public class ArticleService {
 
         Article article = articleRepo.findOne(articleId);
 
-        Deck deck = deckRepo.findByArticleCategoryAndUserId(article.getCategory(), article.getUserId());
-        if(deck != null){
-            Card card = cardRepo.findByDeckIdAndFront(deck.getId(), articleId);
-            if (card != null) {
-                cardRepo.delete(card);
-            }
-            if (cardRepo.countAllByDeckId(deck.getId()) == 0) {
-                deckRepo.delete(deck);
-            }
+        Card card = cardRepo.findByArticleId(articleId);
+        if (card != null) {
+            cardRepo.delete(card);
+        }
+
+        Deck deck = deckRepo.findByTypeAndUserId(Consts.DECKTYPE__TOPIC, article.getUserId());
+        if (deck != null && cardRepo.countAllByDeckId(deck.getId()) == 0) {
+            deckRepo.delete(deck);
         }
 
         articleRepo.delete(articleId);
     }
 
-    private Deck sendToDeck(String articleId, String userId){
-        final String NAME_REFIX = "Article #";
+    @Transactional
+    public Deck refreshCard(String articleId){
         Article article = articleRepo.findOne(articleId);
 
-        Deck deck = deckRepo.findByArticleCategoryAndUserId(article.getCategory(), userId);
-        if (deck == null){
-            deck = deckService.create(NAME_REFIX + article.getCategory(), userId);
-            deck.setProgramId(Consts.PROGRAM__DEFAULT);
-            deck.setArticleCategory(article.getCategory());
+        Deck deck = deckRepo.findByTypeAndUserId(Consts.DECKTYPE__TOPIC, article.getUserId());
+        if (deck == null) {
+            deck = deckService.create("TOPIC", article.getUserId());
+            deck.setType(Consts.DECKTYPE__TOPIC);
             deckRepo.save(deck);
         }
-        Card card = cardRepo.findByDeckIdAndFront(deck.getId(), articleId);
-        if(card == null){
-            card = cardService.create(articleId, Consts.DO_NOT_CHANGE, deck.getId(), userId);
-            card.setArticleCategory(article.getCategory());
-            cardRepo.save(card);
+
+        String url = "";
+
+        Card card = cardRepo.findByArticleId(articleId);
+        if(card == null) {
+            card = cardService.create(article.getName(), url, deck.getId(), article.getUserId());
+            card.setArticleId(articleId);
         } else {
-            throw new AppException(401, "This article is already get");
+            card.setFront(article.getName());
+            card.setBack(url);
         }
+        cardRepo.save(card);
 
         return deck;
     }

@@ -43,20 +43,6 @@ public class DeckController extends BaseController{
         return JSON.ok("Unarchived");
     }
 
-    @PostMapping("/share/{deckId}")
-    public JSON share(@PathVariable("deckId") String deckId) throws Exception {
-        protectGeneratedDeck(authorizeDeck(deckId));
-        deckService.share(deckId);
-        return JSON.ok("Shared");
-    }
-
-    @PostMapping("/unshare/{deckId}")
-    public JSON unshare(@PathVariable("deckId") String deckId) throws Exception {
-        protectGeneratedDeck(authorizeDeck(deckId));
-        deckService.unshare(deckId);
-        return JSON.ok("Unshared");
-    }
-
     @PostMapping("/delete/{deckId}")
     public JSON delete(@PathVariable("deckId") String deckId) throws Exception {
         protectGeneratedDeck(authorizeDeck(deckId));
