@@ -5,6 +5,7 @@ import com.lazylearn.api.config.exception.AppException;
 import com.lazylearn.api.entity.Card;
 import com.lazylearn.api.repo.CardRepo;
 import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,23 +31,28 @@ public class Sm2Program implements Program {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void setCorrect(Card card) {
-        setQuality(card, Consts.SM2_CORRECT_QUALITY_DEFAULT);
-    }
-
-    @Override
-    @Transactional(rollbackFor = Exception.class)
     public void setQuality(Card card, Integer quality) {
 
-        Integer newStep = card.getStep() + 1;
-        Double newEFactor = calculateAndControlEFactor(card.getSm2Ef(), quality);
-        Integer newSpace = newStep <= 2 ? Consts.SM2_SPACE_STEP[newStep] : Long.valueOf(Math.round(newEFactor * card.getSm2LatestSpace())).intValue();
+        if (!card.isExpired()){
+            throw new AppException(401, "Not expired yet");
+        }
 
-        card.setSm2Ef(newEFactor);
-        card.setSm2LatestSpace(newSpace);
-        card.setLearnedOn(new Date());
-        card.setWakeupDays(newSpace);
-        card.increaseStep();
+        final Double newEFactor = calculateAndControlEFactor(card.getSm2Ef(), quality);
+
+        if (quality == 3){
+            card.setSm2Ef(newEFactor);
+            card.setWakeupOn(new Date());
+            card.setLearnedOn(new Date());
+        } else {
+            final Integer newStep = card.getStep() + 1;
+            final Integer newSpace = newStep <= 2 ? Consts.SM2_SPACE_STEP[newStep] : Long.valueOf(Math.round(newEFactor * card.getSm2LatestSpace())).intValue();
+            card.setSm2Ef(newEFactor);
+            card.setSm2LatestSpace(newSpace);
+            card.setLearnedOn(new Date());
+            card.setWakeupOn(DateUtils.addDays(new Date(), newSpace));
+            card.setStep(newStep);
+        }
+
         cardRepo.save(card);
     }
 
@@ -54,11 +60,10 @@ public class Sm2Program implements Program {
     @Transactional(rollbackFor = Exception.class)
     public void setIncorrect(Card card) {
         Date now = new Date();
-        card.setSm2Ef(calculateAndControlEFactor(card.getSm2Ef(), Consts.SM2_INCORRECT_QUALITY));
         card.setSm2LatestSpace(0);
         card.setLearnedOn(now);
         card.setWakeupOn(now);
-        card.increaseStep();
+        card.setStep(0);
         cardRepo.save(card);
     }
 }

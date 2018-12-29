@@ -17,6 +17,11 @@ import java.util.Date;
 public class Card extends AbstractEntity{
 
     @JsonIgnore
+    public boolean isExpired(){
+        return getWakeupOn().before(new Date());
+    }
+
+    @JsonIgnore
     public boolean isInBegin(){
         return getStep() == Consts.STEP_BEGIN;
     }
@@ -38,21 +43,6 @@ public class Card extends AbstractEntity{
         setWakeupOn(new Date());
         setStep(Consts.STEP_BEGIN);
         setArchived(Consts.CARDDECK_UNARCHIVED);
-    }
-
-    public void setWakeupDays(Integer days){
-        setWakeupOn(DateUtils.addDays(new Date(), days));
-    }
-
-    public void increaseStep(){
-        if (getStep() == null || getStep() < Consts.STEP_BEGIN){
-            setStep(Consts.STEP_BEGIN);
-        }
-        setStep(getStep() + 1);
-    }
-
-    public void resetStep(){
-        step = Consts.STEP_BEGIN;
     }
 
     @Lob

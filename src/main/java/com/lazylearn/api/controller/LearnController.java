@@ -47,13 +47,6 @@ public class LearnController extends BaseController{
         return data.getCards().size();
     }
 
-    @PostMapping("/correct/{cardId}")
-    public JSON setCorrect(@PathVariable("cardId") String cardId) throws Exception {
-        Card card = authorizeCard(cardId);
-        answerProcessService.setCorrect(card);
-        return JSON.ok();
-    }
-
     @PostMapping("/incorrect/{cardId}")
     public JSON setIncorrect(@PathVariable("cardId") String cardId) throws Exception {
         Card card = authorizeCard(cardId);

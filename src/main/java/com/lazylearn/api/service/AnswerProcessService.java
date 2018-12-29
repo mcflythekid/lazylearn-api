@@ -29,11 +29,6 @@ public class AnswerProcessService {
     }
 
     @Transactional
-    public void setCorrect(Card card) {
-        getLearnProgram(card).setCorrect(card);
-    }
-
-    @Transactional
     public void setIncorrect(Card card) {
         getLearnProgram(card).setIncorrect(card);
     }
