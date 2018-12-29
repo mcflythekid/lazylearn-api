@@ -13,10 +13,8 @@ public class DetailedDeck extends AbstractEntity{
 
     private String userId;
     private String name;
-    @Column(columnDefinition = "decimal(19,0)")
-    private Long totalCard;
-    @Column(columnDefinition = "decimal(19,0)")
-    private Long totalTimeupCard;
+    private Integer totalCard;
+    private Integer totalTimeupCard;
     private Integer archived;
     private String vocabdeckId;
     private String vocabdeckName;
@@ -88,19 +86,19 @@ public class DetailedDeck extends AbstractEntity{
         this.name = name;
     }
 
-    public Long getTotalCard() {
+    public Integer getTotalCard() {
         return totalCard;
     }
 
-    public void setTotalCard(Long totalCard) {
+    public void setTotalCard(Integer totalCard) {
         this.totalCard = totalCard;
     }
 
-    public Long getTotalTimeupCard() {
+    public Integer getTotalTimeupCard() {
         return totalTimeupCard;
     }
 
-    public void setTotalTimeupCard(Long totalTimeupCard) {
+    public void setTotalTimeupCard(Integer totalTimeupCard) {
         this.totalTimeupCard = totalTimeupCard;
     }
 }

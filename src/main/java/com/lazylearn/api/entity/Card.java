@@ -5,8 +5,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.lazylearn.api.config.Consts;
 import com.lazylearn.api.util.CustomDateUtils;
 import org.apache.commons.lang3.time.DateUtils;
-import org.joda.time.Days;
-import org.joda.time.LocalDate;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -15,11 +13,7 @@ import java.util.Date;
  * @author McFly the Kid
  */
 @Entity
-@Table(name="card", indexes = {
-        @Index(columnList = "userId"),
-        @Index(columnList = "deckId"),
-        @Index(columnList = "vocabId")
-})
+@Table(name="card")
 public class Card extends AbstractEntity{
 
     @JsonIgnore

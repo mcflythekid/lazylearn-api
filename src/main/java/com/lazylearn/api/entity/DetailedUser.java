@@ -15,10 +15,9 @@ public class DetailedUser extends AbstractEntity {
     private String ipAddress;
     private String facebookId;
     private String fullName;
-    @Column(columnDefinition = "NUMERIC(19,0)")
-    private Long cards;
-    @Column(columnDefinition = "NUMERIC(19,0)")
-    private Long decks;
+
+    private Integer cards;
+    private Integer decks;
 
     public String getFullName() {
         return fullName;
@@ -52,19 +51,19 @@ public class DetailedUser extends AbstractEntity {
         this.ipAddress = ipAddress;
     }
 
-    public Long getCards() {
+    public Integer getCards() {
         return cards;
     }
 
-    public void setCards(Long cards) {
+    public void setCards(Integer cards) {
         this.cards = cards;
     }
 
-    public Long getDecks() {
+    public Integer getDecks() {
         return decks;
     }
 
-    public void setDecks(Long decks) {
+    public void setDecks(Integer decks) {
         this.decks = decks;
     }
 }
