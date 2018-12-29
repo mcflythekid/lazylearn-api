@@ -55,13 +55,11 @@ public class ArticleService {
         Article article = articleRepo.findOne(articleId);
 
         Deck deck = deckRepo.findByArticleCategoryAndUserId(article.getCategory(), article.getUserId());
-        Card card = cardRepo.findByDeckIdAndFront(deck.getId(), articleId);
-
-        if (card != null) {
-            cardRepo.delete(card);
-        }
-
-        if (deck != null) {
+        if(deck != null){
+            Card card = cardRepo.findByDeckIdAndFront(deck.getId(), articleId);
+            if (card != null) {
+                cardRepo.delete(card);
+            }
             if (cardRepo.countAllByDeckId(deck.getId()) == 0) {
                 deckRepo.delete(deck);
             }
