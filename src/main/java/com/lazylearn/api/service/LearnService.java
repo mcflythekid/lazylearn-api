@@ -1,5 +1,6 @@
 package com.lazylearn.api.service;
 
+import com.lazylearn.api.config.Consts;
 import com.lazylearn.api.entity.Card;
 import com.lazylearn.api.entity.Deck;
 import com.lazylearn.api.outdto.LearnOut;
@@ -20,11 +21,11 @@ public class LearnService {
     private CardRepo cardRepo;
 
     private List<Card> findAllCardForReview(String deckId){
-        return cardRepo.findAllByDeckId(deckId);
+        return cardRepo.findAllByDeckIdAndArchived(deckId, Consts.CARDDECK_UNARCHIVED);
     }
 
     private List<Card> findAllCardForLearn(String deckId){
-        return cardRepo.findAllByDeckIdAndWakeupOnBefore(deckId, new Date());
+        return cardRepo.findAllByDeckIdAndArchivedAndWakeupOnBefore(deckId, Consts.CARDDECK_UNARCHIVED, new Date());
     }
 
     public LearnOut getByLearn(Deck deck){

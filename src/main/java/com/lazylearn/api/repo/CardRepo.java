@@ -30,9 +30,9 @@ public interface CardRepo extends JpaRepository<Card, String> {
     @Query("DELETE FROM Card c WHERE c.deckId = :deckId")
     void deleteAllByDeckId(@Param("deckId") String deckId);
 
-    List<Card> findAllByDeckId(String deckId);
+    List<Card> findAllByDeckIdAndArchived(String deckId, Integer archived);
 
-    List<Card> findAllByDeckIdAndWakeupOnBefore(String deckId, Date wakeupOn);
+    List<Card> findAllByDeckIdAndArchivedAndWakeupOnBefore(String deckId, Integer archived, Date wakeupOn);
 
     Long countAllByDeckIdAndStepAndWakeupOnBeforeAndArchived(String deckId, Integer step, Date wakeupOn, Integer archived);
     Long countAllByUserIdAndStepAndWakeupOnBeforeAndArchived(String userId, Integer step, Date wakeupOn, Integer archived);
