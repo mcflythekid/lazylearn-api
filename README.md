@@ -11,3 +11,5 @@ API for Lazylearn flashcard learner
 * Java
 * Tomcat (Or Jerry mouse)
 * Brain (Your braind)
+* PHP
+* MariaDB, or MySQl(dead)
