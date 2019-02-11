@@ -13,3 +13,6 @@ API for Lazylearn flashcard learner
 * Brain (Your braind)
 * PHP
 * MariaDB, or MySQl(dead)
+* Facebook developer account
+* SSL Certificate (You can get your free one by usng certbot)
+* A domain name
