@@ -10,7 +10,7 @@ API for Lazylearn flashcard learner
 ## Requirements
 * Java
 * Tomcat (Or Jerry mouse)
-* Brain (Your braind)
+* Brain (Your brain)
 * PHP
 * MariaDB, or MySQl(dead)
 * Facebook developer account
