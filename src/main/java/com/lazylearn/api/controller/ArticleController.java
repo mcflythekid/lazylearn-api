@@ -2,6 +2,7 @@ package com.lazylearn.api.controller;
 
 import javax.validation.Valid;
 
+import com.lazylearn.api.indto.article.ArticleRenameIn;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -37,6 +38,13 @@ public class ArticleController extends BaseController{
         authorizeArticle(articleId);
         articleService.delete(articleId);
         return JSON.ok("Delete success");
+    }
+
+    @PostMapping("/rename")
+    public JSON rename(@Valid @RequestBody ArticleRenameIn payload) throws Exception{
+        authorizeArticle(payload.getArticleId());
+        articleService.rename(payload);
+        return JSON.ok("Rename success");
     }
 
     @PostMapping("/search")

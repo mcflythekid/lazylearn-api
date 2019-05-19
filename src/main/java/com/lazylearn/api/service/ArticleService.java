@@ -8,6 +8,8 @@ import com.lazylearn.api.entity.Deck;
 import com.lazylearn.api.entity.Minpair;
 import com.lazylearn.api.indto.SearchIn;
 import com.lazylearn.api.indto.article.ArticleCreateIn;
+import com.lazylearn.api.indto.article.ArticleRenameIn;
+import com.lazylearn.api.indto.deck.DeckRenameIn;
 import com.lazylearn.api.outdto.BootstraptableOut;
 import com.lazylearn.api.repo.ArticleRepo;
 import com.lazylearn.api.repo.CardRepo;
@@ -17,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -47,6 +50,13 @@ public class ArticleService {
 
         refreshCard(article.getId());
         return article;
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    public void rename(ArticleRenameIn in) {
+        Article article = articleRepo.findOne(in.getArticleId());
+        article.setName(in.getNewName());
+        articleRepo.save(article);
     }
 
     @Transactional
