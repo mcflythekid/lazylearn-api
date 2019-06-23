@@ -1,0 +1,21 @@
+{
+  "name": "lazylearn-api",
+  "version": "2.0.0",
+  "description": "API for Lazylearn flashcard learner",
+  "main": "index.js",
+  "dependencies": {},
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mcflythekid/lazylearn-api.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mcflythekid/lazylearn-api/issues"
+  },
+  "homepage": "https://github.com/mcflythekid/lazylearn-api#readme"
+}
