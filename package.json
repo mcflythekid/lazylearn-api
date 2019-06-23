@@ -4,9 +4,16 @@
   "description": "API for Lazylearn flashcard learner",
   "main": "index.js",
   "dependencies": {},
-  "devDependencies": {},
+  "devDependencies": {
+    "envigenter": "^1.2.0",
+    "hygen": "^4.0.4",
+    "hygen-add": "^1.0.5",
+    "hygen-envigenter": "^1.0.0"
+  },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "env": "envigenter",
+    "hygen": "hygen"
   },
   "repository": {
     "type": "git",
