@@ -1,5 +1,6 @@
 package com.lazylearn.api.service;
 
+import com.lazylearn.api.config.env.WiredEnv;
 import com.lazylearn.api.vocabgenerator.VocabGenerator;
 import com.lazylearn.api.config.Consts;
 import com.lazylearn.api.entity.Deck;
@@ -30,12 +31,13 @@ public class VocabdeckService {
     private DeckService deckService;
     @Autowired
     private DeckRepo deckRepo;
-    @Value("${file-root}")
-    private String fileRoot;
+
+    @Autowired
+    private WiredEnv env;
 
     @Transactional(rollbackFor = Exception.class)
     public void createCallback(Vocabdeck vocabdeck){
-        for (VocabGenerator vocabGenerator : VocabGenerator.getGenerators(fileRoot)){
+        for (VocabGenerator vocabGenerator : VocabGenerator.getGenerators(env.getFileUrl())){
             Deck deck = deckService.create(vocabGenerator.generateDeck(vocabdeck, null));
             deck.setType(Consts.DECKTYPE__VOCAB);
             deckRepo.save(deck);
@@ -44,7 +46,7 @@ public class VocabdeckService {
 
     @Transactional(rollbackFor = Exception.class)
     public void updateCallback(Vocabdeck vocabdeck){
-        for (VocabGenerator vocabGenerator : VocabGenerator.getGenerators(fileRoot)){
+        for (VocabGenerator vocabGenerator : VocabGenerator.getGenerators(env.getFileUrl())){
             Deck deck = deckRepo.findByVocabdeckIdAndVocabType(vocabdeck.getId(), vocabGenerator.getVocabType());
             deck.setType(Consts.DECKTYPE__VOCAB);
             deckRepo.save(deck);
