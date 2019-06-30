@@ -1,5 +1,6 @@
 package com.lazylearn.api.config.jwt;
 
+import com.lazylearn.api.config.env.WiredEnv;
 import com.lazylearn.api.config.exception.ExpiredJwtVersionException;
 import com.lazylearn.api.entity.Session;
 import com.lazylearn.api.service.AuthorityService;
@@ -34,8 +35,8 @@ public class JWTTokenProvider {
     private final Logger log = LoggerFactory.getLogger(JWTTokenProvider.class);
     private static final String KEY__AUTHORITIES = "authorities";
     private static final String KEY__ACCESS_TOKEN_VERSION = "accessTokenVersion";
-    @Value("${jwt.secret}")
-    private String jwtSecret;
+    @Autowired
+    private WiredEnv env;
     @Autowired
     private AuthorityService authorityService;
     @Autowired
@@ -56,12 +57,12 @@ public class JWTTokenProvider {
             .claim(KEY__ACCESS_TOKEN_VERSION, user.getSessionKey())
             .claim("email", user.getEmail())
             .claim("fullName", user.getFullName())
-            .signWith(SignatureAlgorithm.HS512, jwtSecret)
+            .signWith(SignatureAlgorithm.HS512, env.getJwtSecret())
             .compact();
     }
 
     public Authentication getAuthentication(String token) {
-        Claims claims = Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token).getBody();
+        Claims claims = Jwts.parser().setSigningKey(env.getJwtSecret()).parseClaimsJws(token).getBody();
         String authoritiesString = claims.get(KEY__AUTHORITIES) != null ? claims.get(KEY__AUTHORITIES).toString() : "";
 
         Collection<? extends GrantedAuthority> authorities =
@@ -73,7 +74,7 @@ public class JWTTokenProvider {
 
     public boolean validateToken(String jwtToken) {
         try {
-            Claims claims = Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(jwtToken).getBody();
+            Claims claims = Jwts.parser().setSigningKey(env.getJwtSecret()).parseClaimsJws(jwtToken).getBody();
             com.lazylearn.api.entity.User user = userRepo.findOne(claims.getSubject());
             String accessTokenVersion = (String) claims.get(KEY__ACCESS_TOKEN_VERSION);
             if (!user.getSessionKey().equals(accessTokenVersion)) throw new ExpiredJwtVersionException();

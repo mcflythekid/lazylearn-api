@@ -1,0 +1,17 @@
+version: '3.5'
+services:
+  lazylearn-api:
+    user: ':staff'
+    image: openjdk:8
+    ports:
+      - 8419:8080
+    volumes:
+      - ../../target/app.jar:/app/app.jar
+      - C:/Tmp/log:/app/log
+    command: bash -c "mkdir -p /app/log && chmod -R g+w /app/log && java -Duser.timezone=Asia/Ho_Chi_Minh -Xmx1G -jar /app/app.jar 2>>/app/log/stderr.log"
+    networks:
+      - the_network_here
+networks:
+  the_network_here:
+    name: lazylearn-network
+    driver: bridge

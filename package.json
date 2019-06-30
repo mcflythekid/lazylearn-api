@@ -1,0 +1,32 @@
+{
+  "name": "lazylearn-api",
+  "version": "2.0.0",
+  "description": "API for Lazylearn flashcard learner",
+  "main": "index.js",
+  "dependencies": {},
+  "devDependencies": {
+    "envigenter": "^1.2.0",
+    "hygen": "^4.0.4",
+    "hygen-add": "^1.0.5",
+    "hygen-envigenter": "^1.0.0"
+  },
+  "scripts": {
+    "docker:up": "  docker-compose -f docker/default/docker-compose.yml up -d --force-recreate",
+    "docker:down": "docker-compose -f docker/default/docker-compose.yml down || true",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "mvn:install": "rm -rf target && mvn -DskipTests clean install",
+    "stop": "npm run docker:down",
+    "build": "npm i && npm run stop && envigenter default && npm run mvn:install",
+    "start": "npm run build && npm run docker:up"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mcflythekid/lazylearn-api.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mcflythekid/lazylearn-api/issues"
+  },
+  "homepage": "https://github.com/mcflythekid/lazylearn-api#readme"
+}
