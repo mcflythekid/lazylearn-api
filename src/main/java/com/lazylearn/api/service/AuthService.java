@@ -1,6 +1,7 @@
 package com.lazylearn.api.service;
 
 import com.lazylearn.api.config.Consts;
+import com.lazylearn.api.config.env.WiredEnv;
 import com.lazylearn.api.config.exception.AppException;
 import com.lazylearn.api.config.jwt.JWTTokenProvider;
 import com.lazylearn.api.entity.Deck;
@@ -45,8 +46,10 @@ public class AuthService {
     private UserRepo userRepo;
     @Autowired
     private ForgetPasswordRepo forgetPasswordRepo;
-    @Value("${format.reset-password-url}")
-    private String resetPasswordUrlFormat;
+
+    @Autowired
+    private WiredEnv env;
+
     @Autowired
     private JWTTokenProvider jwtTokenProvider;
     @Autowired
@@ -174,7 +177,7 @@ public class AuthService {
     }
 
     private String createResetPasswordEmailContent(Reset forgetPassword){
-        String url = String.format(resetPasswordUrlFormat, forgetPassword.getId());
+        String url = String.format(env.getResetPassword(), forgetPassword.getId());
         return String.format("<a href='%s'>Please click here</a>", url);
     }
 

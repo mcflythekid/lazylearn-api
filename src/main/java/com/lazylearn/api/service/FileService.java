@@ -1,5 +1,7 @@
 package com.lazylearn.api.service;
 
+import com.lazylearn.api.config.env.WiredEnv;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -16,12 +18,12 @@ import java.util.Base64;
 @Service
 public class FileService {
 
-    @Value("${upload.path}")
-    private String uploadPath;
+    @Autowired
+    private WiredEnv env;
 
     public void upload(String filePath, String base64String) throws IOException {
         byte[] bytes = Base64.getDecoder().decode(base64String);
-        String fullPath = uploadPath + filePath;
+        String fullPath = env.getFileUpload() + filePath;
         File file = new File(fullPath);
         file.getParentFile().mkdirs();
         Path destinationFile = Paths.get(fullPath);
@@ -33,6 +35,6 @@ public class FileService {
     }
 
     public void delete(String filePath) throws Exception{
-        Files.deleteIfExists(Paths.get(uploadPath + filePath));
+        Files.deleteIfExists(Paths.get(env.getFileUpload() + filePath));
     }
 }

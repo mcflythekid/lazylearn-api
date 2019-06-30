@@ -1,5 +1,5 @@
 docker:
-  name: 'lazylearn-api'
+  name: 'sss'
   network: 'lazylearn-network'
 port: 8419
 memory: '1G'
