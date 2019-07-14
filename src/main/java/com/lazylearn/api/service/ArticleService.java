@@ -16,6 +16,7 @@ import com.lazylearn.api.outdto.BootstraptableOut;
 import com.lazylearn.api.repo.ArticleRepo;
 import com.lazylearn.api.repo.CardRepo;
 import com.lazylearn.api.repo.DeckRepo;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,6 +28,7 @@ import java.util.List;
 /**
  * @author McFly the Kid
  */
+@Slf4j
 @Service
 public class ArticleService {
 
@@ -111,6 +113,7 @@ public class ArticleService {
         List<Article> rows = articleRepo.findAllByKeywordAndUserId(in.getSearch(), userId, in.getPageable());
         try {
             System.out.println(new ObjectMapper().writeValueAsString(rows));
+            log.info(new ObjectMapper().writeValueAsString(rows));
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
@@ -122,6 +125,7 @@ public class ArticleService {
         List<Article> rows = articleRepo.findAllByKeyword(in.getSearch(), in.getPageable());
         try {
             System.out.println(new ObjectMapper().writeValueAsString(rows));
+            log.info(new ObjectMapper().writeValueAsString(rows));
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
