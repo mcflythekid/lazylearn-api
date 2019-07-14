@@ -1,5 +1,7 @@
 package com.lazylearn.api.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lazylearn.api.config.Consts;
 import com.lazylearn.api.config.exception.AppException;
 import com.lazylearn.api.entity.Article;
@@ -107,6 +109,11 @@ public class ArticleService {
 
     public BootstraptableOut searchByUserId(SearchIn in, String userId){
         List<Article> rows = articleRepo.findAllByKeywordAndUserId(in.getSearch(), userId, in.getPageable());
+        try {
+            System.out.println(new ObjectMapper().writeValueAsString(rows));
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
         Long total = articleRepo.countByKeywordAndUserId(in.getSearch(), userId);
         return new BootstraptableOut(rows, total);
     }
