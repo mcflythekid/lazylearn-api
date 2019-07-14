@@ -120,6 +120,11 @@ public class ArticleService {
 
     public BootstraptableOut searchAll(SearchIn in){
         List<Article> rows = articleRepo.findAllByKeyword(in.getSearch(), in.getPageable());
+        try {
+            System.out.println(new ObjectMapper().writeValueAsString(rows));
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
         Long total = articleRepo.countByKeyword(in.getSearch());
         return new BootstraptableOut(rows, total);
     }
