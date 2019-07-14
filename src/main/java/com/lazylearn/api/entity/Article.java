@@ -1,5 +1,6 @@
 package com.lazylearn.api.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.lazylearn.api.config.Consts;
 
@@ -13,6 +14,7 @@ import java.util.Date;
 @Table(name = "article", indexes = {
         @Index(columnList = "userId")
 })
+@JsonFormat(shape = JsonFormat.Shape.OBJECT)
 public class Article extends AbstractEntity {
 
     @PrePersist
