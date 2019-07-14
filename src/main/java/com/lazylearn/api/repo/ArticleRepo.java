@@ -15,7 +15,7 @@ import java.util.List;
 @Repository
 public interface ArticleRepo extends JpaRepository<Article, String> {
 
-    @Query("SELECT com.lazylearn.api.entity.Article(m.name, m.url) FROM Article m WHERE " +
+    @Query("SELECT m.name name, m.url url FROM Article m WHERE " +
             "(" +
             " LOWER(m.name) LIKE LOWER(CONCAT('%', ?1, '%'))" +
             " OR LOWER(m.content) LIKE LOWER(CONCAT('%', ?1, '%'))" +
