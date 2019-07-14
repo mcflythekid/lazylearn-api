@@ -15,7 +15,7 @@ import java.util.List;
 @Repository
 public interface ArticleRepo extends JpaRepository<Article, String> {
 
-    @Query("SELECT m FROM Article m WHERE " +
+    @Query("SELECT m.name, m.url FROM Article m WHERE " +
             "(" +
             " LOWER(m.name) LIKE LOWER(CONCAT('%', ?1, '%'))" +
             " OR LOWER(m.content) LIKE LOWER(CONCAT('%', ?1, '%'))" +
