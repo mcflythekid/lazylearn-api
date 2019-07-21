@@ -34,7 +34,7 @@ public class DatabaseConfig {
     @Primary
     public DataSource dataSource() {
         HikariConfig config = new HikariConfig();
-        config.setJdbcUrl(env.getDbUrl());
+        config.setJdbcUrl(env.getDbUrl() + "?useUnicode=true&characterEncoding=UTF-8");
         config.setUsername(env.getDbUsername());
         config.setPassword(env.getDbPassword());
         config.setDriverClassName(env.getDbDriver());
