@@ -7,7 +7,7 @@ services:
     user: ':<%= gid %>'
     image: openjdk:8
     ports:
-      - <%= port %>:8080
+      - <%= port %>:<%= port %>
     volumes:
       - ../../target/app.jar:/app/app.jar
       - <%= log.absolute_dir %>:<%= log.absolute_dir_in_docker_container %>
