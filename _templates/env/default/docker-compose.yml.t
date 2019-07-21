@@ -12,9 +12,7 @@ services:
       - ../../target/app.jar:/app/app.jar
       - <%= log.absolute_dir %>:<%= log.absolute_dir_in_docker_container %>
     command: bash -c "mkdir -p <%= log.absolute_dir_in_docker_container %> && chmod -R g+w <%= log.absolute_dir_in_docker_container %> && java -Duser.timezone=Asia/Ho_Chi_Minh -Xmx<%= memory %> -jar /app/app.jar 2>><%= log.absolute_dir_in_docker_container %>/stderr.log"
-    networks:
-      - the_network_here
 networks:
-  the_network_here:
-    name: <%= docker.network %>
-    driver: bridge
+  default:
+    external:
+      name: <%= docker.network %>
