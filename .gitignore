@@ -23,3 +23,9 @@ rebel.xml
 node_modules/
 
 .vscode/
+
+docker/
+application.properties
+
+### file
+*.env.yml
