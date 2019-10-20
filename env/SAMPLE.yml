@@ -1,6 +1,7 @@
 docker:
   name: 'sss'
   network: 'lazylearn-network'
+  upload_path_on_container: 'string'
 port: 8419
 memory: '1G'
 jwt_secret: 'conkmeo'
