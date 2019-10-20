@@ -4,6 +4,7 @@ to: docker/default/docker-compose.yml
 version: '3.5'
 services:
   <%= docker.name %>:
+    restart: always
     container_name: <%= docker.name %>
     user: ':<%= gid %>'
     image: openjdk:8
