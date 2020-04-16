@@ -8,7 +8,7 @@ API for Lazylearn flashcard learner
 * Supermemo SM-2
 
 ## Requirements
-* Java
+* Java 1.8
 * Tomcat (Or Jerry mouse)
 * Brain (Your brain)
 * PHP
