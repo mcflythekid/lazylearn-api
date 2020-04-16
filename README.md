@@ -16,3 +16,10 @@ API for Lazylearn flashcard learner
 * Facebook developer account
 * SSL Certificate (You can get your free one by using certbot)
 * A domain name
+* npm
+
+## First time
+```npm i && npm run build```
+
+## Production
+```npm i && npm run start```
