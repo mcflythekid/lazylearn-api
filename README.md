@@ -18,8 +18,8 @@ API for Lazylearn flashcard learner
 * A domain name
 * npm
 
-## First time
-```npm i && npm run build```
+## Development
+```npm run dev```
 
 ## Production
-```npm i && npm run start```
+```npm run start```
