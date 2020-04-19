@@ -8,6 +8,8 @@ import com.lazylearn.api.outdto.BootstraptableOut;
 import com.lazylearn.api.outdto.JSON;
 import com.lazylearn.api.outdto.vocab.VocabEditOut;
 import com.lazylearn.api.service.VocabService;
+import com.lazylearn.api.unit.OxfordDto;
+import com.lazylearn.api.unit.OxfordUnit;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,6 +24,14 @@ public class VocabController extends BaseController {
 
     @Autowired
     private VocabService vocabService;
+
+    @Autowired
+    private OxfordUnit oxfordUnit;
+
+    @GetMapping("/get-oxford/{word}")
+    public OxfordDto getOxford(@PathVariable String word) throws Exception{
+        return oxfordUnit.craw(word);
+    }
 
     @GetMapping("/get/{vocabId}")
     public Vocab get(@PathVariable String vocabId) throws Exception{
