@@ -13,7 +13,7 @@ import java.util.UUID;
     @UniqueConstraint(columnNames = {"email"}),
     @UniqueConstraint(columnNames = {"facebookId"})
 })
-public class User extends AbstractEntity{
+public class User extends AbstractEntity implements HasUserId{
 
     @PrePersist
     public void prePersist(){
@@ -84,4 +84,8 @@ public class User extends AbstractEntity{
         this.encodedPassword = encodedPassword;
     }
 
+    @Override
+    public String getUserId() {
+        return getId();
+    }
 }

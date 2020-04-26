@@ -15,7 +15,7 @@ import javax.persistence.Table;
     @Index(columnList = "userId"),
     @Index(columnList = "vocabdeckId")
 })
-public class Vocab extends AbstractEntity {
+public class Vocab extends AbstractEntity implements HasUserId{
 
     @JsonIgnore
     public void generateImagePath(EncodedFile encodedFile){

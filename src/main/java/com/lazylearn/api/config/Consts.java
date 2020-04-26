@@ -61,6 +61,12 @@ public final class Consts {
 
     public static class Exception {
         public static final AppException CANNOT_INSPECT_VIRTUAL_DECK = new AppException(503, "Cannot inspect virtual deck");
+        public static final AppException NOT_FOUND = new AppException(404, "Item not found");
+        public static final AppException INVALID_OWNERSHIP = new AppException(403, "Invalid owner ship");
+        public static final AppException PROTECTED_VOCABDECK = new AppException(403, "VOCABDECK protected");
+        public static final AppException PROTECTED_MINPAIR = new AppException(403, "MINPAIR protected");
+        public static final AppException PROTECTED_TOPIC = new AppException(403, "TOPIC protected");
+
     }
 
 }

@@ -11,7 +11,7 @@ import javax.persistence.*;
 @Table(name = "minpair", indexes = {
         @Index(columnList = "userId")
 })
-public class Minpair extends AbstractEntity {
+public class Minpair extends AbstractEntity implements HasUserId{
 
     @JsonIgnore
     public void generateAudioPaths(){

@@ -14,7 +14,7 @@ import javax.persistence.*;
 }, uniqueConstraints = {
     @UniqueConstraint(columnNames = {"vocabdeckId", "vocabType"})
 })
-public class Deck extends AbstractEntity {
+public class Deck extends AbstractEntity implements HasUserId{
 
     @PrePersist
     public void prePersist(){

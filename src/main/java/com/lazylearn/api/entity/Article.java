@@ -15,7 +15,7 @@ import java.util.Date;
         @Index(columnList = "userId")
 })
 @JsonFormat(shape = JsonFormat.Shape.OBJECT)
-public class Article extends AbstractEntity {
+public class Article extends AbstractEntity implements HasUserId{
 
     @PrePersist
     public void prePersist(){
