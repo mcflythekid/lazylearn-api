@@ -1,5 +1,6 @@
 package com.lazylearn.api.controller;
 
+import com.lazylearn.api.config.Consts;
 import com.lazylearn.api.entity.Deck;
 import com.lazylearn.api.indto.SearchIn;
 import com.lazylearn.api.indto.deck.DeckCreateIn;
@@ -57,6 +58,10 @@ public class DeckController extends BaseController{
 
     @GetMapping("/get/{deckId}")
     public Deck get(@PathVariable("deckId") String deckId) throws Exception {
+        if (Consts.Deck.LEARN_ALL_DECK_ID.equals(deckId)){
+            return deckService.createOneForAllDeck();
+        }
+
         return authorizeDeck(deckId);
     }
 

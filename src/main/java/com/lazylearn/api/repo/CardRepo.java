@@ -33,6 +33,7 @@ public interface CardRepo extends JpaRepository<Card, String> {
     List<Card> findAllByDeckIdAndArchived(String deckId, Integer archived);
 
     List<Card> findAllByDeckIdAndArchivedAndWakeupOnBefore(String deckId, Integer archived, Date wakeupOn);
+    List<Card> findAllByUserIdAndArchivedAndWakeupOnBefore(String userId, Integer archived, Date wakeupOn);
 
     Long countAllByDeckIdAndStepAndWakeupOnBeforeAndArchived(String deckId, Integer step, Date wakeupOn, Integer archived);
     Long countAllByUserIdAndStepAndWakeupOnBeforeAndArchived(String userId, Integer step, Date wakeupOn, Integer archived);

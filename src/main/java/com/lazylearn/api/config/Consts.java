@@ -1,5 +1,7 @@
 package com.lazylearn.api.config;
 
+import com.lazylearn.api.config.exception.AppException;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -52,5 +54,13 @@ public final class Consts {
     public static final String DECKTYPE__VOCAB = "vocab";
     public static final String DECKTYPE__MINPAIR = "minpair";
 
+    public static class Deck{
+        public static final String LEARN_ALL_DECK_ID = "all-deck";
+        public static final String LEARN_ALL_DECK_NAME = "All cards";
+    }
+
+    public static class Exception {
+        public static final AppException CANNOT_INSPECT_VIRTUAL_DECK = new AppException(503, "Cannot inspect virtual deck");
+    }
 
 }

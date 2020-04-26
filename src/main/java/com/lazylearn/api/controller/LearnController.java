@@ -29,8 +29,14 @@ public class LearnController extends BaseController{
 
     @GetMapping("/get-deck")
     public LearnOut get(@RequestParam("deckId") String deckId, @RequestParam("learnType") String learnType) throws Exception {
-        Deck deck = authorizeDeck(deckId);
 
+        // All deck
+        if (Consts.Deck.LEARN_ALL_DECK_ID.equals(deckId)){
+            return learnService.getByLearnOneUserId(this.getUserId());
+        }
+
+        // Normal
+        Deck deck = authorizeDeck(deckId);
         if (learnType.equals(Consts.LEARNTYPE_LEARN)){
             return learnService.getByLearn(deck);
         } else if (learnType.equals(Consts.LEARNTYPE_REVIEW)){
