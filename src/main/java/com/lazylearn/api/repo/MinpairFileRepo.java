@@ -11,5 +11,5 @@ import java.util.List;
  */
 @Repository
 public interface MinpairFileRepo extends JpaRepository<MinpairFile, String> {
-    List<MinpairFile> finaAllByMinpairId(String minpairId);
+    List<MinpairFile> findAllByMinpairId(String minpairId);
 }
