@@ -14,7 +14,8 @@ import java.util.Date;
  */
 @Entity
 @Table(name="card")
-public class Card extends AbstractEntity{
+public class
+Card extends AbstractEntity{
 
     @JsonIgnore
     public boolean isExpired(){

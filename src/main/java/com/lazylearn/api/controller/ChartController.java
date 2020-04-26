@@ -1,5 +1,6 @@
 package com.lazylearn.api.controller;
 
+import com.lazylearn.api.config.Consts;
 import com.lazylearn.api.entity.Deck;
 import com.lazylearn.api.service.ChartService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +27,10 @@ public class ChartController extends BaseController {
 
     @GetMapping("/get-deck/{deckId}")
     public Object deckChart(@PathVariable("deckId") String deckId) throws Exception {
+        if (Consts.Deck.LEARN_ALL_DECK_ID.equals(deckId)){
+            throw Consts.Exception.CANNOT_INSPECT_VIRTUAL_DECK;
+        }
+
         Deck deck = authorizeDeck(deckId);
         return chartService.deckChart(deck);
     }

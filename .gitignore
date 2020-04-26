@@ -29,3 +29,4 @@ application.properties
 
 ### file
 *.env.yml
+src/main/java/com/lazylearn/api/config/env/WiredEnv.java

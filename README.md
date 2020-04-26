@@ -8,7 +8,7 @@ API for Lazylearn flashcard learner
 * Supermemo SM-2
 
 ## Requirements
-* Java
+* Java 1.8
 * Tomcat (Or Jerry mouse)
 * Brain (Your brain)
 * PHP
@@ -16,3 +16,10 @@ API for Lazylearn flashcard learner
 * Facebook developer account
 * SSL Certificate (You can get your free one by using certbot)
 * A domain name
+* npm
+
+## Development
+```npm run dev```
+
+## Production
+```npm run start```

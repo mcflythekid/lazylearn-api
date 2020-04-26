@@ -1,5 +1,6 @@
 package com.lazylearn.api.controller;
 
+import com.lazylearn.api.config.Consts;
 import com.lazylearn.api.config.exception.AppException;
 import com.lazylearn.api.entity.Card;
 import com.lazylearn.api.entity.Deck;
@@ -31,6 +32,10 @@ public class CardController extends BaseController{
 
     @PostMapping("/search")
     public BootstraptableOut searchDeck(@Valid @RequestBody CardSearchIn in) throws Exception {
+        if (Consts.Deck.LEARN_ALL_DECK_ID.equals(in.getDeckId())){
+            throw Consts.Exception.CANNOT_INSPECT_VIRTUAL_DECK;
+        }
+
         authorizeDeck(in.getDeckId());
         return cardService.search(in);
     }

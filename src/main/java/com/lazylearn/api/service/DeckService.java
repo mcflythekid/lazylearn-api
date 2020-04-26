@@ -127,4 +127,11 @@ public class DeckService {
     public Deck importDeck(String resourceName, String userId) throws IOException {
         return importDeck(resourceName, userId, "");
     }
+
+    public Deck createOneForAllDeck(){
+        Deck deck = new Deck();
+        deck.setId(Consts.Deck.LEARN_ALL_DECK_ID);
+        deck.setName(Consts.Deck.LEARN_ALL_DECK_NAME);
+        return deck;
+    }
 }

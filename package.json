@@ -11,13 +11,14 @@
     "hygen-envigenter": "^1.0.0"
   },
   "scripts": {
-    "docker:up": "  docker-compose -f docker/default/docker-compose.yml up -d --force-recreate",
-    "docker:down": "docker-compose -f docker/default/docker-compose.yml down || true",
+    "_docker:up": "  docker-compose -f docker/default/docker-compose.yml up -d --force-recreate",
+    "_docker:down": "docker-compose -f docker/default/docker-compose.yml down || true",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "mvn:install": "rm -rf target && mvn -DskipTests clean install",
-    "stop": "npm run docker:down",
-    "build": "npm i && npm run stop && envigenter default && npm run mvn:install",
-    "start": "npm run build && npm run docker:up"
+    "_mvn:install": "rm -rf target && mvn -DskipTests clean install",
+    "_stop": "npm run _docker:down",
+    "_build": "npm i && npm run _stop && envigenter default && npm run _mvn:install",
+    "dev": "envigenter default",
+    "start": "npm run _build && npm run _docker:up"
   },
   "repository": {
     "type": "git",

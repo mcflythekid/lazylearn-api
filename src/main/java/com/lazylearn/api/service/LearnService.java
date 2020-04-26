@@ -20,12 +20,26 @@ public class LearnService {
     @Autowired
     private CardRepo cardRepo;
 
+    @Autowired
+    private DeckService deckService;
+
     private List<Card> findAllCardForReview(String deckId){
         return cardRepo.findAllByDeckIdAndArchived(deckId, Consts.CARDDECK_UNARCHIVED);
     }
 
     private List<Card> findAllCardForLearn(String deckId){
         return cardRepo.findAllByDeckIdAndArchivedAndWakeupOnBefore(deckId, Consts.CARDDECK_UNARCHIVED, new Date());
+    }
+
+    private List<Card> findAllCardForLearnByUserId(String userId){
+        return cardRepo.findAllByUserIdAndArchivedAndWakeupOnBefore(userId, Consts.CARDDECK_UNARCHIVED, new Date());
+    }
+
+    public LearnOut getByLearnOneUserId(String userId){
+        LearnOut learnOut = new LearnOut();
+        learnOut.setDeck(deckService.createOneForAllDeck());
+        learnOut.setCards(this.findAllCardForLearnByUserId(userId));
+        return learnOut;
     }
 
     public LearnOut getByLearn(Deck deck){
