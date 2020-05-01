@@ -21,4 +21,10 @@ import javax.persistence.Table;
 @Builder
 public class SubscribeEntity extends AbstractEntity {
     private String email;
+
+    public String format(){
+        return new StringBuilder()
+                .append("SUBSCRIBE: ").append(email)
+                .toString();
+    }
 }

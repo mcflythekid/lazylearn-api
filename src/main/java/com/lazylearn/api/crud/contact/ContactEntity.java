@@ -31,4 +31,15 @@ public class ContactEntity extends AbstractEntity {
     private String email;
     @Lob
     private String content;
+
+    public String format(){
+        return new StringBuilder()
+                .append("CONTACT").append("\n")
+                .append("First name: ").append(firstName).append("\n")
+                .append("Last name: ").append(lastName).append("\n")
+                .append("Email: ").append(email).append("\n")
+                .append("Subject: ").append(subject).append("\n")
+                .append(content)
+                .toString();
+    }
 }
