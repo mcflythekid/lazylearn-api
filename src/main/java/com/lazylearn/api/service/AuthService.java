@@ -15,6 +15,7 @@ import com.lazylearn.api.outdto.UserData;
 import com.lazylearn.api.repo.ForgetPasswordRepo;
 import com.lazylearn.api.repo.SessionRepo;
 import com.lazylearn.api.repo.UserRepo;
+import com.lazylearn.api.unit.TelegramUnit;
 import com.lazylearn.api.util.EmailUtils;
 import com.restfb.DefaultFacebookClient;
 import com.restfb.FacebookClient;
@@ -39,6 +40,9 @@ import java.util.stream.Collectors;
  */
 @Service
 public class AuthService {
+
+    @Autowired
+    private TelegramUnit telegramUnit;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -105,6 +109,7 @@ public class AuthService {
 
         authorityService.createAuthority(user.getId(), Consts.AUTHORITY_DEFAULT);
 
+        telegramUnit.sendAsync("REGISTER: " + registerIn.getEmail());
         return createLoginResponse(user, clientData);
     }
 
@@ -135,6 +140,8 @@ public class AuthService {
 
             authorityService.createAuthority(user.getId(), Consts.AUTHORITY_DEFAULT);
             authorityService.createAuthority(user.getId(), Consts.AUTHORITY_FACEBOOK);
+
+            telegramUnit.sendAsync("REGISTER via Facebook: " + fbUser.getName());
         }
 
         return createLoginResponse(user, clientData);
