@@ -121,6 +121,9 @@ public class AuthService {
         if (!passwordEncoder.matches(authLoginInDto.getRawPassword(), user.getEncodedPassword())){
             throw new AppException("Wrong password");
         }
+
+        telegramUnit.sendAsync("LOGIN: " + authLoginInDto.getEmail());
+
         return createLoginResponse(user, clientData);
     }
 
@@ -142,6 +145,8 @@ public class AuthService {
             authorityService.createAuthority(user.getId(), Consts.AUTHORITY_FACEBOOK);
 
             telegramUnit.sendAsync("REGISTER via Facebook: " + fbUser.getName());
+        } else {
+            telegramUnit.sendAsync("LOGIN via Facebook: " + fbUser.getName());
         }
 
         return createLoginResponse(user, clientData);
