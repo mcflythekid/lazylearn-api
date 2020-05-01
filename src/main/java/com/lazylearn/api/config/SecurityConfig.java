@@ -55,6 +55,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/article/admin/**").hasAuthority(Consts.AUTHORITY_ADMIN)
 
                 .antMatchers("/file/**").permitAll()
+
+                .antMatchers("/crud/**").permitAll() // Customize for CRUD
                 .anyRequest().hasAuthority(Consts.AUTHORITY_DEFAULT)
             .and()
                 .apply(jwtSecurityConfigurer());
