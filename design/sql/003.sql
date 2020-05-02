@@ -1,0 +1,1 @@
+alter table deck add cloneableid varchar(100);

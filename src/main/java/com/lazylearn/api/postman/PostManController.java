@@ -1,5 +1,6 @@
 package com.lazylearn.api.postman;
 
+import com.lazylearn.api.clone.service.DeckCloneService;
 import com.lazylearn.api.config.exception.AppException;
 import com.lazylearn.api.outdto.JSON;
 import com.lazylearn.api.service.ImportService;
@@ -26,6 +27,9 @@ public class PostManController {
     @Autowired
     private ImportService importService;
 
+    @Autowired
+    private DeckCloneService deckCloneService;
+
     private static final String TOKEN = "dkmmcc699";
 
     private void validate(HttpServletRequest request){
@@ -40,5 +44,12 @@ public class PostManController {
     public JSON importDeck(HttpServletRequest request, @RequestParam String user, @RequestParam String file) throws IOException {
         validate(request);
         return importService.importDeck(user, file);
+    }
+
+    @PostMapping("/clone-deck-to-all-user")
+    public JSON cloneDeck(HttpServletRequest request, @RequestParam String deck_id) throws IOException {
+        validate(request);
+        deckCloneService.cloneDeck(deck_id);
+        return JSON.ok("Done!");
     }
 }

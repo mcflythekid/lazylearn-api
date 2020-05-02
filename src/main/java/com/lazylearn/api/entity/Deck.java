@@ -23,6 +23,8 @@ public class Deck extends AbstractEntity implements HasUserId{
         setArchived(Consts.CARDDECK_UNARCHIVED);
     }
 
+    private String cloneableid;
+
     private String userId;
     private String name;
     private Integer archived;
@@ -36,6 +38,14 @@ public class Deck extends AbstractEntity implements HasUserId{
     private String programId;
 
     private String type;
+
+    public String getCloneableid() {
+        return cloneableid;
+    }
+
+    public void setCloneableid(String cloneableid) {
+        this.cloneableid = cloneableid;
+    }
 
     public String getType() {
         return type;

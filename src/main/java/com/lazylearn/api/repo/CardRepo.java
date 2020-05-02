@@ -32,6 +32,8 @@ public interface CardRepo extends JpaRepository<Card, String> {
 
     List<Card> findAllByDeckIdAndArchived(String deckId, Integer archived);
 
+    List<Card> findAllByDeckId(String deckId);
+
     List<Card> findAllByDeckIdAndArchivedAndWakeupOnBefore(String deckId, Integer archived, Date wakeupOn);
 
 

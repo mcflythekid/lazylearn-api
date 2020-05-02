@@ -19,4 +19,6 @@ public interface DeckRepo extends JpaRepository<Deck, String> {
 
     List<Deck> findAllByUserIdAndNameContainingIgnoreCase(String userId, String name, Pageable pageable);
     Long countByUserIdAndNameContainingIgnoreCase(String userId, String name);
+
+    Long countByUserIdAndCloneableid(String userId, String cloneableId);
 }
