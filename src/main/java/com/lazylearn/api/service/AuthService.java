@@ -15,6 +15,7 @@ import com.lazylearn.api.outdto.UserData;
 import com.lazylearn.api.repo.ForgetPasswordRepo;
 import com.lazylearn.api.repo.SessionRepo;
 import com.lazylearn.api.repo.UserRepo;
+import com.lazylearn.api.unit.TelegramUnit;
 import com.lazylearn.api.util.EmailUtils;
 import com.restfb.DefaultFacebookClient;
 import com.restfb.FacebookClient;
@@ -22,7 +23,6 @@ import com.restfb.Parameter;
 import com.restfb.Version;
 import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -39,6 +39,9 @@ import java.util.stream.Collectors;
  */
 @Service
 public class AuthService {
+
+    @Autowired
+    private TelegramUnit telegramUnit;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -105,6 +108,7 @@ public class AuthService {
 
         authorityService.createAuthority(user.getId(), Consts.AUTHORITY_DEFAULT);
 
+        telegramUnit.sendAsync("REGISTER: " + registerIn.getEmail());
         return createLoginResponse(user, clientData);
     }
 
@@ -116,6 +120,9 @@ public class AuthService {
         if (!passwordEncoder.matches(authLoginInDto.getRawPassword(), user.getEncodedPassword())){
             throw new AppException("Wrong password");
         }
+
+        telegramUnit.sendAsync("LOGIN: " + authLoginInDto.getEmail());
+
         return createLoginResponse(user, clientData);
     }
 
@@ -135,6 +142,10 @@ public class AuthService {
 
             authorityService.createAuthority(user.getId(), Consts.AUTHORITY_DEFAULT);
             authorityService.createAuthority(user.getId(), Consts.AUTHORITY_FACEBOOK);
+
+            telegramUnit.sendAsync("REGISTER via Facebook: " + fbUser.getName());
+        } else {
+            telegramUnit.sendAsync("LOGIN via Facebook: " + fbUser.getName());
         }
 
         return createLoginResponse(user, clientData);
@@ -182,7 +193,7 @@ public class AuthService {
     }
 
     private Deck createTemplateDeck(String userId) throws IOException {
-        final String TEMPLATE_ID = "/deck/100.txt";
+        final String TEMPLATE_ID = "/deck/3000.txt";
         return deckService.importDeck(TEMPLATE_ID, userId);
     }
 
