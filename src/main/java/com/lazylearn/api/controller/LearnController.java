@@ -1,5 +1,6 @@
 package com.lazylearn.api.controller;
 
+import com.google.common.collect.ImmutableMap;
 import com.lazylearn.api.config.Consts;
 import com.lazylearn.api.config.exception.AppException;
 import com.lazylearn.api.entity.Card;
@@ -7,12 +8,15 @@ import com.lazylearn.api.entity.Deck;
 import com.lazylearn.api.indto.learn.QualityIn;
 import com.lazylearn.api.outdto.JSON;
 import com.lazylearn.api.outdto.LearnOut;
+import com.lazylearn.api.repo.CardRepo;
 import com.lazylearn.api.service.AnswerProcessService;
 import com.lazylearn.api.service.LearnService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.Date;
+import java.util.Map;
 
 /**
  * @author McFly the Kid
@@ -26,6 +30,14 @@ public class LearnController extends BaseController{
 
     @Autowired
     private AnswerProcessService answerProcessService;
+
+    @Autowired
+    private CardRepo cardRepo;
+
+    @GetMapping("/count-onetime-learn-card")
+    public Map countOnetimeLearnCard() throws Exception {
+        return ImmutableMap.of("count", cardRepo.countAllByUserIdAndWakeupOnBefore(getUserId(), new Date()));
+    }
 
     @GetMapping("/get-deck")
     public LearnOut get(@RequestParam("deckId") String deckId, @RequestParam("learnType") String learnType) throws Exception {

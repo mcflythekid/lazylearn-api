@@ -32,7 +32,7 @@ public class LearnService {
     }
 
     private List<Card> findAllCardForLearnByUserId(String userId){
-        return cardRepo.findAllByUserIdAndArchivedAndWakeupOnBefore(userId, new Date());
+        return cardRepo.findAllByUserIdAndWakeupOnBefore(userId, new Date());
     }
 
     public LearnOut getByLearnOneUserId(String userId){
