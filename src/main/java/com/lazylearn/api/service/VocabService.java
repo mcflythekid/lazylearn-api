@@ -71,10 +71,6 @@ public class VocabService {
     @Transactional(rollbackFor = Exception.class)
     public Vocab create(VocabCreateIn in, String userId) throws Exception {
 
-        if (vocabRepo.findByWordAndUserId(in.getWord(), userId) != null){
-            throw new AppException(HttpStatus.CONFLICT.value(), in.getWord() + " is already existed");
-        }
-
         Vocab vocab = new Vocab();
         BeanUtils.copyProperties(in, vocab);
         vocab.setUserId(userId);
@@ -92,10 +88,6 @@ public class VocabService {
 
     @Transactional(rollbackFor = Exception.class)
     public VocabEditOut edit(VocabEditIn in, String userId) throws Exception{
-
-        if (vocabRepo.findByIdNotAndWordAndUserId(in.getVocabId(), in.getWord(), userId) != null){
-            throw new AppException(HttpStatus.CONFLICT.value(), in.getWord() + " is already existed");
-        }
 
         Vocab vocab = vocabRepo.findOne(in.getVocabId());
         BeanUtils.copyProperties(in, vocab);
