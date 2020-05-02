@@ -1,7 +1,6 @@
 package com.lazylearn.api.service;
 
 import com.lazylearn.api.config.Consts;
-import com.lazylearn.api.config.exception.AppException;
 import com.lazylearn.api.entity.Card;
 import com.lazylearn.api.entity.Deck;
 import com.lazylearn.api.entity.Minpair;
@@ -10,13 +9,13 @@ import com.lazylearn.api.indto.SearchIn;
 import com.lazylearn.api.outdto.BootstraptableOut;
 import com.lazylearn.api.repo.CardRepo;
 import com.lazylearn.api.repo.DeckRepo;
+import com.lazylearn.api.repo.MinpairFileRepo;
 import com.lazylearn.api.repo.MinpairRepo;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.print.attribute.standard.MediaSize;
 import java.util.List;
 
 /**
@@ -37,22 +36,20 @@ public class MinpairService {
     private CardService cardService;
     @Autowired
     private CardRepo cardRepo;
+    @Autowired
+    private MinpairFileService minpairFileService;
+    @Autowired
+    private MinpairFileRepo minpairFileRepo;
 
     @Transactional(rollbackFor = Exception.class)
     public Minpair create(MinpairCreateIn in, String userId) throws Exception{
         Minpair minpair = new Minpair();
-        minpair.setUserId(userId);
+        minpair.setUserid(userId);
         BeanUtils.copyProperties(in, minpair);
-        minpairRepo.save(minpair);
+        minpair = minpairRepo.save(minpair);
 
-        minpair.generateAudioPaths();
-        minpairRepo.save(minpair);
-
-//        fileService.upload(minpair.getAudioPath1(), in.getAudio1());
-//        fileService.upload(minpair.getAudioPath2(), in.getAudio2());
-
+        minpairFileService.create(in, minpair);
         updateCardAndDeckCallBack(minpair.getId());
-
         return minpair;
     }
 
@@ -62,6 +59,9 @@ public class MinpairService {
         fileService.delete(minpair.getAudioPath1());
         fileService.delete(minpair.getAudioPath2());
         minpairRepo.delete(minpairId);
+
+        minpairFileRepo.deleteAllByMinpairId(minpairId);
+        fileService.rmDirIfExists(minpair.getDirPath());
     }
 
     @Transactional(rollbackFor = Exception.class)

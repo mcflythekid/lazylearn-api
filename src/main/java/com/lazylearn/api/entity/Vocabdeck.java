@@ -14,7 +14,7 @@ import javax.persistence.Table;
 @Table(name="vocabdeck", indexes = {
     @Index(columnList = "userId")
 })
-public class Vocabdeck extends AbstractEntity {
+public class Vocabdeck extends AbstractEntity implements HasUserId{
 
     @PrePersist
     public void prePersist(){

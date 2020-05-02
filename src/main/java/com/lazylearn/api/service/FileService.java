@@ -1,6 +1,7 @@
 package com.lazylearn.api.service;
 
 import com.lazylearn.api.config.env.WiredEnv;
+import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -36,5 +37,9 @@ public class FileService {
 
     public void delete(String filePath) throws Exception{
         Files.deleteIfExists(Paths.get(env.getFileUpload() + filePath));
+    }
+
+    public void rmDirIfExists(String dirPath) throws IOException {
+        FileUtils.deleteDirectory(new File(env.getFileUpload() + dirPath));
     }
 }

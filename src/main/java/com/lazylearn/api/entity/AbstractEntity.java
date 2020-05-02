@@ -19,7 +19,7 @@ public abstract class AbstractEntity implements Serializable {
 
     @PrePersist
     public void parentPrePersist(){
-        setId(StringUtils2.generateRandomId());
+        setId(StringUtils2.generateReadableId(getClass().getSimpleName(), 36));
         setCreatedDate(new Date());
     }
 

@@ -39,6 +39,9 @@ public abstract class BaseController {
     private VocabdeckRepo vocabdeckRepo;
 
     @Autowired
+    private MinpairFileRepo minpairFileRepo;
+
+    @Autowired
     private HttpServletRequest request;
 
     protected ClientData getClientData(){
@@ -59,82 +62,83 @@ public abstract class BaseController {
     }
 
     protected User authorizeUser(String userId) throws Exception {
-        User user = userRepo.findOne(userId);
-        if (user == null || !user.getId().equals(SecurityUtils.getCurrentUserLogin())){
-            throw new AppException("It's not you");
-        }
-        return user;
+        User data = userRepo.findOne(userId);
+        authorizeObject(data);
+        return data;
     }
 
     protected Deck authorizeDeck(String deckId) throws Exception {
-        Deck deck = deckRepo.findOne(deckId);
-        if (deck == null || !deck.getUserId().equals(SecurityUtils.getCurrentUserLogin())){
-            throw new AppException("It's not you");
-        }
-        return deck;
+        Deck data = deckRepo.findOne(deckId);
+        authorizeObject(data);
+        return data;
     }
 
     protected Card authorizeCard(String cardId) throws Exception {
-        Card card = cardRepo.findOne(cardId);
-        if (card == null || !card.getUserId().equals(SecurityUtils.getCurrentUserLogin())){
-            throw new AppException("It's not you");
-        }
-        return card;
+        Card data = cardRepo.findOne(cardId);
+        authorizeObject(data);
+        return data;
     }
 
     protected Minpair authorizeMinpair(String minpairId) throws Exception {
-        Minpair minpair = minpairRepo.findOne(minpairId);
-        if (minpair == null || !minpair.getUserId().equals(SecurityUtils.getCurrentUserLogin())){
-            throw new AppException("It's not you");
-        }
-        return minpair;
+        Minpair data = minpairRepo.findOne(minpairId);
+        authorizeObject(data);
+        return data;
     }
 
     protected Article authorizeArticle(String articleId) throws Exception {
-        Article article = articleRepo.findOne(articleId);
-        if (article == null || !article.getUserId().equals(SecurityUtils.getCurrentUserLogin())){
-            throw new AppException("It's not you");
-        }
-        return article;
+        Article data = articleRepo.findOne(articleId);
+        authorizeObject(data);
+        return data;
     }
 
     protected Vocab authorizeVocab(String vocabId) throws Exception {
-        Vocab vocab = vocabRepo.findOne(vocabId);
-        if (vocab == null || !vocab.getUserId().equals(SecurityUtils.getCurrentUserLogin())){
-            throw new AppException("It's not you");
-        }
-        return vocab;
+        Vocab data = vocabRepo.findOne(vocabId);
+        authorizeObject(data);
+        return data;
     }
 
     protected Vocabdeck authorizeVocabdeck(String vocabdeckId) throws Exception {
-        Vocabdeck vocabdeck = vocabdeckRepo.findOne(vocabdeckId);
-        if (vocabdeck == null || !vocabdeck.getUserId().equals(SecurityUtils.getCurrentUserLogin())){
-            throw new AppException("It's not you");
+        Vocabdeck data = vocabdeckRepo.findOne(vocabdeckId);
+        authorizeObject(data);
+        return data;
+    }
+
+    protected MinpairFile authorizeMinpairFile(String minpairFileId) throws Exception {
+        MinpairFile data = minpairFileRepo.findOne(minpairFileId);
+        authorizeObject(data);
+        return data;
+    }
+
+    private void authorizeObject(HasUserId hasUserId) throws Exception {
+        if (hasUserId == null){
+            throw Consts.Exception.NOT_FOUND;
         }
-        return vocabdeck;
+        if (!hasUserId.getUserId().equals(this.getUserId())){
+            throw Consts.Exception.INVALID_OWNERSHIP;
+        }
     }
 
     protected void protectGeneratedDeck(Deck deck) throws Exception{
         if (StringUtils.isNotBlank(deck.getVocabdeckId())){
-            throw new AppException(403, "VOCABDECK protected");
+            throw Consts.Exception.PROTECTED_VOCABDECK;
         }
         if (StringUtils.isNotBlank(deck.getMinpairLanguage())){
-            throw new AppException(403, "MINPAIR protected");
+            throw Consts.Exception.PROTECTED_MINPAIR;
         }
         if (deck.getType() != null && deck.getType().equalsIgnoreCase(Consts.DECKTYPE__TOPIC)){
-            throw new AppException(403, "TOPIC protected");
+            throw Consts.Exception.PROTECTED_TOPIC;
         }
     }
 
     protected void protectGeneratedCard(Card card) throws Exception{
         if (StringUtils.isNotBlank(card.getVocabId())){
-            throw new AppException(403, "VOCABDECK protected");
+            throw Consts.Exception.PROTECTED_VOCABDECK;
         }
         if (StringUtils.isNotBlank(card.getMinpairLanguage())){
-            throw new AppException(403, "MINPAIR protected");
+            throw Consts.Exception.PROTECTED_MINPAIR;
         }
         if (StringUtils.isNotBlank(card.getArticleId())){
-            throw new AppException(403, "TOPIC protected");
+            throw Consts.Exception.PROTECTED_TOPIC;
         }
     }
 }

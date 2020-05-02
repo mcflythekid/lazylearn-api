@@ -19,7 +19,7 @@ public interface MinpairRepo extends JpaRepository<Minpair, String> {
             " LOWER(m.word1) LIKE LOWER(CONCAT('%', ?1, '%'))" +
             " OR LOWER(m.word2) LIKE LOWER(CONCAT('%', ?1, '%'))" +
             " OR LOWER(m.language) LIKE LOWER(CONCAT('%', ?1, '%'))" +
-            ") AND m.user.id = ?2")
+            ") AND m.userid = ?2")
     List<Minpair> findAllByKeywordAndUserId(String keyword, String userId, Pageable pageable);
 
     @Query("SELECT COUNT(m) FROM Minpair m WHERE " +
@@ -27,7 +27,7 @@ public interface MinpairRepo extends JpaRepository<Minpair, String> {
             " LOWER(m.word1) LIKE LOWER(CONCAT('%', ?1, '%')) " +
             " OR LOWER(m.word2) LIKE LOWER(CONCAT('%', ?1, '%'))" +
             " OR LOWER(m.language) LIKE LOWER(CONCAT('%', ?1, '%'))" +
-            ") AND m.user.id = ?2")
+            ") AND m.userid = ?2")
     Long countByKeywordAndUserId(String keyword, String userId);
 
     @Query("SELECT m FROM Minpair m WHERE " +
