@@ -56,8 +56,6 @@ public class MinpairService {
     @Transactional(rollbackFor = Exception.class)
     public void delete(String minpairId) throws Exception{
         Minpair minpair = minpairRepo.findOne(minpairId);
-        fileService.delete(minpair.getAudioPath1());
-        fileService.delete(minpair.getAudioPath2());
         minpairRepo.delete(minpairId);
 
         minpairFileRepo.deleteAllByMinpairId(minpairId);

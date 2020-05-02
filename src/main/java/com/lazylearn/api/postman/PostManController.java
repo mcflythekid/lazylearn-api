@@ -2,6 +2,7 @@ package com.lazylearn.api.postman;
 
 import com.lazylearn.api.clone.dto.VocabdeckCloneDto;
 import com.lazylearn.api.clone.service.DeckCloneService;
+import com.lazylearn.api.clone.service.MinpairCloneService;
 import com.lazylearn.api.clone.service.VocabCloneService;
 import com.lazylearn.api.config.exception.AppException;
 import com.lazylearn.api.outdto.JSON;
@@ -35,6 +36,9 @@ public class PostManController {
     @Autowired
     private VocabCloneService vocabCloneService;
 
+    @Autowired
+    private MinpairCloneService minpairCloneService;
+
     private static final String TOKEN = "dkmmcc699";
 
     private void validate(HttpServletRequest request){
@@ -62,6 +66,13 @@ public class PostManController {
     public JSON cloneVocabDeck(HttpServletRequest request, @RequestParam String vocabdeck_id) throws IOException {
         validate(request);
         vocabCloneService.cloneDeck(vocabdeck_id);
+        return JSON.ok("Dispatched! Don't know result");
+    }
+
+    @PostMapping("/clone-minpair-to-all-user")
+    public JSON cloneMinpair(HttpServletRequest request, @RequestParam String minpair_id) throws IOException {
+        validate(request);
+        minpairCloneService.cloneMinpair(minpair_id);
         return JSON.ok("Dispatched! Don't know result");
     }
 }

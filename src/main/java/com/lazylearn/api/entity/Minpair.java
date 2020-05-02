@@ -29,12 +29,12 @@ public class Minpair extends AbstractEntity implements HasUserId{
         return String.format("/minpair_file/%s/%s", getUserId(), getId());
     }
 
+    private String cloneableid;
+
     private String word1;
     private String word2;
     private String phonetic1;
     private String phonetic2;
-    private String audioPath1;
-    private String audioPath2;
     private String language;
 
 

@@ -51,4 +51,6 @@ public interface MinpairRepo extends JpaRepository<Minpair, String> {
             " OR LOWER(m.user.email) LIKE LOWER(CONCAT('%', ?1, '%'))" +
             ")")
     Long countByKeyword(String keyword);
+
+    Long countByUser_IdAndCloneableid(String userId, String cloneableId);
 }
