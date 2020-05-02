@@ -14,4 +14,6 @@ import java.util.List;
 public interface VocabdeckRepo extends JpaRepository<Vocabdeck, String> {
     List<Vocabdeck> findAllByUserIdAndNameContainingIgnoreCase(String userId, String name, Pageable pageable);
     Long countByUserIdAndNameContainingIgnoreCase(String userId, String name);
+
+    Long countByUserIdAndCloneableid(String userId, String cloneableId);
 }

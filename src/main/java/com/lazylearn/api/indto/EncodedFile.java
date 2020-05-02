@@ -1,10 +1,16 @@
 package com.lazylearn.api.indto;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.NotBlank;
 
 /**
  * @author McFly the Kid
  */
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 public class EncodedFile {
 
     @NotBlank

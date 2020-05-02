@@ -14,6 +14,8 @@ import java.util.List;
 @Repository
 public interface VocabRepo extends JpaRepository<Vocab, String> {
 
+    List<Vocab> findAllByVocabdeckId(String vocabdeckId);
+
     @Query("SELECT v FROM Vocab v WHERE v.vocabdeckId = ?1 AND" +
             " (LOWER(v.word) LIKE LOWER(CONCAT('%', ?2, '%')) " +
             "OR LOWER(v.phonetic) LIKE LOWER(CONCAT('%', ?2, '%'))" +

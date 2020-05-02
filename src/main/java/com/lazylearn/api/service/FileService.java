@@ -1,7 +1,9 @@
 package com.lazylearn.api.service;
 
 import com.lazylearn.api.config.env.WiredEnv;
+import com.lazylearn.api.indto.EncodedFile;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -41,5 +43,14 @@ public class FileService {
 
     public void rmDirIfExists(String dirPath) throws IOException {
         FileUtils.deleteDirectory(new File(env.getFileUpload() + dirPath));
+    }
+
+    public EncodedFile readFileFromPath(String path) throws IOException {
+        String ext = FilenameUtils.getExtension(path);
+
+        byte[] fileContent = FileUtils.readFileToByteArray(new File(env.getFileUpload() + path));
+        String content = Base64.getEncoder().encodeToString(fileContent);
+
+        return EncodedFile.builder().ext(ext).content(content).build();
     }
 }

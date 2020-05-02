@@ -1,6 +1,8 @@
 package com.lazylearn.api.postman;
 
+import com.lazylearn.api.clone.dto.VocabdeckCloneDto;
 import com.lazylearn.api.clone.service.DeckCloneService;
+import com.lazylearn.api.clone.service.VocabCloneService;
 import com.lazylearn.api.config.exception.AppException;
 import com.lazylearn.api.outdto.JSON;
 import com.lazylearn.api.service.ImportService;
@@ -30,6 +32,9 @@ public class PostManController {
     @Autowired
     private DeckCloneService deckCloneService;
 
+    @Autowired
+    private VocabCloneService vocabCloneService;
+
     private static final String TOKEN = "dkmmcc699";
 
     private void validate(HttpServletRequest request){
@@ -50,6 +55,13 @@ public class PostManController {
     public JSON cloneDeck(HttpServletRequest request, @RequestParam String deck_id) throws IOException {
         validate(request);
         deckCloneService.cloneDeck(deck_id);
+        return JSON.ok("Done!");
+    }
+
+    @PostMapping("/clone-vocabdeck-to-all-user")
+    public JSON cloneVocabDeck(HttpServletRequest request, @RequestParam String vocabdeck_id) throws IOException {
+        validate(request);
+        vocabCloneService.cloneDeck(vocabdeck_id);
         return JSON.ok("Done!");
     }
 }

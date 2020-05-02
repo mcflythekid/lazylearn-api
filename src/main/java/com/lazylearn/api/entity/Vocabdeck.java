@@ -27,7 +27,18 @@ public class Vocabdeck extends AbstractEntity implements HasUserId{
     private Integer archived;
     private String language;
 
+    private String cloneableid;
+
     //////////////////////////////////////////////////////////////////////////
+
+
+    public String getCloneableid() {
+        return cloneableid;
+    }
+
+    public void setCloneableid(String cloneableid) {
+        this.cloneableid = cloneableid;
+    }
 
     public String getLanguage() {
         return language;
