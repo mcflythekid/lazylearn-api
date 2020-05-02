@@ -1,9 +1,13 @@
 package com.lazylearn.api.config;
 
 import com.lazylearn.api.config.exception.AppException;
+import com.lazylearn.api.util.SecurityUtils;
+import org.apache.commons.lang3.ArrayUtils;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import static com.lazylearn.api.util.SecurityUtils.getCurrentUserLogin;
 
 /**
  * @author McFly the Kid
@@ -66,7 +70,22 @@ public final class Consts {
         public static final AppException PROTECTED_VOCABDECK = new AppException(403, "VOCABDECK protected");
         public static final AppException PROTECTED_MINPAIR = new AppException(403, "MINPAIR protected");
         public static final AppException PROTECTED_TOPIC = new AppException(403, "TOPIC protected");
+    }
 
+    public static class Admin {
+        static String[] ADMINS = new String[]{
+                "20180204ndTJOOObNawFuTrrANnzZndoZyjjbK" //odopoc
+        };
+        public static boolean isAdmin(){
+            String username = "";
+            try {
+                username = getCurrentUserLogin();
+            } catch (java.lang.Exception exception) {  }
+            if (ArrayUtils.contains(ADMINS, username)){
+                return true;
+            }
+            return false;
+        }
     }
 
 }

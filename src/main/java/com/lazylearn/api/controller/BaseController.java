@@ -110,6 +110,11 @@ public abstract class BaseController {
     }
 
     private void authorizeObject(HasUserId hasUserId) throws Exception {
+        if (Consts.Admin.isAdmin()){
+            // HIJACK admin
+            return;
+        }
+
         if (hasUserId == null){
             throw Consts.Exception.NOT_FOUND;
         }

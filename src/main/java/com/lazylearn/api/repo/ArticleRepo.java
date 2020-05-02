@@ -33,6 +33,10 @@ public interface ArticleRepo extends JpaRepository<Article, String> {
             "(" +
             " LOWER(m.name) LIKE LOWER(CONCAT('%', ?1, '%'))" +
             " OR LOWER(m.content) LIKE LOWER(CONCAT('%', ?1, '%'))" +
+            " OR LOWER(m.url) LIKE LOWER(CONCAT('%', ?1, '%'))" +
+            " OR LOWER(m.user.id) LIKE LOWER(CONCAT('%', ?1, '%'))" +
+            " OR LOWER(m.user.fullName) LIKE LOWER(CONCAT('%', ?1, '%'))" +
+            " OR LOWER(m.user.email) LIKE LOWER(CONCAT('%', ?1, '%'))" +
             ")")
     List<Article> findAllByKeyword(String keyword, Pageable pageable);
 
@@ -40,6 +44,10 @@ public interface ArticleRepo extends JpaRepository<Article, String> {
             " (" +
             " LOWER(m.name) LIKE LOWER(CONCAT('%', ?1, '%')) " +
             " OR LOWER(m.content) LIKE LOWER(CONCAT('%', ?1, '%'))" +
+            " OR LOWER(m.url) LIKE LOWER(CONCAT('%', ?1, '%'))" +
+            " OR LOWER(m.user.id) LIKE LOWER(CONCAT('%', ?1, '%'))" +
+            " OR LOWER(m.user.fullName) LIKE LOWER(CONCAT('%', ?1, '%'))" +
+            " OR LOWER(m.user.email) LIKE LOWER(CONCAT('%', ?1, '%'))" +
             ")")
     Long countByKeyword(String keyword);
 }

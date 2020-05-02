@@ -16,7 +16,7 @@ public final class SecurityUtils {
     }
 
     /**
-     * Get the login of the current user.
+     * Get the login of the current user. userid
      *
      * @return the login of the current user
      */
