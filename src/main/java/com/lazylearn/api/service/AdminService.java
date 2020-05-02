@@ -101,16 +101,4 @@ public class AdminService {
 
         return JSON.ok(count + " Minpairs refreshed");
     }
-
-    public JSON massiveImportDeck(String templateName) throws IOException {
-        final String DATE_FORMAT = "yyyyMMdd HHmmss";
-        String trackingId = templateName + " " + new SimpleDateFormat(DATE_FORMAT).format(new Date());
-
-        List<User> userList = userRepo.findAll();
-        for(User user : userList){
-            deckService.importDeck(templateName, user.getId(), trackingId);
-        }
-        return JSON.ok(String.format("Decks imported. Affected user: %s. Tracking id: %s", userList.size(),
-                trackingId));
-    }
 }

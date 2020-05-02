@@ -1,5 +1,6 @@
 package com.lazylearn.api.service;
 
+import com.lazylearn.api.clone.service.CloneService;
 import com.lazylearn.api.config.Consts;
 import com.lazylearn.api.config.env.WiredEnv;
 import com.lazylearn.api.config.exception.AppException;
@@ -62,6 +63,9 @@ public class AuthService {
     @Autowired
     private DeckService deckService;
 
+    @Autowired
+    private CloneService cloneService;
+
     @Transactional(rollbackFor = Exception.class)
     public void forgetPassword(ForgetPasswordIn in) {
         User user = userRepo.findByEmail(in.getEmail());
@@ -104,7 +108,7 @@ public class AuthService {
         user.setIpAddress(clientData.getIpAddress());
 
         user = userRepo.save(user);
-        createTemplateDeck(user.getId());
+        cloneService.cloneAllAsync(user.getId());
 
         authorityService.createAuthority(user.getId(), Consts.AUTHORITY_DEFAULT);
 
@@ -138,7 +142,7 @@ public class AuthService {
             user.setFacebookId(fbUser.getId());
             user.setFullName(fbUser.getName());
             user = userRepo.save(user);
-            createTemplateDeck(user.getId());
+            cloneService.cloneAllAsync(user.getId());
 
             authorityService.createAuthority(user.getId(), Consts.AUTHORITY_DEFAULT);
             authorityService.createAuthority(user.getId(), Consts.AUTHORITY_FACEBOOK);
@@ -192,10 +196,6 @@ public class AuthService {
         return String.format("<a href='%s'>Please click here</a>", url);
     }
 
-    private Deck createTemplateDeck(String userId) throws IOException {
-        final String TEMPLATE_ID = "/deck/3000.txt";
-        return deckService.importDeck(TEMPLATE_ID, userId);
-    }
 
     public LoginOut forceLogin(String userId, ClientData clientData) {
         User user = userRepo.findOne(userId);

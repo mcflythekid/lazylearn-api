@@ -1,6 +1,5 @@
 package com.lazylearn.api.postman;
 
-import com.lazylearn.api.clone.dto.VocabdeckCloneDto;
 import com.lazylearn.api.clone.service.DeckCloneService;
 import com.lazylearn.api.clone.service.MinpairCloneService;
 import com.lazylearn.api.clone.service.VocabCloneService;
@@ -14,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
-
 import java.io.IOException;
 
 import static org.apache.commons.lang3.StringUtils.isBlank;

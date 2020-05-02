@@ -9,7 +9,6 @@ import com.lazylearn.api.outdto.BootstraptableOut;
 import com.lazylearn.api.repo.CardRepo;
 import com.lazylearn.api.repo.DeckRepo;
 import com.lazylearn.api.util.FileUtils;
-import com.lazylearn.api.util.ResouresUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -108,20 +107,10 @@ public class DeckService {
         return deckRepo.save(deck);
     }
 
-    private Deck importDeck(String deckName, List<String> cardLines, String userId, String trackingId){
+    private Deck importDeckFromLines(String deckName, List<String> cardLines, String userId, String trackingId){
         Deck deck = create(deckName, userId, trackingId);
         cardService.importCards(cardLines, deck);
         return deck;
-    }
-
-    @Transactional(rollbackFor = Exception.class)
-    public Deck importDeck(String resourceName, String userId, String trackingId) throws IOException {
-        List<String> lines = ResouresUtils.readLineByLine(resourceName);
-
-        String deckName = lines.get(0);
-        lines.remove(0);
-
-        return importDeck(deckName, lines, userId, trackingId);
     }
 
     @Transactional(rollbackFor = Exception.class)
@@ -131,12 +120,7 @@ public class DeckService {
         String deckName = lines.get(0);
         lines.remove(0);
 
-        return importDeck(deckName, lines, userId, trackingId);
-    }
-
-    @Transactional(rollbackFor = Exception.class)
-    public Deck importDeck(String resourceName, String userId) throws IOException {
-        return importDeck(resourceName, userId, "");
+        return importDeckFromLines(deckName, lines, userId, trackingId);
     }
 
     public Deck createOneForAllDeck(){

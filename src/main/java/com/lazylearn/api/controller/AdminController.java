@@ -1,18 +1,14 @@
 package com.lazylearn.api.controller;
 
-import javax.validation.Valid;
-
+import com.lazylearn.api.indto.SearchIn;
+import com.lazylearn.api.outdto.BootstraptableOut;
+import com.lazylearn.api.outdto.JSON;
+import com.lazylearn.api.service.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import com.lazylearn.api.indto.BasicIn;
-import com.lazylearn.api.indto.SearchIn;
-import com.lazylearn.api.outdto.BootstraptableOut;
-import com.lazylearn.api.outdto.JSON;
-import com.lazylearn.api.service.AdminService;
 
 /**
  * @author McFly the Kid
@@ -42,10 +38,5 @@ public class AdminController extends BaseController {
     @PostMapping("/refresh-all-minpair")
     public JSON refreshAllMinpair() throws Exception {
         return adminService.refreshAllMinpair();
-    }
-
-    @PostMapping("/massive-import-deck")
-    public JSON massiveImportDeck(@Valid @RequestBody BasicIn payload) throws Exception {
-        return adminService.massiveImportDeck(payload.getData());
     }
 }
