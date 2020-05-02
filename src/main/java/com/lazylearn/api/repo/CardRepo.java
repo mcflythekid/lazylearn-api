@@ -33,7 +33,19 @@ public interface CardRepo extends JpaRepository<Card, String> {
     List<Card> findAllByDeckIdAndArchived(String deckId, Integer archived);
 
     List<Card> findAllByDeckIdAndArchivedAndWakeupOnBefore(String deckId, Integer archived, Date wakeupOn);
-    List<Card> findAllByUserIdAndArchivedAndWakeupOnBefore(String userId, Integer archived, Date wakeupOn);
+
+
+    @Query(nativeQuery = true, value =
+            " SELECT * FROM card c " +
+            " JOIN deck d ON d.id = c.deckid AND d.type IN ('default', 'vocab')" +
+            " WHERE " +
+            "     c.userid = ?1" +
+            " AND c.archived = 0" +
+            " AND c.wakeupOn < ?2" +
+            " ")
+    List<Card> findAllByUserIdAndArchivedAndWakeupOnBefore(String userId, Date wakeupOn);
+
+
 
     Long countAllByDeckIdAndStepAndWakeupOnBeforeAndArchived(String deckId, Integer step, Date wakeupOn, Integer archived);
     Long countAllByUserIdAndStepAndWakeupOnBeforeAndArchived(String userId, Integer step, Date wakeupOn, Integer archived);
