@@ -3,6 +3,7 @@ package com.lazylearn.api.entity;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.lazylearn.api.config.Consts;
+import com.lazylearn.api.program.Sm2Program;
 import com.lazylearn.api.util.CustomDateUtils;
 import org.apache.commons.lang3.time.DateUtils;
 
@@ -40,7 +41,7 @@ Card extends AbstractEntity implements HasUserId{
 
     @PrePersist
     public void prePersist(){
-        setSm2Ef(Consts.SM2_EF_INIT);
+        setSm2Ef(Sm2Program.SM2_EF_INIT);
         setWakeupOn(new Date());
         setStep(Consts.STEP_BEGIN);
         setArchived(Consts.CARDDECK_UNARCHIVED);

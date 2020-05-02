@@ -15,16 +15,23 @@ import java.util.Date;
 @Service(Consts.PROGRAM__SM2)
 public class Sm2Program implements Program {
 
+    public static final Double SM2_EF_MIN = 1.3D;
+    public static final Double SM2_EF_INIT = 2.5D;
+    public static final Integer[] SM2_SPACE_STEP = new Integer[]{0, 1, 6};
+    public static final Integer[] SM2_ALLOWS_CORRECT_QUALITY = new Integer[]{3,4,5};
+    public static final Integer SM2_INCORRECT_QUALITY = 0;
+    public static final Integer SM2_CORRECT_QUALITY_DEFAULT = 5;
+
     @Autowired
     private CardRepo cardRepo;
-
+    
     private Double calculateAndControlEFactor(Double oldEFactor, Integer quality){
-        if (!ArrayUtils.contains(Consts.SM2_ALLOWS_CORRECT_QUALITY, quality)){
+        if (!ArrayUtils.contains(SM2_ALLOWS_CORRECT_QUALITY, quality)){
             throw new AppException(401, "Not allowed setQuality value: " + quality);
         }
         Double newEFaqctor = oldEFactor - 0.8 + 0.28*quality - 0.02*quality*quality;
-        if (newEFaqctor < Consts.SM2_EF_MIN){
-            newEFaqctor = Consts.SM2_EF_MIN;
+        if (newEFaqctor < SM2_EF_MIN){
+            newEFaqctor = SM2_EF_MIN;
         }
         return newEFaqctor;
     }
@@ -45,7 +52,7 @@ public class Sm2Program implements Program {
             card.setLearnedOn(new Date());
         } else {
             final Integer newStep = card.getStep() + 1;
-            final Integer newSpace = newStep <= 2 ? Consts.SM2_SPACE_STEP[newStep] : Long.valueOf(Math.round(newEFactor * card.getSm2LatestSpace())).intValue();
+            final Integer newSpace = newStep <= 2 ? SM2_SPACE_STEP[newStep] : Long.valueOf(Math.round(newEFactor * card.getSm2LatestSpace())).intValue();
             card.setSm2Ef(newEFactor);
             card.setSm2LatestSpace(newSpace);
             card.setLearnedOn(new Date());

@@ -14,12 +14,7 @@ import static com.lazylearn.api.util.SecurityUtils.getCurrentUserLogin;
  */
 public final class Consts {
 
-    public static final Double SM2_EF_MIN = 1.3D;
-    public static final Double SM2_EF_INIT = 2.5D;
-    public static final Integer[] SM2_SPACE_STEP = new Integer[]{0, 1, 6};
-    public static final Integer[] SM2_ALLOWS_CORRECT_QUALITY = new Integer[]{3,4,5};
-    public static final Integer SM2_INCORRECT_QUALITY = 0;
-    public static final Integer SM2_CORRECT_QUALITY_DEFAULT = 5;
+
 
     public static final String PARAM_JSON_DATETIMEFORMAT = "yyyy-MM-dd HH:mm:ss";
     public static final String PARAM_JSON_TIMEZONE = "GMT+7";
