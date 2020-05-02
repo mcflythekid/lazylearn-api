@@ -23,7 +23,7 @@ public class ProgramService {
     }
 
     public String getLabel(int stepValue){
-        return "S" + stepValue;
+        return "Deck #" + (stepValue + 1);
     }
 
 }
