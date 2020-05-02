@@ -66,7 +66,7 @@ public class MinpairService {
 
     @Transactional(rollbackFor = Exception.class)
     public Deck updateCardAndDeckCallBack(String minpairId) throws Exception{
-        final String NAME_REFIX = "Minpair #";
+        final String NAME_REFIX = "All Minpair #";
         Minpair minpair = minpairRepo.findOne(minpairId);
 
         Deck deck = deckRepo.findByMinpairLanguageAndUserId(minpair.getLanguage(), minpair.getUserId());
