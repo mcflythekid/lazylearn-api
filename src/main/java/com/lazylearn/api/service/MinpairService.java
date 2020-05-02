@@ -44,7 +44,7 @@ public class MinpairService {
     @Transactional(rollbackFor = Exception.class)
     public Minpair create(MinpairCreateIn in, String userId) throws Exception{
         Minpair minpair = new Minpair();
-        minpair.setUserid(userId);
+        minpair.setUserId(userId);
         BeanUtils.copyProperties(in, minpair);
         minpair = minpairRepo.save(minpair);
 

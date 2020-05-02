@@ -23,10 +23,10 @@ public class Minpair extends AbstractEntity implements HasUserId{
 
     @JsonIgnore
     public String getDirPath(){
-        if (isBlank(userid) || isBlank(getId())){
+        if (isBlank(getUserId()) || isBlank(getId())){
             throw new RuntimeException("userid / id is blank, please init them first");
         }
-        return String.format("/minpair_file/%s/%s", userid, getId());
+        return String.format("/minpair_file/%s/%s", getUserId(), getId());
     }
 
     private String word1;
@@ -36,10 +36,22 @@ public class Minpair extends AbstractEntity implements HasUserId{
     private String audioPath1;
     private String audioPath2;
     private String language;
-    private String userid;
 
-    @Override
-    public String getUserId() {
-        return userid;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "userid")
+    private User user;
+
+    public String getUserId(){
+        return getUser() == null ? null : getUser().getId();
+    }
+
+    public void setUserId(String userId){
+        if (getUser() == null){
+            setUser(new User());
+        }
+        if (getUser().getId() == null){
+            getUser().setId(userId);
+        }
     }
 }
