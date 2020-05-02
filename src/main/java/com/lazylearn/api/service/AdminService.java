@@ -88,20 +88,6 @@ public class AdminService {
         return JSON.ok(count + " Vocabdecks refreshed");
     }
 
-    public JSON refreshAllTopic() throws Exception{
-        final int SIZE = 50;
-        long count = articleRepo.count();
-        Double totalPage = Math.ceil(count * 1.0 / SIZE);
-        for (int page = 0; page < totalPage; page++){
-            List<Article> topics = articleRepo.findAll(new PageRequest(page, SIZE)).getContent();
-            for (Article topic : topics){
-                articleService.refreshCard(topic.getId());
-            }
-        }
-
-        return JSON.ok(count + " Topics refreshed");
-    }
-
     public JSON refreshAllMinpair() throws Exception{
         final int SIZE = 50;
         long count = minpairRepo.count();

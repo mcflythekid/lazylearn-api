@@ -39,11 +39,6 @@ public class AdminController extends BaseController {
         return adminService.refreshAllVocabdeck();
     }
 
-    @PostMapping("/refresh-all-topic")
-    public JSON refreshAllTopic() throws Exception {
-        return adminService.refreshAllTopic();
-    }
-
     @PostMapping("/refresh-all-minpair")
     public JSON refreshAllMinpair() throws Exception {
         return adminService.refreshAllMinpair();
