@@ -55,13 +55,13 @@ public class PostManController {
     public JSON cloneDeck(HttpServletRequest request, @RequestParam String deck_id) throws IOException {
         validate(request);
         deckCloneService.cloneDeck(deck_id);
-        return JSON.ok("Done!");
+        return JSON.ok("Dispatched! Don't know result");
     }
 
     @PostMapping("/clone-vocabdeck-to-all-user")
     public JSON cloneVocabDeck(HttpServletRequest request, @RequestParam String vocabdeck_id) throws IOException {
         validate(request);
         vocabCloneService.cloneDeck(vocabdeck_id);
-        return JSON.ok("Done!");
+        return JSON.ok("Dispatched! Don't know result");
     }
 }
