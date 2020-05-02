@@ -98,7 +98,7 @@ public class AuthService {
     }
 
     @Transactional(rollbackFor = Exception.class)
-    public LoginOut register(RegisterIn registerIn, ClientData clientData) throws IOException {
+    public LoginOut register(RegisterIn registerIn, ClientData clientData) throws Exception {
         if (userRepo.findByEmail(registerIn.getEmail()) != null) throw new AppException(HttpStatus.CONFLICT.value(), "Email address already exists");
 
         User user = new User();
@@ -108,7 +108,7 @@ public class AuthService {
         user.setIpAddress(clientData.getIpAddress());
 
         user = userRepo.save(user);
-        cloneService.cloneAllAsync(user.getId());
+        cloneService.cloneAll(user.getId());
 
         authorityService.createAuthority(user.getId(), Consts.AUTHORITY_DEFAULT);
 
@@ -131,7 +131,7 @@ public class AuthService {
     }
 
     @Transactional(rollbackFor = Exception.class)
-    public LoginOut loginFacebook(LoginFacebookIn in, ClientData clientData) throws IOException {
+    public LoginOut loginFacebook(LoginFacebookIn in, ClientData clientData) throws Exception {
         FacebookClient facebookClient = new DefaultFacebookClient(in.getAccessToken(), Version.VERSION_3_0);
         com.restfb.types.User fbUser = facebookClient.fetchObject("me",  com.restfb.types.User.class,Parameter.with("fields", "name,id"));
 
@@ -142,7 +142,7 @@ public class AuthService {
             user.setFacebookId(fbUser.getId());
             user.setFullName(fbUser.getName());
             user = userRepo.save(user);
-            cloneService.cloneAllAsync(user.getId());
+            cloneService.cloneAll(user.getId());
 
             authorityService.createAuthority(user.getId(), Consts.AUTHORITY_DEFAULT);
             authorityService.createAuthority(user.getId(), Consts.AUTHORITY_FACEBOOK);

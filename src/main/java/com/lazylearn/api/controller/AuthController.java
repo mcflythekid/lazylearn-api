@@ -44,7 +44,7 @@ public class AuthController extends BaseController{
     }
 
     @PostMapping("/register")
-    public LoginOut register(@Valid @RequestBody RegisterIn in) throws IOException {
+    public LoginOut register(@Valid @RequestBody RegisterIn in) throws Exception {
         return authService.register(in, getClientData());
     }
 
@@ -59,7 +59,7 @@ public class AuthController extends BaseController{
     }
 
     @PostMapping("/login-facebook")
-    public LoginOut loginFacebook(@Valid @RequestBody LoginFacebookIn in) throws IOException {
+    public LoginOut loginFacebook(@Valid @RequestBody LoginFacebookIn in) throws Exception {
         return authService.loginFacebook(in, getClientData());
     }
 
