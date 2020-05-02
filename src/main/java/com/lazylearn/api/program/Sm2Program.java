@@ -36,6 +36,11 @@ public class Sm2Program implements Program {
         return newEFaqctor;
     }
 
+    /**
+     *  CORRECT
+     * @param card
+     * @param quality
+     */
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void setQuality(Card card, Integer quality) {
@@ -46,7 +51,7 @@ public class Sm2Program implements Program {
 
         final Double newEFactor = calculateAndControlEFactor(card.getSm2Ef(), quality);
 
-        if (quality == 3){
+        if (quality == 3){ // Min is 3, max is 5. No 0, 1, 2.
             card.setSm2Ef(newEFactor);
             card.setWakeupOn(new Date());
             card.setLearnedOn(new Date());
@@ -63,10 +68,18 @@ public class Sm2Program implements Program {
         cardRepo.save(card);
     }
 
+    /**
+     * INCORRECT
+     *
+     * If the quality response was lower than 3 then start repetitions for the item from the beginning
+     * without changing the E-Factor (i.e. use intervals I(1), I(2) etc. as if the item was memorized anew).
+     * @param card
+     */
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void setIncorrect(Card card) {
         Date now = new Date();
+        // no change sm2ef
         card.setSm2LatestSpace(0);
         card.setLearnedOn(now);
         card.setWakeupOn(now);
