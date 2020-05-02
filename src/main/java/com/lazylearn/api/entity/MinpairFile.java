@@ -1,10 +1,13 @@
 package com.lazylearn.api.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.lazylearn.api.indto.EncodedFile;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+
+import static org.apache.commons.lang3.StringUtils.isBlank;
 
 /**
  * @author McFly the Kid
@@ -15,32 +18,32 @@ import javax.persistence.*;
 @Setter
 public class MinpairFile extends AbstractEntity implements HasUserId{
 
+    /**
+     * Should be called after saved entity
+     * @param encodedFile
+     */
     @JsonIgnore
-    public void generateAudioPaths(){
-        setAudioPath(String.format("/minpair_file/%s/%s/%s/%s.mp3", getUserId(), getMinpairId(), getSide(), getId()));
+    public void generateAudioPaths(Minpair minpair, EncodedFile encodedFile){
+        if (isBlank(getId())){
+            throw new RuntimeException("Entity not saved before generate audio path");
+        }
+        setAudioPath(String.format("%s/%s/%s.%s", minpair.getDirPath(), getSide(), getId(), encodedFile.getExt()));
     }
 
     private String name;
+
+    @Column(name = "minpair_id")
     private String minpairId;
-    private Integer side; // 0: left ; 1: right
+
+    private Integer side; // 1: left ; 2: right
+
+    @Column(name = "audio_path")
     private String audioPath;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "userid")
-    private User user;
+    private String userid;
 
-    public String getUserId(){
-        return getUser() == null ? null : getUser().getId();
+    @Override
+    public String getUserId() {
+        return userid;
     }
-
-    public void setUserId(String userId){
-        if (getUser() == null){
-            setUser(new User());
-        }
-        if (getUser().getId() == null){
-            getUser().setId(userId);
-        }
-    }
-
-
 }

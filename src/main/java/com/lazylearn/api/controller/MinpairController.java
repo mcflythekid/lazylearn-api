@@ -1,15 +1,19 @@
 package com.lazylearn.api.controller;
 
 import com.lazylearn.api.entity.Minpair;
+import com.lazylearn.api.entity.MinpairFile;
 import com.lazylearn.api.indto.SearchIn;
 import com.lazylearn.api.indto.minpair.MinpairCreateIn;
 import com.lazylearn.api.outdto.BootstraptableOut;
 import com.lazylearn.api.outdto.JSON;
+import com.lazylearn.api.outdto.MinpairLearnOut;
+import com.lazylearn.api.repo.MinpairFileRepo;
 import com.lazylearn.api.service.MinpairService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 /**
  * @author McFly the Kid
@@ -20,6 +24,9 @@ public class MinpairController extends BaseController{
 
     @Autowired
     private MinpairService minpairService;
+
+    @Autowired
+    private MinpairFileRepo minpairFileRepo;
 
     @PostMapping("/create")
     public Object create(@Valid @RequestBody MinpairCreateIn in) throws Exception{
@@ -43,7 +50,17 @@ public class MinpairController extends BaseController{
     }
 
     @GetMapping("/get/{minpairId}")
-    public Minpair create(@PathVariable String minpairId) throws Exception{
+    public Minpair get(@PathVariable String minpairId) throws Exception{
         return authorizeMinpair(minpairId);
+    }
+
+    @GetMapping("/get-learn/{minpairId}")
+    public MinpairLearnOut getLearn(@PathVariable String minpairId) throws Exception{
+        Minpair minpair = authorizeMinpair(minpairId);
+        return MinpairLearnOut.builder()
+                .minpair(minpair)
+                .left(minpairFileRepo.findAllByMinpairIdAndSide(minpairId, 1))
+                .right(minpairFileRepo.findAllByMinpairIdAndSide(minpairId, 2))
+                .build();
     }
 }
