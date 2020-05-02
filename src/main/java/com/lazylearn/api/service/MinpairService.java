@@ -48,8 +48,8 @@ public class MinpairService {
         minpair.generateAudioPaths();
         minpairRepo.save(minpair);
 
-        fileService.upload(minpair.getAudioPath1(), in.getAudio1());
-        fileService.upload(minpair.getAudioPath2(), in.getAudio2());
+//        fileService.upload(minpair.getAudioPath1(), in.getAudio1());
+//        fileService.upload(minpair.getAudioPath2(), in.getAudio2());
 
         updateCardAndDeckCallBack(minpair.getId());
 

@@ -1,19 +1,29 @@
 package com.lazylearn.api.indto.minpair;
 
+import com.lazylearn.api.indto.EncodedFile;
 import org.hibernate.validator.constraints.NotBlank;
 
+import javax.validation.constraints.AssertTrue;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
+import java.util.List;
 
 /**
  * @author McFly the Kid
  */
 public class MinpairCreateIn {
 
-    @NotBlank
-    private String audio1;
+    @NotNull
+    private List<EncodedFile> audioFiles1;
 
-    @NotBlank
-    private String audio2;
+    @NotNull
+    private List<EncodedFile> audioFiles2;
+
+    @AssertTrue(message = "Audio files is required")
+    public boolean isValidFiles(){
+        return audioFiles1 != null && audioFiles2 != null
+                && !audioFiles1.isEmpty() && !audioFiles2.isEmpty();
+    }
 
     @NotBlank
     private String word1;
@@ -30,22 +40,6 @@ public class MinpairCreateIn {
     @NotBlank
     @Pattern(regexp = "^([a-z]{2,10})$", message = "Invalid language name. Allows: a-z")
     private String language;
-
-    public String getAudio1() {
-        return audio1;
-    }
-
-    public void setAudio1(String audio1) {
-        this.audio1 = audio1;
-    }
-
-    public String getAudio2() {
-        return audio2;
-    }
-
-    public void setAudio2(String audio2) {
-        this.audio2 = audio2;
-    }
 
     public String getWord1() {
         return word1;
