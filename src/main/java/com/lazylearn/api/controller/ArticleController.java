@@ -82,9 +82,9 @@ public class ArticleController extends BaseController{
         return ImmutableMap.of("name", articleList.get(0).getName(), "content", articleList.get(0).getContent());
     }
 
-    @GetMapping("/public/randoms")
-    public List<RandomTopicDto> publicRandoms(){
-        int size = 3;
+    @GetMapping("/public/randoms/{slug}")
+    public List<RandomTopicDto> publicRandoms(@PathVariable String slug){
+        int size = 4;
         List<Article> selected = null;
         List<Article> articleList = articleRepo.findAllSlugAndName();
         Collections.shuffle(articleList);
@@ -96,6 +96,9 @@ public class ArticleController extends BaseController{
 
         List<RandomTopicDto> output = new ArrayList<>();
         for (Article article : selected){
+            if (article.getSlug().equals(slug)){
+                continue;
+            }
             output.add(RandomTopicDto.builder()
                 .name(article.getName())
                 .slug(article.getSlug())
