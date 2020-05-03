@@ -28,6 +28,8 @@ public class Article extends AbstractEntity implements HasUserId{
 
     private String url;
 
+    private String slug;
+
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "userid")
     private User user;
@@ -43,6 +45,14 @@ public class Article extends AbstractEntity implements HasUserId{
         if (getUser().getId() == null){
             getUser().setId(userId);
         }
+    }
+
+    public String getSlug() {
+        return slug;
+    }
+
+    public void setSlug(String slug) {
+        this.slug = slug;
     }
 
     public User getUser() {

@@ -2,7 +2,10 @@ package com.lazylearn.api.controller;
 
 import javax.validation.Valid;
 
+import com.google.common.collect.ImmutableMap;
 import com.lazylearn.api.indto.article.ArticleRenameIn;
+import com.lazylearn.api.outdto.RandomTopicDto;
+import com.lazylearn.api.repo.ArticleRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,6 +21,11 @@ import com.lazylearn.api.outdto.BootstraptableOut;
 import com.lazylearn.api.outdto.JSON;
 import com.lazylearn.api.service.ArticleService;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+
 /**
  * @author McFly the Kid
  */
@@ -27,6 +35,9 @@ public class ArticleController extends BaseController{
 
     @Autowired
     private ArticleService articleService;
+
+    @Autowired
+    private ArticleRepo articleRepo;
 
     @PostMapping("/create")
     public Object create(@Valid @RequestBody ArticleCreateIn in) throws Exception{
@@ -60,5 +71,36 @@ public class ArticleController extends BaseController{
     @GetMapping("/get/{articleId}")
     public Article create(@PathVariable String articleId) throws Exception{
         return authorizeArticle(articleId);
+    }
+
+    @GetMapping("/public/{slug}")
+    public Map publicTopicRead(@PathVariable String slug){
+        List<Article> articleList = articleRepo.findAllBySlug(slug);
+        if (articleList.isEmpty()){
+            return null;
+        }
+        return ImmutableMap.of("name", articleList.get(0).getName(), "content", articleList.get(0).getContent());
+    }
+
+    @GetMapping("/public/randoms")
+    public List<RandomTopicDto> publicRandoms(){
+        int size = 3;
+        List<Article> selected = null;
+        List<Article> articleList = articleRepo.findAllSlugAndName();
+        Collections.shuffle(articleList);
+        if (articleList.size() <= size){
+            selected = articleList;
+        } else {
+            selected = articleList.subList(0, size);
+        }
+
+        List<RandomTopicDto> output = new ArrayList<>();
+        for (Article article : selected){
+            output.add(RandomTopicDto.builder()
+                .name(article.getName())
+                .slug(article.getSlug())
+            .build());
+        }
+        return output;
     }
 }

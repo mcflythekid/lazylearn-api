@@ -50,4 +50,9 @@ public interface ArticleRepo extends JpaRepository<Article, String> {
             " OR LOWER(m.user.email) LIKE LOWER(CONCAT('%', ?1, '%'))" +
             ")")
     Long countByKeyword(String keyword);
+
+    List<Article> findAllBySlug(String slug);
+
+    @Query(nativeQuery = true, value = "select * FROM article Where slug is not null")
+    List<Article> findAllSlugAndName();
 }

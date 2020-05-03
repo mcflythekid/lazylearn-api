@@ -1,0 +1,1 @@
+alter table article add slug varchar(200);
