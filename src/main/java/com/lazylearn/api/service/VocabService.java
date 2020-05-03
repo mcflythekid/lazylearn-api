@@ -1,10 +1,8 @@
 package com.lazylearn.api.service;
 
 import com.lazylearn.api.config.env.WiredEnv;
-import com.lazylearn.api.entity.Deck;
-import com.lazylearn.api.vocabgenerator.VocabGenerator;
-import com.lazylearn.api.config.exception.AppException;
 import com.lazylearn.api.entity.Card;
+import com.lazylearn.api.entity.Deck;
 import com.lazylearn.api.entity.Vocab;
 import com.lazylearn.api.indto.vocab.VocabCreateIn;
 import com.lazylearn.api.indto.vocab.VocabEditIn;
@@ -14,10 +12,9 @@ import com.lazylearn.api.outdto.vocab.VocabEditOut;
 import com.lazylearn.api.repo.CardRepo;
 import com.lazylearn.api.repo.DeckRepo;
 import com.lazylearn.api.repo.VocabRepo;
+import com.lazylearn.api.vocabgenerator.VocabGenerator;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

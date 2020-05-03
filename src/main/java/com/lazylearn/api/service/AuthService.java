@@ -5,7 +5,6 @@ import com.lazylearn.api.config.Consts;
 import com.lazylearn.api.config.env.WiredEnv;
 import com.lazylearn.api.config.exception.AppException;
 import com.lazylearn.api.config.jwt.JWTTokenProvider;
-import com.lazylearn.api.entity.Deck;
 import com.lazylearn.api.entity.Reset;
 import com.lazylearn.api.entity.Session;
 import com.lazylearn.api.entity.User;
@@ -17,7 +16,7 @@ import com.lazylearn.api.repo.ForgetPasswordRepo;
 import com.lazylearn.api.repo.SessionRepo;
 import com.lazylearn.api.repo.UserRepo;
 import com.lazylearn.api.unit.TelegramUnit;
-import com.lazylearn.api.util.EmailUtils;
+import com.lazylearn.api.util.EmailService;
 import com.restfb.DefaultFacebookClient;
 import com.restfb.FacebookClient;
 import com.restfb.Parameter;
@@ -29,7 +28,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -66,6 +64,9 @@ public class AuthService {
     @Autowired
     private CloneService cloneService;
 
+    @Autowired
+    private EmailService emailService;
+
     @Transactional(rollbackFor = Exception.class)
     public void forgetPassword(ForgetPasswordIn in) {
         User user = userRepo.findByEmail(in.getEmail());
@@ -76,8 +77,8 @@ public class AuthService {
         forgetPassword.setExpiredDate(DateUtils.addDays(new Date(), Consts.FORGETPASSWORD_EXPIRED_DAYS));
         forgetPasswordRepo.save(forgetPassword);
 
-        EmailUtils.sendHtmlEmail("support@lazylearn.com", "Lazylearn Team",
-                in.getEmail(), "Reset your password",  createResetPasswordEmailContent(forgetPassword));
+        new Thread(()-> emailService.sendHtmlEmail("support@lazylearn.com", "Lazylearn Team",
+                in.getEmail(), "Reset your password",  createResetPasswordEmailContent(forgetPassword))).start();
     }
 
     @Transactional(rollbackFor = Exception.class)

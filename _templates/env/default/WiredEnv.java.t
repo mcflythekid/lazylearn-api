@@ -28,4 +28,7 @@ public class WiredEnv {
     private String fileUrl = "<%= file.url %>";
 
     private String resetPassword = "<%= reset_password %>";
+
+    private String mailServer = "<%= mail.server %>";
+    private Integer mailPort = <%= mail.port %>;
 }

@@ -24,3 +24,6 @@ db:
   show_sql: false
   format_sql: true
   pool_size: 10
+mail:
+  server: 'localhost'
+  port: '50000'
