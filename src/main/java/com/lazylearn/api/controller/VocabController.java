@@ -28,7 +28,7 @@ public class VocabController extends BaseController {
     @Autowired
     private OxfordUnit oxfordUnit;
 
-    @GetMapping("/get-oxford/{word}")
+    @GetMapping("/get-vocab-data/{word}")
     public OxfordDto getOxford(@PathVariable String word) throws Exception{
         return oxfordUnit.craw(word);
     }

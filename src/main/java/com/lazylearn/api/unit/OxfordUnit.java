@@ -1,6 +1,8 @@
 package com.lazylearn.api.unit;
 
+import com.lazylearn.api.config.exception.AppException;
 import org.apache.tomcat.util.codec.binary.Base64;
+import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -13,29 +15,54 @@ import java.io.InputStream;
  * Date: 2020-04-19
  */
 public class OxfordUnit {
-    public OxfordDto craw(String word) throws Exception {
-        Document document = Jsoup.connect("https://www.oxfordlearnersdictionaries.com/definition/american_english/" + word).timeout(1000).get();
-        Element firstPhonetic = document.select(".phon").first();
-        if (firstPhonetic == null){
-            throw new Exception("Phonetic not found: " + word);
+
+    public OxfordDto craw(String word) throws Exception{
+        return crawx(word);
+    }
+
+    public static void main(String[] args) throws Exception {
+        System.out.println(crawx("lion"));
+    }
+
+    public static OxfordDto crawx(String word) throws Exception {
+        try {
+            Connection.Response response = Jsoup.connect("https://www.oxfordlearnersdictionaries.com/definition/english/" + word)
+                    .followRedirects(true)
+                    .timeout(10000).execute();
+
+            Document document = response.parse();
+            String url = response.url().toString();
+
+            // Phonetic & sound
+            Element firstMeetElement = document.select(".phons_n_am").first();
+            if (firstMeetElement == null) {
+                firstMeetElement = document.select(".phons_br").first();
+                if (firstMeetElement == null){
+                    throw new Exception("Item not found: " + word);
+                }
+            }
+            if (firstMeetElement.childrenSize() != 2){
+                throw new Exception("Must have 2 child");
+            }
+            Element soundElement = firstMeetElement.child(0);
+            Element phoneticElement = firstMeetElement.child(1);
+            String audio = soundElement.attr("data-src-mp3");
+            String audio64 = getBase64EncodedImage(audio);
+            String phonetic = phoneticElement.text();
+
+            Element phrase = document.selectFirst("span.x");
+            String phraseString = phrase != null ? phrase.text() : "";
+
+            return OxfordDto.builder().word(word).phonetic(phonetic)
+                    .audio(audio).phrase(phraseString).audio64(audio64).build();
+        } catch (org.jsoup.HttpStatusException e){
+            if (e.getStatusCode() == 404){
+                throw new AppException(e.getStatusCode());
+            }
+            throw e;
+        } catch (Exception e){
+            throw e;//debug
         }
-
-        Element sound = (Element) firstPhonetic.siblingNodes().get(0);
-        if (sound == null){
-            throw new Exception("Audio not found: " + word);
-        }
-
-        firstPhonetic.selectFirst("span.name").remove();
-        firstPhonetic.select("span.wrap").remove();
-
-        Element phrase = document.selectFirst("span.x");
-
-        String audio = sound.attr("data-src-mp3");
-        String audio64 = getBase64EncodedImage(audio);
-
-
-        return OxfordDto.builder().word(word).phonetic(firstPhonetic.text())
-                .audio(audio).phrase(phrase.text()).audio64(audio64).build();
     }
 
     static String getBase64EncodedImage(String imageURL) throws IOException {
