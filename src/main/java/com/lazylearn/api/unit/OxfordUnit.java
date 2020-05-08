@@ -36,8 +36,8 @@ public class OxfordUnit {
         if (array.length == 1){
             return crawlSingle(array[0]);
         }
-        if (array.length > 2){
-            throw new AppException(404, "Not allowed 3 words");
+        if (array.length > 5){
+            throw new AppException(404, "Maximum 5 words");
         }
 
         List<OxfordDto> oxfordDtoList = new ArrayList<>();
@@ -46,27 +46,16 @@ public class OxfordUnit {
         }
         String word = "";
         String phonetic = "";
-        List<InputStream> streams = new ArrayList<>();
         for (OxfordDto oxfordDto : oxfordDtoList){
             word += oxfordDto.getWord().trim() + " ";
             phonetic += oxfordDto.getPhonetic().replaceAll("\\/", "").trim() + " ";
-            streams.add(new URL(oxfordDto.getAudioUrl()).openStream());
         }
         word = word.trim();
         phonetic = "/" + phonetic.trim() + "/";
 
-        SequenceInputStream sistream = new SequenceInputStream(streams.get(0), streams.get(1));
-
-        byte[] audioBytes = new byte[sistream.available()];
-        sistream.read(audioBytes, 0, audioBytes.length);
-        sistream.close();
-        String audio64 = Base64.encodeBase64String(audioBytes);
-
-
         return OxfordDto.builder()
                 .word(word)
                 .phonetic(phonetic)
-                .audio64(audio64)
                 .build();
     }
 
@@ -109,7 +98,8 @@ public class OxfordUnit {
             }
             throw e;
         } catch (Exception e){
-            throw e;//debug
+            log.error("Cannot fetch word: " + rawWord, e);
+            throw new AppException(404, "Error");
         }
     }
 

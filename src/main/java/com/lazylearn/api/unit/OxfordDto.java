@@ -1,7 +1,10 @@
 package com.lazylearn.api.unit;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * @author 4nha
