@@ -9,6 +9,8 @@ import org.jsoup.nodes.Element;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author 4nha
@@ -24,7 +26,35 @@ public class OxfordUnit {
         System.out.println(crawx("lion"));
     }
 
-    public static OxfordDto crawx(String word) throws Exception {
+    public static OxfordDto crawx(String rawWords) throws Exception {
+        String words = rawWords.replaceAll("\\s{2,}", " ").trim();
+        String[] array = words.split("\\s");
+        if (array.length == 1){
+            return crawlSingle(array[0]);
+        }
+
+        List<OxfordDto> oxfordDtoList = new ArrayList<>();
+        for (String word : array){
+            oxfordDtoList.add(crawlSingle(word));
+        }
+        String word = "";
+        String phonetic = "";
+        for (OxfordDto oxfordDto : oxfordDtoList){
+            word += oxfordDto.getWord().trim() + " ";
+            phonetic += oxfordDto.getPhonetic().replaceAll("\\/", "").trim() + " ";
+        }
+        word = word.trim();
+        phonetic = "/" + phonetic.trim() + "/";
+
+        return OxfordDto.builder()
+                .word(word)
+                .phonetic(phonetic)
+                .build();
+    }
+
+    public static OxfordDto crawlSingle(String rawWord) throws Exception {
+        String word = rawWord.toLowerCase().trim();
+
         try {
             Connection.Response response = Jsoup.connect("https://www.oxfordlearnersdictionaries.com/definition/english/" + word)
                     .followRedirects(true)
@@ -41,7 +71,7 @@ public class OxfordUnit {
                     throw new Exception("Item not found: " + word);
                 }
             }
-            if (firstMeetElement.childrenSize() != 2){
+            if (firstMeetElement.childrenSize() < 2){
                 throw new Exception("Must have 2 child");
             }
             Element soundElement = firstMeetElement.child(0);
