@@ -1,5 +1,6 @@
 package com.lazylearn.api.unit;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 /**
@@ -14,6 +15,8 @@ public class OxfordDto {
     private String word;
     private String phonetic;
     private String phrase;
-    private String audio;
     private String audio64;
+
+    @JsonIgnore
+    private String audioUrl;
 }

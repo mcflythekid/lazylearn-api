@@ -1,6 +1,7 @@
 package com.lazylearn.api.unit;
 
 import com.lazylearn.api.config.exception.AppException;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.tomcat.util.codec.binary.Base64;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
@@ -9,6 +10,8 @@ import org.jsoup.nodes.Element;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.SequenceInputStream;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,6 +19,7 @@ import java.util.List;
  * @author 4nha
  * Date: 2020-04-19
  */
+@Slf4j
 public class OxfordUnit {
 
     public OxfordDto craw(String word) throws Exception{
@@ -32,6 +36,9 @@ public class OxfordUnit {
         if (array.length == 1){
             return crawlSingle(array[0]);
         }
+        if (array.length > 2){
+            throw new AppException(404, "Not allowed 3 words");
+        }
 
         List<OxfordDto> oxfordDtoList = new ArrayList<>();
         for (String word : array){
@@ -39,16 +46,27 @@ public class OxfordUnit {
         }
         String word = "";
         String phonetic = "";
+        List<InputStream> streams = new ArrayList<>();
         for (OxfordDto oxfordDto : oxfordDtoList){
             word += oxfordDto.getWord().trim() + " ";
             phonetic += oxfordDto.getPhonetic().replaceAll("\\/", "").trim() + " ";
+            streams.add(new URL(oxfordDto.getAudioUrl()).openStream());
         }
         word = word.trim();
         phonetic = "/" + phonetic.trim() + "/";
 
+        SequenceInputStream sistream = new SequenceInputStream(streams.get(0), streams.get(1));
+
+        byte[] audioBytes = new byte[sistream.available()];
+        sistream.read(audioBytes, 0, audioBytes.length);
+        sistream.close();
+        String audio64 = Base64.encodeBase64String(audioBytes);
+
+
         return OxfordDto.builder()
                 .word(word)
                 .phonetic(phonetic)
+                .audio64(audio64)
                 .build();
     }
 
@@ -74,17 +92,17 @@ public class OxfordUnit {
             if (firstMeetElement.childrenSize() < 2){
                 throw new Exception("Must have 2 child");
             }
-            Element soundElement = firstMeetElement.child(0);
-            Element phoneticElement = firstMeetElement.child(1);
-            String audio = soundElement.attr("data-src-mp3");
-            String audio64 = getBase64EncodedImage(audio);
+            Element soundElement = firstMeetElement.selectFirst("div.sound");
+            Element phoneticElement = soundElement.nextElementSibling();
+            String audioUrl = soundElement.attr("data-src-mp3");
+            String audio64 = getBase64EncodedImage(audioUrl);
             String phonetic = phoneticElement.text();
 
             Element phrase = document.selectFirst("span.x");
             String phraseString = phrase != null ? phrase.text() : "";
 
             return OxfordDto.builder().word(word).phonetic(phonetic)
-                    .audio(audio).phrase(phraseString).audio64(audio64).build();
+                    .audioUrl(audioUrl).phrase(phraseString).audio64(audio64).build();
         } catch (org.jsoup.HttpStatusException e){
             if (e.getStatusCode() == 404){
                 throw new AppException(e.getStatusCode());
