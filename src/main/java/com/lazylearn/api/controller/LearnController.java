@@ -11,6 +11,7 @@ import com.lazylearn.api.outdto.LearnOut;
 import com.lazylearn.api.repo.CardRepo;
 import com.lazylearn.api.service.AnswerProcessService;
 import com.lazylearn.api.service.LearnService;
+import com.lazylearn.api.unit.TelegramUnit;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,6 +25,9 @@ import java.util.Map;
 @RestController
 @RequestMapping("/learn")
 public class LearnController extends BaseController{
+
+    @Autowired
+    private TelegramUnit telegramUnit;
 
     @Autowired
     private LearnService learnService;
@@ -44,11 +48,13 @@ public class LearnController extends BaseController{
 
         // All deck
         if (Consts.Deck.LEARN_ALL_DECK_ID.equals(deckId)){
+            telegramUnit.sendAsync("Learn one-for-all by " + getUserId());
             return learnService.getByLearnOneUserId(this.getUserId());
         }
 
         // Normal
         Deck deck = authorizeDeck(deckId);
+        telegramUnit.sendAsync("Learn by " + getUserId());
         if (learnType.equals(Consts.LEARNTYPE_LEARN)){
             return learnService.getByLearn(deck);
         } else if (learnType.equals(Consts.LEARNTYPE_REVIEW)){
