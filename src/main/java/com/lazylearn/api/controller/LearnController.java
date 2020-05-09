@@ -5,10 +5,12 @@ import com.lazylearn.api.config.Consts;
 import com.lazylearn.api.config.exception.AppException;
 import com.lazylearn.api.entity.Card;
 import com.lazylearn.api.entity.Deck;
+import com.lazylearn.api.entity.User;
 import com.lazylearn.api.indto.learn.QualityIn;
 import com.lazylearn.api.outdto.JSON;
 import com.lazylearn.api.outdto.LearnOut;
 import com.lazylearn.api.repo.CardRepo;
+import com.lazylearn.api.repo.UserRepo;
 import com.lazylearn.api.service.AnswerProcessService;
 import com.lazylearn.api.service.LearnService;
 import com.lazylearn.api.unit.TelegramUnit;
@@ -38,6 +40,14 @@ public class LearnController extends BaseController{
     @Autowired
     private CardRepo cardRepo;
 
+    @Autowired
+    private UserRepo userRepo;
+
+    private String getUserFullName() throws Exception {
+        User user = userRepo.findOne(getUserId());
+        return user.getFullName();
+    }
+
     @GetMapping("/count-onetime-learn-card")
     public Map countOnetimeLearnCard() throws Exception {
         return ImmutableMap.of("count", cardRepo.countAllByUserIdAndWakeupOnBefore(getUserId(), new Date()));
@@ -48,13 +58,13 @@ public class LearnController extends BaseController{
 
         // All deck
         if (Consts.Deck.LEARN_ALL_DECK_ID.equals(deckId)){
-            telegramUnit.sendAsync("Learn one-for-all by " + getUserId());
+            telegramUnit.sendAsync("Learn one-for-all by " + getUserFullName());
             return learnService.getByLearnOneUserId(this.getUserId());
         }
 
         // Normal
         Deck deck = authorizeDeck(deckId);
-        telegramUnit.sendAsync("Learn by " + getUserId());
+        telegramUnit.sendAsync("Learn by " + getUserFullName());
         if (learnType.equals(Consts.LEARNTYPE_LEARN)){
             return learnService.getByLearn(deck);
         } else if (learnType.equals(Consts.LEARNTYPE_REVIEW)){
