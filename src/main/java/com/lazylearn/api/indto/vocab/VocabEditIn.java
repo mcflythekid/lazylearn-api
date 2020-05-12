@@ -30,6 +30,8 @@ public class VocabEditIn {
 
     private EncodedFile encodedAudio;
 
+    private String audioHint;
+
     @AssertTrue(message = "Must be a valid image file")
     public boolean getImage(){
         if (encodedImage == null){
@@ -46,6 +48,14 @@ public class VocabEditIn {
         return MimeUtils.validateMime(encodedAudio.getContent(), "audio/.+");
     }
 
+
+    public String getAudioHint() {
+        return audioHint;
+    }
+
+    public void setAudioHint(String audioHint) {
+        this.audioHint = audioHint;
+    }
 
     public EncodedFile getEncodedImage() {
         return encodedImage;
