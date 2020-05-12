@@ -1,18 +1,12 @@
-<div class="u-text-center u-mt-5">
-    Do dou remember this image?<br>
-    <i class="">${personalConnection}</i>
-</div>
+<div class="u-text-center">What is your connection to this word?</div>
 
 <div class="row u-mt-10">
-    <div class="col-xs-6 u-text-center">
-        <strong>${word}</strong><br>
-        <span>${phrase}</span>
-    </div>
-    <div class="col-xs-6 u-text-center">
+    <div class="col-xs-4 u-text-center">
+        <div><i>${audioHint}</i></div>
         <div>${phonetic}</div>
         <div class="u-mt-5">
             <audio id="${id}_audio" src="${audioPath}"></audio>
-            <button id="${id}_play" class="btn btn-success btn-sm">
+            <button id="${id}_play" class="btn btn-success btn-sm btn-flat">
                 <span class="glyphicon glyphicon-play"></span>
             </button>
             <script>
@@ -21,5 +15,12 @@
                 });
             </script>
         </div>
+    </div>
+    <div class="col-xs-4 u-text-center">
+        <strong>${word}</strong><br>
+        <span>${phrase}</span>
+    </div>
+    <div class="col-xs-4 u-text-center">
+        <div><img src="${imagePath}" class="vocab-image"></div>
     </div>
 </div>

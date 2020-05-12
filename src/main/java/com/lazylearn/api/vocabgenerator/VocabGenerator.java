@@ -12,6 +12,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static org.apache.commons.lang3.StringUtils.isBlank;
+
 /**
  * @author McFly the Kid
  */
@@ -67,6 +69,8 @@ public abstract class VocabGenerator {
      * @return
      */
     public String formatCardContent(String template, Vocab vocab){
+        String audioHint = isBlank(vocab.getAudioHint()) ? "" : vocab.getAudioHint();
+
         Map<String, String> valuesMap = new HashMap<>();
         valuesMap.put("id", vocab.getId());
         valuesMap.put("word", vocab.getWord());
@@ -75,6 +79,7 @@ public abstract class VocabGenerator {
         valuesMap.put("personalConnection", vocab.getPersonalConnection());
         valuesMap.put("audioPath", fileRoot + vocab.getAudioPath());
         valuesMap.put("imagePath", fileRoot + vocab.getImagePath());
+        valuesMap.put("audioHint", audioHint);
         StringSubstitutor sub = new StringSubstitutor(valuesMap);
         return sub.replace(template);
     }
