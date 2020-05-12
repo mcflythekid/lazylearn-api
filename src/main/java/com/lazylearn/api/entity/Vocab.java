@@ -34,7 +34,16 @@ public class Vocab extends AbstractEntity implements HasUserId{
     private String phrase;
     private String imagePath;
     private String audioPath;
+    private String audioHint;
     private String personalConnection;
+
+    public String getAudioHint() {
+        return audioHint;
+    }
+
+    public void setAudioHint(String audioHint) {
+        this.audioHint = audioHint;
+    }
 
     public String getUserId() {
         return userId;

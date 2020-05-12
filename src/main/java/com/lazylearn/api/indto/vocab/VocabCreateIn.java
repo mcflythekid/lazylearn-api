@@ -27,6 +27,8 @@ public class VocabCreateIn {
     @NotBlank
     private String phrase;
 
+    private String audioHint;
+
     @NotNull
     private EncodedFile encodedImage;
 
@@ -41,6 +43,15 @@ public class VocabCreateIn {
     @AssertTrue(message = "Must me a valid audio file")
     public boolean getAudio(){
         return MimeUtils.validateMime(encodedAudio.getContent(), "audio/.+");
+    }
+
+
+    public String getAudioHint() {
+        return audioHint;
+    }
+
+    public void setAudioHint(String audioHint) {
+        this.audioHint = audioHint;
     }
 
     public String getVocabdeckId() {
