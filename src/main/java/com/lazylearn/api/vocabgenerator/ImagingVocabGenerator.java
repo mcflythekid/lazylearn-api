@@ -15,7 +15,7 @@ public class ImagingVocabGenerator extends VocabGenerator {
 
     @Override
     public String getPrefix() {
-        return "[Imaging Vocab]";
+        return "[Connection Vocab]";
     }
 
     @Override
