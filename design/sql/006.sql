@@ -20,3 +20,6 @@ alter table card add minpairid varchar(100);
 
 --delete from card where minpairlanguage is not null;
 --delete from deck where type = 'minpair';
+
+alter table user add timezone varchar(100);
+update user set timezone = 'GMT+7';

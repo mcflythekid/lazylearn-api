@@ -36,6 +36,16 @@ public class User extends AbstractEntity implements HasUserId{
 
     private String fullName;
 
+    private String timezone;
+
+    public String getTimezone() {
+        return timezone;
+    }
+
+    public void setTimezone(String timezone) {
+        this.timezone = timezone;
+    }
+
     public String getFullName() {
         return fullName;
     }
