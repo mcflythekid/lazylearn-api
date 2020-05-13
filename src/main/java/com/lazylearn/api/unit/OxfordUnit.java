@@ -20,19 +20,20 @@ import java.io.InputStream;
 public class OxfordUnit {
 
     public static void main(String[] args) throws Exception {
-       System.out.println(new OxfordUnit().crawlSingle("lion"));
+       System.out.println(new OxfordUnit().crawlSingle("dragon"));
     }
 
     public VocabSampleDto crawlSingle(String rawWord) throws Exception {
         String word = rawWord.toLowerCase().trim();
 
         try {
-            Connection.Response response = Jsoup.connect("https://www.oxfordlearnersdictionaries.com/definition/english/" + word)
+            Connection.Response response = Jsoup.connect("https://www.oxfordlearnersdictionaries.com/search/english/?q=" + word)
                     .followRedirects(true)
                     .timeout(10000).execute();
 
             Document document = response.parse();
             String url = response.url().toString();
+            log.info("Fetching word '{}' with url: {}",  word, url);
 
             // Phonetic & sound
             Element firstMeetElement = document.select(".phons_n_am").first();
