@@ -126,7 +126,7 @@ public class AuthService {
             throw new AppException("Wrong password");
         }
 
-        telegramUnit.sendAsync("LOGIN: " + authLoginInDto.getEmail());
+        telegramUnit.sendAsync("LOGIN: " + authLoginInDto.getEmail(), authLoginInDto.getEmail());
 
         return createLoginResponse(user, clientData);
     }

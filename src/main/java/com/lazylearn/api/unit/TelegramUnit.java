@@ -57,6 +57,11 @@ public class TelegramUnit {
             return;
         }
 
+        if (invoker.equalsIgnoreCase("odopoc@gmail.com")){
+            log.info("Telegram disabled for 'odopoc@gmail.com', stop sending message");
+            return;
+        }
+
         sendAsync(message);
     }
 
