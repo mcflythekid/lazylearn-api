@@ -30,6 +30,10 @@ public interface CardRepo extends JpaRepository<Card, String> {
     @Query("DELETE FROM Card c WHERE c.deckId = :deckId")
     void deleteAllByDeckId(@Param("deckId") String deckId);
 
+    @Modifying
+    @Query("DELETE FROM Card c WHERE c.minpairId = :minpairId")
+    void deleteAllByMinpairId(@Param("minpairId") String minpairId);
+
     List<Card> findAllByDeckIdAndArchived(String deckId, Integer archived);
 
     List<Card> findAllByDeckId(String deckId);
@@ -90,5 +94,5 @@ public interface CardRepo extends JpaRepository<Card, String> {
 
     Long countAllByDeckId(String deckId);
 
-    Card findByArticleId(String articleId);
+    Card findByMinpairId(String minpairId);
 }

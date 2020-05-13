@@ -142,8 +142,5 @@ public abstract class BaseController {
         if (StringUtils.isNotBlank(card.getMinpairLanguage())){
             throw Consts.Exception.PROTECTED_MINPAIR;
         }
-        if (StringUtils.isNotBlank(card.getArticleId())){
-            throw Consts.Exception.PROTECTED_TOPIC;
-        }
     }
 }

@@ -60,16 +60,29 @@ public class MinpairService {
 
         minpairFileRepo.deleteAllByMinpairId(minpairId);
         fileService.rmDirIfExists(minpair.getDirPath());
+
+        deleteCallback(minpairId);
+    }
+
+    public void deleteCallback(String minpairId) {
+        // Delete cards
+        Card card = cardRepo.findByMinpairId(minpairId);
+        cardRepo.deleteAllByMinpairId(minpairId);
+
+        // Delete deck if empty
+        if (cardRepo.countAllByDeckId(card.getDeckId()) == 0){
+            deckRepo.delete(card.getDeckId());
+        }
     }
 
     @Transactional(rollbackFor = Exception.class)
-    public Deck updateCardAndDeckCallBack(String minpairId) throws Exception{
-        final String NAME_REFIX = "All Minpair #";
+    public Deck updateCardAndDeckCallBack(String minpairId) {
+        final String NAME_PREFIX = "All Minpair #";
         Minpair minpair = minpairRepo.findOne(minpairId);
 
         Deck deck = deckRepo.findByMinpairLanguageAndUserId(minpair.getLanguage(), minpair.getUserId());
         if (deck == null){
-            deck = deckService.create(NAME_REFIX + minpair.getLanguage(), minpair.getUserId());
+            deck = deckService.create(NAME_PREFIX + minpair.getLanguage(), minpair.getUserId());
             deck.setMinpairLanguage(minpair.getLanguage());
         }
         deck.setType(Consts.DECKTYPE__MINPAIR);
@@ -77,6 +90,8 @@ public class MinpairService {
         Card card = cardRepo.findByDeckIdAndFront(deck.getId(), minpairId);
         if(card == null){
             card = cardService.create(minpairId, "", deck.getId(), minpair.getUserId());
+            card.setMinpairId(minpairId);
+            cardRepo.save(card);
         }
         card.setMinpairLanguage(minpair.getLanguage());
         card.setFront(minpairId);

@@ -4,7 +4,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lazylearn.api.config.Consts;
 import com.lazylearn.api.entity.Article;
-import com.lazylearn.api.entity.Card;
 import com.lazylearn.api.entity.Deck;
 import com.lazylearn.api.indto.SearchIn;
 import com.lazylearn.api.indto.article.ArticleCreateIn;
@@ -60,13 +59,7 @@ public class ArticleService {
 
     @Transactional
     public void delete(String articleId){
-
         Article article = articleRepo.findOne(articleId);
-
-        Card card = cardRepo.findByArticleId(articleId);
-        if (card != null) {
-            cardRepo.delete(card);
-        }
 
         Deck deck = deckRepo.findByTypeAndUserId(Consts.DECKTYPE__TOPIC, article.getUserId());
         if (deck != null && cardRepo.countAllByDeckId(deck.getId()) == 0) {

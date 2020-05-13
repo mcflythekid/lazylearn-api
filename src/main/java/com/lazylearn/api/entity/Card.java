@@ -65,14 +65,14 @@ Card extends AbstractEntity implements HasUserId{
     private Double sm2Ef;
     private Integer sm2LatestSpace;
 
-    private String articleId;
+    private String minpairId;
 
-    public String getArticleId() {
-        return articleId;
+    public String getMinpairId() {
+        return minpairId;
     }
 
-    public void setArticleId(String articleId) {
-        this.articleId = articleId;
+    public void setMinpairId(String minpairId) {
+        this.minpairId = minpairId;
     }
 
     public Double getSm2Ef() {

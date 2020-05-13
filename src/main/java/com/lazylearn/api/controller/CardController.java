@@ -64,15 +64,6 @@ public class CardController extends BaseController{
         return authorizeCard(cardId);
     }
 
-    @GetMapping("/get/by-articleid/{articleId}")
-    public Card getByArticleId(@PathVariable("articleId") String articleId) throws Exception {
-        Card card = cardRepo.findByArticleId(articleId);
-        if (card == null){
-            return null;
-        }
-        return authorizeCard(card.getId());
-    }
-
     @PostMapping("/change-deck")
     public Card changeDeck(@Valid @RequestBody CardChangeDeckIn in) throws Exception{
         protectGeneratedCard(authorizeCard(in.getCardId()));
