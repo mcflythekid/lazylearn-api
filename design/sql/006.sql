@@ -14,3 +14,9 @@ create table vocab_saved(
     constraint vocab_saved_id primary key (id),
     constraint vocab_saved_idx unique(languageid, word)
 );
+
+alter table card drop column articleid;
+alter table card add minpairid varchar(100);
+
+--delete from card where minpairlanguage is not null;
+--delete from deck where type = 'minpair';
