@@ -1,7 +1,9 @@
 package com.lazylearn.api.unit;
 
+import com.lazylearn.api.config.env.WiredEnv;
 import lombok.extern.slf4j.Slf4j;
 import org.jsoup.Jsoup;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.io.BufferedInputStream;
@@ -22,6 +24,9 @@ import java.util.UUID;
 @Slf4j
 public class TelegramUnit {
 
+    @Autowired
+    private WiredEnv wiredEnv;
+
     // OLD
     public static final int TIMEOUT_MILLIS = 10000;
     public static final String HOOK = "https://api.telegram.org/bot1244850034:AAEwBmgDNQ0gm2P8Kyk4cedWflb4holSgzY/sendMessage?chat_id=-425730701&text=";
@@ -39,14 +44,28 @@ public class TelegramUnit {
         return URLEncoder.encode(text, StandardCharsets.UTF_8.toString());
     }
 
-    public static void sendToTelegram(String text) throws IOException {
+    private static void sendToTelegram(String text) throws IOException {
         final String urlString = String.format(URL_FORMAT, TOKEN, ID, encode(text));
         URL url = new URL(urlString);
         URLConnection conn = url.openConnection();
         InputStream is = new BufferedInputStream(conn.getInputStream());
     }
 
+    public void sendAsync(String message, String invoker){
+        if (invoker.equalsIgnoreCase("Administrator")){
+            log.info("Telegram disabled for 'Administrator', stop sending message");
+            return;
+        }
+
+        sendAsync(message);
+    }
+
     public void sendAsync(String message){
+        if (!wiredEnv.isTelegramEnabled()){
+            log.info("Telegram disabled, stop sending message");
+            return;
+        }
+
         new Thread(()->{
             try {
                 sendToTelegram(message);

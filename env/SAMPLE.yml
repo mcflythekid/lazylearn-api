@@ -27,3 +27,5 @@ db:
 mail:
   server: 'localhost'
   port: '50000'
+telegram:
+  enabled: false

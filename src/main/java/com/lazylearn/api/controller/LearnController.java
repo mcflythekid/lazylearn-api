@@ -58,13 +58,13 @@ public class LearnController extends BaseController{
 
         // All deck
         if (Consts.Deck.LEARN_ALL_DECK_ID.equals(deckId)){
-            telegramUnit.sendAsync("Learn one-for-all by " + getUserFullName());
+            telegramUnit.sendAsync("Learn one-for-all by " + getUserFullName(), getUserFullName());
             return learnService.getByLearnOneUserId(this.getUserId());
         }
 
         // Normal
         Deck deck = authorizeDeck(deckId);
-        telegramUnit.sendAsync("Learn by " + getUserFullName());
+        telegramUnit.sendAsync("Learn by " + getUserFullName(), getUserFullName());
         if (learnType.equals(Consts.LEARNTYPE_LEARN)){
             return learnService.getByLearn(deck);
         } else if (learnType.equals(Consts.LEARNTYPE_REVIEW)){

@@ -31,4 +31,6 @@ public class WiredEnv {
 
     private String mailServer = "<%= mail.server %>";
     private Integer mailPort = <%= mail.port %>;
+
+    private boolean telegramEnabled = <%= telegram.enabled %>;
 }

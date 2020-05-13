@@ -8,6 +8,8 @@ import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -17,7 +19,11 @@ import java.io.InputStream;
  * Date: 2020-04-19
  */
 @Slf4j
+@Service
 public class OxfordUnit {
+
+    @Autowired
+    private TelegramUnit telegramUnit;
 
     public static void main(String[] args) throws Exception {
        System.out.println(new OxfordUnit().crawlSingle("dragon"));
@@ -64,7 +70,9 @@ public class OxfordUnit {
             }
             throw e;
         } catch (Exception e){
-            log.error("Cannot fetch word: " + rawWord, e);
+            String message = "Cannot fetch word: " + rawWord;
+            telegramUnit.sendAsync(message);
+            log.error(message, e);
             throw new AppException(404, "Error");
         }
     }
