@@ -1,5 +1,6 @@
 package com.lazylearn.api.controller;
 
+import com.lazylearn.api.config.Consts;
 import com.lazylearn.api.entity.Vocab;
 import com.lazylearn.api.indto.vocab.VocabCreateIn;
 import com.lazylearn.api.indto.vocab.VocabEditIn;
@@ -7,9 +8,9 @@ import com.lazylearn.api.indto.vocab.VocabSearchIn;
 import com.lazylearn.api.outdto.BootstraptableOut;
 import com.lazylearn.api.outdto.JSON;
 import com.lazylearn.api.outdto.vocab.VocabEditOut;
+import com.lazylearn.api.service.VocabSavedService;
 import com.lazylearn.api.service.VocabService;
-import com.lazylearn.api.unit.OxfordDto;
-import com.lazylearn.api.unit.OxfordUnit;
+import com.lazylearn.api.unit.VocabSampleDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,11 +27,11 @@ public class VocabController extends BaseController {
     private VocabService vocabService;
 
     @Autowired
-    private OxfordUnit oxfordUnit;
+    private VocabSavedService vocabSavedService;
 
     @GetMapping("/get-vocab-data/{word}")
-    public OxfordDto getOxford(@PathVariable String word) throws Exception{
-        return oxfordUnit.craw(word);
+    public VocabSampleDto getVocabTemplate(@PathVariable String word) throws Exception{
+        return vocabSavedService.getSampleByWords(word, Consts.VocabTemplate.LANGUAGE_ENGLISH);
     }
 
     @GetMapping("/get/{vocabId}")

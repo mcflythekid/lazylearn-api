@@ -1,6 +1,7 @@
 package com.lazylearn.api.unit;
 
 import com.lazylearn.api.config.exception.AppException;
+import com.lazylearn.api.indto.EncodedFile;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.tomcat.util.codec.binary.Base64;
 import org.jsoup.Connection;
@@ -10,10 +11,6 @@ import org.jsoup.nodes.Element;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.SequenceInputStream;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @author 4nha
@@ -22,44 +19,11 @@ import java.util.List;
 @Slf4j
 public class OxfordUnit {
 
-    public OxfordDto craw(String word) throws Exception{
-        return crawx(word);
-    }
-
     public static void main(String[] args) throws Exception {
-        System.out.println(crawx("lion"));
+       System.out.println(new OxfordUnit().crawlSingle("lion"));
     }
 
-    public static OxfordDto crawx(String rawWords) throws Exception {
-        String words = rawWords.replaceAll("\\s{2,}", " ").trim();
-        String[] array = words.split("\\s");
-        if (array.length == 1){
-            return crawlSingle(array[0]);
-        }
-        if (array.length > 5){
-            throw new AppException(404, "Maximum 5 words");
-        }
-
-        List<OxfordDto> oxfordDtoList = new ArrayList<>();
-        for (String word : array){
-            oxfordDtoList.add(crawlSingle(word));
-        }
-        String word = "";
-        String phonetic = "";
-        for (OxfordDto oxfordDto : oxfordDtoList){
-            word += oxfordDto.getWord().trim() + " ";
-            phonetic += oxfordDto.getPhonetic().replaceAll("\\/", "").trim() + " ";
-        }
-        word = word.trim();
-        phonetic = "/" + phonetic.trim() + "/";
-
-        return OxfordDto.builder()
-                .word(word)
-                .phonetic(phonetic)
-                .build();
-    }
-
-    public static OxfordDto crawlSingle(String rawWord) throws Exception {
+    public VocabSampleDto crawlSingle(String rawWord) throws Exception {
         String word = rawWord.toLowerCase().trim();
 
         try {
@@ -90,7 +54,8 @@ public class OxfordUnit {
             Element phrase = document.selectFirst("span.x");
             String phraseString = phrase != null ? phrase.text() : "";
 
-            return OxfordDto.builder().word(word).phonetic(phonetic)
+            return VocabSampleDto.builder().word(word).phonetic(phonetic)
+                    .encodedAudioFile(EncodedFile.builder().ext("mp3").content(audio64).build())
                     .audioUrl(audioUrl).phrase(phraseString).audio64(audio64).build();
         } catch (org.jsoup.HttpStatusException e){
             if (e.getStatusCode() == 404){
@@ -108,11 +73,5 @@ public class OxfordUnit {
         InputStream is = url.openStream();
         byte[] bytes = org.apache.commons.io.IOUtils.toByteArray(is);
         return Base64.encodeBase64String(bytes);
-    }
-
-
-    public static void test(String[] args) throws Exception {
-        OxfordDto oxfordDto = new OxfordUnit().craw("kiss");
-        System.out.println(oxfordDto);
     }
 }

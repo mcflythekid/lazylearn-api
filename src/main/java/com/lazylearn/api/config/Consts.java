@@ -14,7 +14,18 @@ import static com.lazylearn.api.util.SecurityUtils.getCurrentUserLogin;
  */
 public final class Consts {
 
+    public static class User{
+        public static final String SYSTEM = "system";
+    }
 
+    public static class VocabTemplate {
+        public static final int WORD_LIMIT = 3;
+        public static final int LANGUAGE_ENGLISH = 1;
+        public static final int PLATFORM_OXFORD_LEARNER = 1;
+        public static final AppException LANG_NOT_FOUND = new AppException(404, "Language not found");
+        public static final AppException INVALID_WORD = new AppException(403, "Invalid word");
+        public static final AppException TOO_MANY_WORD = new AppException(403, "Too many words");
+    }
 
     public static final String PARAM_JSON_DATETIMEFORMAT = "yyyy-MM-dd HH:mm:ss";
     public static final String PARAM_JSON_TIMEZONE = "GMT+7";

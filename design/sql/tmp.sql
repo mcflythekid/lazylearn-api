@@ -1,1 +1,0 @@
-alter table vocab add audiohint varchar(100) default null;

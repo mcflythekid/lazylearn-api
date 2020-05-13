@@ -1,6 +1,7 @@
 package com.lazylearn.api.unit;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.lazylearn.api.indto.EncodedFile;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -14,7 +15,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class OxfordDto {
+public class VocabSampleDto {
     private String word;
     private String phonetic;
     private String phrase;
@@ -22,4 +23,7 @@ public class OxfordDto {
 
     @JsonIgnore
     private String audioUrl;
+
+    @JsonIgnore
+    private EncodedFile encodedAudioFile;
 }
