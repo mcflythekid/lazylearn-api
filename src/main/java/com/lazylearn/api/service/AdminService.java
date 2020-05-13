@@ -133,6 +133,6 @@ public class AdminService {
         int rows = jdbcTemplate.update("update card set deckid = :to where deckid = :from",
                 new MapSqlParameterSource().addValue("from", fromdeck).addValue("to", todeck));
 
-        return JSON.ok(rows + " Cards transfered");
+        return JSON.ok(String.format("Moved %s card(s) from '%s' to '%s'", rows, from.getName(), to.getName()));
     }
 }
