@@ -5,6 +5,7 @@ import com.lazylearn.api.clone.service.MinpairCloneService;
 import com.lazylearn.api.clone.service.VocabCloneService;
 import com.lazylearn.api.config.exception.AppException;
 import com.lazylearn.api.outdto.JSON;
+import com.lazylearn.api.service.AdminService;
 import com.lazylearn.api.service.ImportService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -36,6 +37,9 @@ public class PostManController {
 
     @Autowired
     private MinpairCloneService minpairCloneService;
+
+    @Autowired
+    private AdminService adminService;
 
     private static final String TOKEN = "dkmmcc699";
 
@@ -72,5 +76,10 @@ public class PostManController {
         validate(request);
         minpairCloneService.cloneMinpair(minpair_id);
         return JSON.ok("Dispatched! Don't know result");
+    }
+
+    @PostMapping("/transfer-cards")
+    public JSON transferCards(@RequestParam String fromdeck, @RequestParam String todeck) throws Exception {
+        return adminService.transferCards(fromdeck, todeck);
     }
 }
