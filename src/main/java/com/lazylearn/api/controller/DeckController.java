@@ -58,7 +58,7 @@ public class DeckController extends BaseController{
 
     @GetMapping("/get/{deckId}")
     public Deck get(@PathVariable("deckId") String deckId) throws Exception {
-        if (Consts.Deck.LEARN_ALL_DECK_ID.equals(deckId)){
+        if (deckId.startsWith(Consts.Deck.LEARN_ALL_DECK_ID_PREFIX)){
             return deckService.createOneForAllDeck();
         }
 

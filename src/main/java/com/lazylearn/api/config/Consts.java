@@ -66,7 +66,10 @@ public final class Consts {
     public static final String DECKTYPE__MINPAIR = "minpair";
 
     public static class Deck{
+        public static final String LEARN_ALL_DECK_ID_PREFIX = "all-deck";
+        public static final String LEARN_ALL_DECK_TODAY_ID = "all-deck-today";
         public static final String LEARN_ALL_DECK_ID = "all-deck";
+
         public static final String LEARN_ALL_DECK_NAME = "All cards";
     }
 

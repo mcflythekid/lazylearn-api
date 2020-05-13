@@ -32,7 +32,7 @@ public class CardController extends BaseController{
 
     @PostMapping("/search")
     public BootstraptableOut searchDeck(@Valid @RequestBody CardSearchIn in) throws Exception {
-        if (Consts.Deck.LEARN_ALL_DECK_ID.equals(in.getDeckId())){
+        if (in.getDeckId().startsWith(Consts.Deck.LEARN_ALL_DECK_ID_PREFIX)){
             throw Consts.Exception.CANNOT_INSPECT_VIRTUAL_DECK;
         }
 
