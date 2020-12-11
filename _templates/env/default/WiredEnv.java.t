@@ -24,7 +24,7 @@ public class WiredEnv {
     private String jwtSecret = "<%= jwt_secret %>";
 
     //file
-    private String fileUpload = "<%= file.upload %>";
+    private String fileUpload = "<%= file.absolute_dir %>";
     private String fileUrl = "<%= file.url %>";
 
     private String resetPassword = "<%= reset_password %>";

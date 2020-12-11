@@ -5,7 +5,7 @@ to: src/main/resources/logback-spring.xml
 <!-- Generated file, do not try to modify -->
 <configuration>
 
-    <property name="LOGS" value="<%= log.absolute_dir_in_docker_container %>" />
+    <property name="LOGS" value="<%= log.absolute_dir %>" />
 
     <appender name="Console" class="ch.qos.logback.core.ConsoleAppender">
         <layout class="ch.qos.logback.classic.PatternLayout">
