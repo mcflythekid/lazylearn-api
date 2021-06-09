@@ -19,13 +19,5 @@ target/
 .springBeans
 .factorypath
 rebel.xml
-/bin/
-node_modules/
-
 .vscode/
-
 docker/
-application.properties
-
-### file
-src/main/java/com/lazylearn/api/config/env/WiredEnv.java
