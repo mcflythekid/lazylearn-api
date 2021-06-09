@@ -14,7 +14,7 @@ import java.util.Properties;
  * Date: 2020-05-03
  */
 @Configuration
-public class EmailConfig{
+public class EmailConfig {
 
     @Autowired
     private WiredEnv wiredEnv;
@@ -22,7 +22,7 @@ public class EmailConfig{
     public static final String MAIL_SENDER = "MAIL_SENDER";
 
     @Bean(MAIL_SENDER)
-    public JavaMailSender getJavaMailSender(){
+    public JavaMailSender getJavaMailSender() {
         JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
         mailSender.setHost(wiredEnv.getMailServer());
         mailSender.setPort(wiredEnv.getMailPort());

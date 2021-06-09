@@ -16,7 +16,7 @@ import javax.persistence.Table;
  * Date: 2020-05-01
  */
 @Entity
-@Table(name="contact_form")
+@Table(name = "contact_form")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -32,7 +32,7 @@ public class ContactEntity extends AbstractEntity {
     @Lob
     private String content;
 
-    public String format(){
+    public String format() {
         return new StringBuilder()
                 .append("CONTACT").append("\n")
                 .append("First name: ").append(firstName).append("\n")

@@ -11,13 +11,13 @@ import javax.persistence.Table;
  * @author McFly the Kid
  */
 @Entity
-@Table(name="vocabdeck", indexes = {
-    @Index(columnList = "userId")
+@Table(name = "vocabdeck", indexes = {
+        @Index(columnList = "userId")
 })
-public class Vocabdeck extends AbstractEntity implements HasUserId{
+public class Vocabdeck extends AbstractEntity implements HasUserId {
 
     @PrePersist
-    public void prePersist(){
+    public void prePersist() {
         setArchived(Consts.CARDDECK_UNARCHIVED);
         setLanguage(Consts.VOCABDECK_LANGUAGE);
     }

@@ -4,7 +4,6 @@ import com.lazylearn.api.config.env.WiredEnv;
 import org.apache.tika.Tika;
 import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.HandlerMapping;
@@ -25,7 +24,7 @@ public class FileController extends BaseController {
     private WiredEnv env;
 
     @RequestMapping("/file/**")
-    public void getFile(HttpServletResponse response, HttpServletRequest request) throws Exception{
+    public void getFile(HttpServletResponse response, HttpServletRequest request) throws Exception {
         String filePath = (String) request.getAttribute(HandlerMapping.PATH_WITHIN_HANDLER_MAPPING_ATTRIBUTE);
         filePath = filePath.substring("file".length() + 1);
         String fullPath = env.getFileUpload() + filePath;

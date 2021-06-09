@@ -5,7 +5,6 @@ import com.lazylearn.api.indto.EncodedFile;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
@@ -37,7 +36,7 @@ public class FileService {
         upload(filePath, encodedFile);
     }
 
-    public void delete(String filePath) throws Exception{
+    public void delete(String filePath) throws Exception {
         Files.deleteIfExists(Paths.get(env.getFileUpload() + filePath));
     }
 

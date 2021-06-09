@@ -1,6 +1,5 @@
 package com.lazylearn.api.vocabgenerator;
 
-import com.lazylearn.api.config.Consts;
 import com.lazylearn.api.entity.Card;
 import com.lazylearn.api.entity.Deck;
 import com.lazylearn.api.entity.Vocab;
@@ -25,7 +24,7 @@ public abstract class VocabGenerator {
         this.fileRoot = fileRoot;
     }
 
-    public static List<VocabGenerator> getGenerators(String fileRoot){
+    public static List<VocabGenerator> getGenerators(String fileRoot) {
         return Arrays.asList(new ImagingVocabGenerator(fileRoot), new SpeakingVocabGenerator(fileRoot), new WritingVocabGenerator(fileRoot));
     }
 
@@ -34,12 +33,15 @@ public abstract class VocabGenerator {
     public static final Integer VOCAB_TYPE__WRITING = 4;
 
     public abstract String getPrefix();
+
     public abstract Integer getVocabType();
+
     public abstract String getCardFrontTemplate() throws Exception;
+
     public abstract String getCardBackTemplate() throws Exception;
 
-    public Deck generateDeck(Vocabdeck vocabdeck, Deck deck){
-        if (deck == null){
+    public Deck generateDeck(Vocabdeck vocabdeck, Deck deck) {
+        if (deck == null) {
             deck = new Deck();
             deck.setUserId(vocabdeck.getUserId());
         }
@@ -51,7 +53,7 @@ public abstract class VocabGenerator {
     }
 
     public Card generateCard(Vocab vocab, Card card, String deckId) throws Exception {
-        if (card == null){
+        if (card == null) {
             card = new Card();
             card.setUserId(vocab.getUserId());
             card.setDeckId(deckId);
@@ -63,12 +65,11 @@ public abstract class VocabGenerator {
     }
 
     /**
-     *
-     * @param template   "The ${animal} jumped over the ${target}."
+     * @param template "The ${animal} jumped over the ${target}."
      * @param vocab
      * @return
      */
-    public String formatCardContent(String template, Vocab vocab){
+    public String formatCardContent(String template, Vocab vocab) {
         String audioHint = isBlank(vocab.getAudioHint()) ? "" : vocab.getAudioHint();
 
         Map<String, String> valuesMap = new HashMap<>();

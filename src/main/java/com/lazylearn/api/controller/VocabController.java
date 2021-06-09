@@ -30,35 +30,35 @@ public class VocabController extends BaseController {
     private VocabSavedService vocabSavedService;
 
     @GetMapping("/get-vocab-data/{word}")
-    public VocabSampleDto getVocabTemplate(@PathVariable String word) throws Exception{
+    public VocabSampleDto getVocabTemplate(@PathVariable String word) throws Exception {
         return vocabSavedService.getSampleByWords(word, Consts.VocabTemplate.LANGUAGE_ENGLISH);
     }
 
     @GetMapping("/get/{vocabId}")
-    public Vocab get(@PathVariable String vocabId) throws Exception{
+    public Vocab get(@PathVariable String vocabId) throws Exception {
         return authorizeVocab(vocabId);
     }
 
     @PostMapping("/create")
-    public Vocab create(@Valid @RequestBody VocabCreateIn in) throws Exception{
+    public Vocab create(@Valid @RequestBody VocabCreateIn in) throws Exception {
         return vocabService.create(in, getUserId());
     }
 
     @PostMapping("/edit")
-    public VocabEditOut edit(@Valid @RequestBody VocabEditIn in) throws Exception{
+    public VocabEditOut edit(@Valid @RequestBody VocabEditIn in) throws Exception {
         authorizeVocab(in.getVocabId());
         return vocabService.edit(in, getUserId());
     }
 
     @PostMapping("/delete/{vocabId}")
-    public JSON delete(@PathVariable String vocabId) throws Exception{
+    public JSON delete(@PathVariable String vocabId) throws Exception {
         authorizeVocab(vocabId);
         vocabService.delete(vocabId);
         return JSON.ok("Delete success");
     }
 
     @PostMapping("/search")
-    public BootstraptableOut search(@Valid @RequestBody VocabSearchIn in) throws Exception{
+    public BootstraptableOut search(@Valid @RequestBody VocabSearchIn in) throws Exception {
         return vocabService.search(in);
     }
 }

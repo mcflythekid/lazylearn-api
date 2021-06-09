@@ -18,7 +18,7 @@ public class SubscribeService {
     @Autowired
     private TelegramUnit telegramUnit;
 
-    public SubscribeEntity create(SubscribeCreateDto dto){
+    public SubscribeEntity create(SubscribeCreateDto dto) {
         SubscribeEntity subscribeEntity = new SubscribeEntity();
         BeanUtils.copyProperties(dto, subscribeEntity);
         subscribeEntity = subscribeRepo.save(subscribeEntity);

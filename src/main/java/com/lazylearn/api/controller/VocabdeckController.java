@@ -17,51 +17,51 @@ import javax.validation.Valid;
  */
 @RestController
 @RequestMapping("/vocabdeck")
-public class VocabdeckController extends BaseController{
+public class VocabdeckController extends BaseController {
 
     @Autowired
     private VocabdeckService vocabdeckService;
 
     @GetMapping("/get/{vocabdeckId}")
-    public Vocabdeck get(@PathVariable String vocabdeckId) throws Exception{
+    public Vocabdeck get(@PathVariable String vocabdeckId) throws Exception {
         return authorizeVocabdeck(vocabdeckId);
     }
 
     @PostMapping("/create")
-    public Vocabdeck create(@Valid @RequestBody VocabdeckCreateIn in) throws Exception{
+    public Vocabdeck create(@Valid @RequestBody VocabdeckCreateIn in) throws Exception {
         return vocabdeckService.create(in, getUserId());
     }
 
     @PostMapping("/rename")
-    public JSON rename(@Valid @RequestBody VocabdeckRenameIn in) throws Exception{
+    public JSON rename(@Valid @RequestBody VocabdeckRenameIn in) throws Exception {
         authorizeVocabdeck(in.getVocabdeckId());
         vocabdeckService.rename(in);
         return JSON.ok("Rename success");
     }
 
     @PostMapping("/delete/{vocabdeckId}")
-    public JSON delete(@PathVariable String vocabdeckId) throws Exception{
+    public JSON delete(@PathVariable String vocabdeckId) throws Exception {
         authorizeVocabdeck(vocabdeckId);
         vocabdeckService.delete(vocabdeckId);
         return JSON.ok("Delete success");
     }
 
     @PostMapping("/archive/{vocabdeckId}")
-    public JSON archive(@PathVariable String vocabdeckId) throws Exception{
+    public JSON archive(@PathVariable String vocabdeckId) throws Exception {
         authorizeVocabdeck(vocabdeckId);
         vocabdeckService.archive(vocabdeckId);
         return JSON.ok("Archive success");
     }
 
     @PostMapping("/unarchive/{vocabdeckId}")
-    public JSON unarchive(@PathVariable String vocabdeckId) throws Exception{
+    public JSON unarchive(@PathVariable String vocabdeckId) throws Exception {
         authorizeVocabdeck(vocabdeckId);
         vocabdeckService.unarchive(vocabdeckId);
         return JSON.ok("Unarchive success");
     }
 
     @PostMapping("/search")
-    public BootstraptableOut search(@Valid @RequestBody SearchIn in) throws Exception{
+    public BootstraptableOut search(@Valid @RequestBody SearchIn in) throws Exception {
         return vocabdeckService.search(in, getUserId());
     }
 }

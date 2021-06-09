@@ -2,21 +2,24 @@ package com.lazylearn.api.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.PrePersist;
+import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 import java.util.UUID;
 
 /**
  * @author McFly the Kid
  */
 @Entity
-@Table(name="user", uniqueConstraints = {
-    @UniqueConstraint(columnNames = {"email"}),
-    @UniqueConstraint(columnNames = {"facebookId"})
+@Table(name = "user", uniqueConstraints = {
+        @UniqueConstraint(columnNames = {"email"}),
+        @UniqueConstraint(columnNames = {"facebookId"})
 })
-public class User extends AbstractEntity implements HasUserId{
+public class User extends AbstractEntity implements HasUserId {
 
     @PrePersist
-    public void prePersist(){
+    public void prePersist() {
         setSessionKey(UUID.randomUUID().toString());
     }
 

@@ -1,7 +1,6 @@
 package com.lazylearn.api.controller;
 
 import com.lazylearn.api.config.Consts;
-import com.lazylearn.api.config.exception.AppException;
 import com.lazylearn.api.entity.*;
 import com.lazylearn.api.indto.ClientData;
 import com.lazylearn.api.repo.*;
@@ -44,7 +43,7 @@ public abstract class BaseController {
     @Autowired
     private HttpServletRequest request;
 
-    protected ClientData getClientData(){
+    protected ClientData getClientData() {
         ClientData clientData = new ClientData();
 
         String os = HttpServletUtils.getClientOS(request);
@@ -57,7 +56,7 @@ public abstract class BaseController {
         return clientData;
     }
 
-    protected String getUserId() throws Exception{
+    protected String getUserId() throws Exception {
         return SecurityUtils.getCurrentUserLogin();
     }
 
@@ -110,36 +109,36 @@ public abstract class BaseController {
     }
 
     private void authorizeObject(HasUserId hasUserId) throws Exception {
-        if (Consts.Admin.isAdmin()){
+        if (Consts.Admin.isAdmin()) {
             // HIJACK admin
             return;
         }
 
-        if (hasUserId == null){
+        if (hasUserId == null) {
             throw Consts.Exception.NOT_FOUND;
         }
-        if (!hasUserId.getUserId().equals(this.getUserId())){
+        if (!hasUserId.getUserId().equals(this.getUserId())) {
             throw Consts.Exception.INVALID_OWNERSHIP;
         }
     }
 
-    protected void protectGeneratedDeck(Deck deck) throws Exception{
-        if (StringUtils.isNotBlank(deck.getVocabdeckId())){
+    protected void protectGeneratedDeck(Deck deck) throws Exception {
+        if (StringUtils.isNotBlank(deck.getVocabdeckId())) {
             throw Consts.Exception.PROTECTED_VOCABDECK;
         }
-        if (StringUtils.isNotBlank(deck.getMinpairLanguage())){
+        if (StringUtils.isNotBlank(deck.getMinpairLanguage())) {
             throw Consts.Exception.PROTECTED_MINPAIR;
         }
-        if (deck.getType() != null && deck.getType().equalsIgnoreCase(Consts.DECKTYPE__TOPIC)){
+        if (deck.getType() != null && deck.getType().equalsIgnoreCase(Consts.DECKTYPE__TOPIC)) {
             throw Consts.Exception.PROTECTED_TOPIC;
         }
     }
 
-    protected void protectGeneratedCard(Card card) throws Exception{
-        if (StringUtils.isNotBlank(card.getVocabId())){
+    protected void protectGeneratedCard(Card card) throws Exception {
+        if (StringUtils.isNotBlank(card.getVocabId())) {
             throw Consts.Exception.PROTECTED_VOCABDECK;
         }
-        if (StringUtils.isNotBlank(card.getMinpairLanguage())){
+        if (StringUtils.isNotBlank(card.getMinpairLanguage())) {
             throw Consts.Exception.PROTECTED_MINPAIR;
         }
     }

@@ -12,7 +12,6 @@ import com.lazylearn.api.repo.DeckRepo;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
@@ -31,7 +30,7 @@ public class CardService {
     private DeckRepo deckRepo;
 
     public BootstraptableOut search(CardSearchIn in) {
-        List<Card> rows = cardRepo.findAllByDeckIdAndSearch(in.getDeckId(),  in.getSearch(), in.getPageable());
+        List<Card> rows = cardRepo.findAllByDeckIdAndSearch(in.getDeckId(), in.getSearch(), in.getPageable());
         Long total = cardRepo.countByDeckIdAndSearch(in.getDeckId(), in.getSearch());
         return new BootstraptableOut(rows, total);
     }
@@ -73,20 +72,20 @@ public class CardService {
     }
 
     @Transactional(rollbackFor = Exception.class)
-    public void importCards(List<String> cardLines, Deck deck){
-        for (String cardLine: cardLines){
-            if(StringUtils.isBlank(cardLine)){
+    public void importCards(List<String> cardLines, Deck deck) {
+        for (String cardLine : cardLines) {
+            if (StringUtils.isBlank(cardLine)) {
                 continue;
             }
             String[] sides = cardLine.split("\\t");
-            if (sides.length < 2){
+            if (sides.length < 2) {
                 continue;
             }
             create(sides[0], sides[1], deck.getId(), deck.getUserId());
         }
     }
 
-    public Card create(String front, String back, String deckId, String userId){
+    public Card create(String front, String back, String deckId, String userId) {
         Card card = new Card();
         card.setFront(front);
         card.setBack(back);

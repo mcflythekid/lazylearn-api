@@ -10,12 +10,13 @@ import static org.apache.commons.lang3.StringUtils.isBlank;
  * @author McFly the Kid
  */
 public final class StringUtils2 {
-    private StringUtils2() {}
+    private StringUtils2() {
+    }
 
 
     private static final String READABLE_ID_FORMAT_DATE = "yyyy_MM_dd";
 
-    public static String generateReadableId(String prefix, int suffixLength){
+    public static String generateReadableId(String prefix, int suffixLength) {
         return new StringBuilder()
                 .append(prefix)
                 .append("_")
@@ -25,9 +26,9 @@ public final class StringUtils2 {
                 .toString();
     }
 
-    public static String removeTabAndDoubleSpaceAndTrim(String input){
+    public static String removeTabAndDoubleSpaceAndTrim(String input) {
         String data = input;
-        if (isBlank(data)){
+        if (isBlank(data)) {
             return data;
         }
         data = data.replaceAll("\\s{2,}", " ");
@@ -35,11 +36,11 @@ public final class StringUtils2 {
         return data.trim();
     }
 
-    public static String generateRandomId(){
+    public static String generateRandomId() {
         return randomBeautyString(32);
     }
 
-    public static String randomBeautyString(Integer length){
+    public static String randomBeautyString(Integer length) {
         final String SALTCHARS = "QAZXWECRFVBGTYHNUMKLP";
         StringBuilder salt = new StringBuilder();
         Random rnd = new Random();

@@ -18,13 +18,13 @@ import java.util.Date;
 public abstract class AbstractEntity implements Serializable {
 
     @PrePersist
-    public void parentPrePersist(){
+    public void parentPrePersist() {
         setId(StringUtils2.generateReadableId(getClass().getSimpleName(), 36));
         setCreatedDate(new Date());
     }
 
     @PreUpdate
-    public void parentPreUpdate(){
+    public void parentPreUpdate() {
         setUpdatedDate(new Date());
     }
 

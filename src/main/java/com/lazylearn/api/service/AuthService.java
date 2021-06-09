@@ -77,8 +77,8 @@ public class AuthService {
         forgetPassword.setExpiredDate(DateUtils.addDays(new Date(), Consts.FORGETPASSWORD_EXPIRED_DAYS));
         forgetPasswordRepo.save(forgetPassword);
 
-        new Thread(()-> emailService.sendHtmlEmail("support@lazylearn.com", "Lazylearn Team",
-                in.getEmail(), "Reset your password",  createResetPasswordEmailContent(forgetPassword))).start();
+        new Thread(() -> emailService.sendHtmlEmail("support@lazylearn.com", "Lazylearn Team",
+                in.getEmail(), "Reset your password", createResetPasswordEmailContent(forgetPassword))).start();
     }
 
     @Transactional(rollbackFor = Exception.class)
@@ -100,7 +100,8 @@ public class AuthService {
 
     @Transactional(rollbackFor = Exception.class)
     public LoginOut register(RegisterIn registerIn, ClientData clientData) throws Exception {
-        if (userRepo.findByEmail(registerIn.getEmail()) != null) throw new AppException(HttpStatus.CONFLICT.value(), "Email address already exists");
+        if (userRepo.findByEmail(registerIn.getEmail()) != null)
+            throw new AppException(HttpStatus.CONFLICT.value(), "Email address already exists");
 
         User user = new User();
         user.setEmail(registerIn.getEmail());
@@ -117,12 +118,12 @@ public class AuthService {
         return createLoginResponse(user, clientData);
     }
 
-    public LoginOut login(LoginIn authLoginInDto, ClientData clientData){
+    public LoginOut login(LoginIn authLoginInDto, ClientData clientData) {
         User user = userRepo.findByEmail(authLoginInDto.getEmail());
-        if (user == null){
+        if (user == null) {
             throw new AppException("Email not found");
         }
-        if (!passwordEncoder.matches(authLoginInDto.getRawPassword(), user.getEncodedPassword())){
+        if (!passwordEncoder.matches(authLoginInDto.getRawPassword(), user.getEncodedPassword())) {
             throw new AppException("Wrong password");
         }
 
@@ -134,10 +135,10 @@ public class AuthService {
     @Transactional(rollbackFor = Exception.class)
     public LoginOut loginFacebook(LoginFacebookIn in, ClientData clientData) throws Exception {
         FacebookClient facebookClient = new DefaultFacebookClient(in.getAccessToken(), Version.VERSION_3_0);
-        com.restfb.types.User fbUser = facebookClient.fetchObject("me",  com.restfb.types.User.class,Parameter.with("fields", "name,id"));
+        com.restfb.types.User fbUser = facebookClient.fetchObject("me", com.restfb.types.User.class, Parameter.with("fields", "name,id"));
 
         User user = userRepo.findByFacebookId(fbUser.getId());
-        if (user == null){
+        if (user == null) {
             user = new User();
             user.setIpAddress(clientData.getIpAddress());
             user.setFacebookId(fbUser.getId());
@@ -157,7 +158,7 @@ public class AuthService {
     }
 
     @Transactional(rollbackFor = Exception.class)
-    public LoginOut logoutAllSession(String userId, ClientData clientData){
+    public LoginOut logoutAllSession(String userId, ClientData clientData) {
         User user = userRepo.findOne(userId);
         user.setSessionKey(UUID.randomUUID().toString());
         userRepo.save(user);
@@ -168,18 +169,18 @@ public class AuthService {
     }
 
     @Transactional(rollbackFor = Exception.class)
-    public void changePassword(String userId, String rawPassword){
+    public void changePassword(String userId, String rawPassword) {
         User user = userRepo.findOne(userId);
         user.setEncodedPassword(passwordEncoder.encode(rawPassword));
         userRepo.save(user);
     }
 
-    public String getAllSession(String userId){
+    public String getAllSession(String userId) {
         List<Session> sessions = sessionRepo.findAllByUserIdOrderByCreatedDateDesc(userId);
         return sessions.stream().map(Session::getClientData).collect(Collectors.joining("<br>"));
     }
 
-    private LoginOut createLoginResponse(User user, ClientData clientData){
+    private LoginOut createLoginResponse(User user, ClientData clientData) {
         UserData userData = new UserData();
         userData.setEmail(user.getEmail());
         userData.setUserId(user.getId());
@@ -192,7 +193,7 @@ public class AuthService {
         return loginOut;
     }
 
-    private String createResetPasswordEmailContent(Reset forgetPassword){
+    private String createResetPasswordEmailContent(Reset forgetPassword) {
         String url = String.format(env.getResetPassword(), forgetPassword.getId());
         return String.format("<a href='%s'>Please click here</a>", url);
     }
@@ -200,7 +201,7 @@ public class AuthService {
 
     public LoginOut forceLogin(String userId, ClientData clientData) {
         User user = userRepo.findOne(userId);
-        if (user == null){
+        if (user == null) {
             throw new AppException("User id not found");
         }
         return createLoginResponse(user, clientData);

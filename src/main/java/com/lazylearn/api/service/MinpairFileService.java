@@ -24,11 +24,11 @@ public class MinpairFileService {
     @Autowired
     private FileService fileService;
 
-    public MinpairFile upload(MinpairFileCreateIn dto){
+    public MinpairFile upload(MinpairFileCreateIn dto) {
         return null;
     }
 
-    public MinpairFile rename(MinpairFile minpairFile, String newName){
+    public MinpairFile rename(MinpairFile minpairFile, String newName) {
         minpairFile.setName(newName);
         return minpairFileRepo.save(minpairFile);
     }
@@ -41,7 +41,7 @@ public class MinpairFileService {
 
     @Transactional
     public void create(MinpairCreateIn dto, Minpair minpair) throws Exception {
-        for(EncodedFile encodedFile : dto.getAudioFiles1()){
+        for (EncodedFile encodedFile : dto.getAudioFiles1()) {
             MinpairFile minpairFile = new MinpairFile();
             BeanUtils.copyProperties(dto, minpairFile);
             minpairFile.setName("init");
@@ -53,7 +53,7 @@ public class MinpairFileService {
             minpairFile.generateAudioPaths(minpair, encodedFile);
             fileService.uploadEncodedFile(minpairFile.getAudioPath(), encodedFile.getContent());
         }
-        for(EncodedFile encodedFile : dto.getAudioFiles2()){
+        for (EncodedFile encodedFile : dto.getAudioFiles2()) {
             MinpairFile minpairFile = new MinpairFile();
             BeanUtils.copyProperties(dto, minpairFile);
             minpairFile.setName("init");

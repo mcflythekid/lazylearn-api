@@ -9,5 +9,5 @@ import org.springframework.stereotype.Repository;
  * Date: 2020-05-02
  */
 @Repository
-public interface NewUserTemplateRepo  extends JpaRepository<NewUserTemplate, String> {
+public interface NewUserTemplateRepo extends JpaRepository<NewUserTemplate, String> {
 }

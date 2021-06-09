@@ -12,7 +12,7 @@ import org.springframework.context.annotation.Configuration;
 public class Beans {
 
     @Bean
-    public OxfordUnit oxfordUnit(){
+    public OxfordUnit oxfordUnit() {
         return new OxfordUnit();
     }
 }

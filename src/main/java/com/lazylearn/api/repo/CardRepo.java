@@ -43,12 +43,12 @@ public interface CardRepo extends JpaRepository<Card, String> {
 
     @Query(nativeQuery = true, value =
             " SELECT * FROM card c " +
-            " JOIN deck d ON d.id = c.deckid AND d.type IN ('default', 'vocab')" +
-            " WHERE " +
-            "     c.userid = ?1" +
-            " AND c.archived = 0" +
-            " AND c.wakeupOn < ?2" +
-            " ")
+                    " JOIN deck d ON d.id = c.deckid AND d.type IN ('default', 'vocab')" +
+                    " WHERE " +
+                    "     c.userid = ?1" +
+                    " AND c.archived = 0" +
+                    " AND c.wakeupOn < ?2" +
+                    " ")
     List<Card> findAllByUserIdAndWakeupOnBefore(String userId, Date wakeupOn);
 
     @Query(nativeQuery = true, value =
@@ -85,12 +85,15 @@ public interface CardRepo extends JpaRepository<Card, String> {
     long countAllByUserIdAndWakeupOnBeforeAndLearnedOnBefore(String userId, Date wakeupOn, Date midNight);
 
     Long countAllByDeckIdAndStepAndWakeupOnBeforeAndArchived(String deckId, Integer step, Date wakeupOn, Integer archived);
+
     Long countAllByUserIdAndStepAndWakeupOnBeforeAndArchived(String userId, Integer step, Date wakeupOn, Integer archived);
 
     Long countAllByDeckIdAndStepAndWakeupOnAfterAndArchived(String deckId, Integer step, Date wakeupOn, Integer archived);
+
     Long countAllByUserIdAndStepAndWakeupOnAfterAndArchived(String userId, Integer step, Date wakeupOn, Integer archived);
 
     Long countAllByDeckIdAndStepAndArchived(String deckId, Integer step, Integer archived);
+
     Long countAllByUserIdAndStepAndArchived(String userId, Integer step, Integer archived);
 
     @Modifying

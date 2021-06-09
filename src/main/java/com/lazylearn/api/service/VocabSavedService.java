@@ -2,7 +2,6 @@ package com.lazylearn.api.service;
 
 import com.lazylearn.api.config.Consts;
 import com.lazylearn.api.entity.VocabSaved;
-import com.lazylearn.api.indto.EncodedFile;
 import com.lazylearn.api.repo.VocabSavedRepo;
 import com.lazylearn.api.unit.OxfordUnit;
 import com.lazylearn.api.unit.VocabSampleDto;
@@ -14,7 +13,6 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.lazylearn.api.config.Consts.VocabTemplate.PLATFORM_OXFORD_LEARNER;
 import static org.apache.commons.lang3.StringUtils.isBlank;
 
 /**
@@ -36,33 +34,33 @@ public class VocabSavedService {
 
     public VocabSampleDto getSampleByWords(String words, int languageId) throws Exception {
         // Validate language
-        if (languageId != Consts.VocabTemplate.LANGUAGE_ENGLISH){
+        if (languageId != Consts.VocabTemplate.LANGUAGE_ENGLISH) {
             throw Consts.VocabTemplate.LANG_NOT_FOUND;
         }
 
         // Validate words
         String validatedWords = StringUtils2.removeTabAndDoubleSpaceAndTrim(words);
-        if (isBlank(validatedWords)){
+        if (isBlank(validatedWords)) {
             throw Consts.VocabTemplate.INVALID_WORD;
         }
 
         // Process single word & Validate sub-words
         String[] validatedWordsArray = validatedWords.split("\\s");
-        if (validatedWordsArray.length == 1){
+        if (validatedWordsArray.length == 1) {
             return getSampleByWord(validatedWordsArray[0], languageId);
         }
-        if (validatedWordsArray.length > Consts.VocabTemplate.WORD_LIMIT){
+        if (validatedWordsArray.length > Consts.VocabTemplate.WORD_LIMIT) {
             throw Consts.VocabTemplate.TOO_MANY_WORD;
         }
 
         // Merge words
         List<VocabSampleDto> oxfordDtoList = new ArrayList<>();
-        for (String word : validatedWordsArray){
+        for (String word : validatedWordsArray) {
             oxfordDtoList.add(getSampleByWord(word, languageId));
         }
         String word = "";
         String phonetic = "";
-        for (VocabSampleDto vocabSampleDto : oxfordDtoList){
+        for (VocabSampleDto vocabSampleDto : oxfordDtoList) {
             word += vocabSampleDto.getWord().trim() + " ";
             phonetic += vocabSampleDto.getPhonetic().replaceAll("\\/", "").trim() + " ";
         }
@@ -72,14 +70,14 @@ public class VocabSavedService {
         return VocabSampleDto.builder()
                 .word(word)
                 .phonetic(phonetic)
-            .build();
+                .build();
     }
 
 
     private VocabSampleDto getSampleByWord(String word, int languageId) throws Exception {
         // Get from saved cache first
         VocabSaved vocabSaved = vocabSavedRepo.findByWordAndLanguageId(word, languageId);
-        if (vocabSaved != null){
+        if (vocabSaved != null) {
             log.info("Get word '{}' from cache", word);
             return VocabSampleDto
                     .builder()
@@ -87,7 +85,7 @@ public class VocabSavedService {
                     .phonetic(vocabSaved.getPhonetic())
                     .phrase(vocabSaved.getPhrase())
                     .audio64(fileService.readFileFromPath(vocabSaved.getAudioPath()).getContent())
-            .build();
+                    .build();
         }
 
         // Get word from internet

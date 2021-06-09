@@ -26,7 +26,7 @@ public class MinpairCreateIn {
     private List<EncodedFile> audioFiles2;
 
     @AssertTrue(message = "Audio files is required")
-    public boolean isValidFiles(){
+    public boolean isValidFiles() {
         return audioFiles1 != null && audioFiles2 != null
                 && !audioFiles1.isEmpty() && !audioFiles2.isEmpty();
     }

@@ -14,7 +14,7 @@ import javax.persistence.Table;
  * Date: 2020-05-01
  */
 @Entity
-@Table(name="subscribe_form")
+@Table(name = "subscribe_form")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -22,7 +22,7 @@ import javax.persistence.Table;
 public class SubscribeEntity extends AbstractEntity {
     private String email;
 
-    public String format(){
+    public String format() {
         return new StringBuilder()
                 .append("SUBSCRIBE: ").append(email)
                 .toString();

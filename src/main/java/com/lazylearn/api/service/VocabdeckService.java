@@ -1,8 +1,7 @@
 package com.lazylearn.api.service;
 
-import com.lazylearn.api.config.env.WiredEnv;
-import com.lazylearn.api.vocabgenerator.VocabGenerator;
 import com.lazylearn.api.config.Consts;
+import com.lazylearn.api.config.env.WiredEnv;
 import com.lazylearn.api.entity.Deck;
 import com.lazylearn.api.entity.Vocabdeck;
 import com.lazylearn.api.indto.SearchIn;
@@ -11,8 +10,8 @@ import com.lazylearn.api.indto.vocabdeck.VocabdeckRenameIn;
 import com.lazylearn.api.outdto.BootstraptableOut;
 import com.lazylearn.api.repo.DeckRepo;
 import com.lazylearn.api.repo.VocabdeckRepo;
+import com.lazylearn.api.vocabgenerator.VocabGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -36,8 +35,8 @@ public class VocabdeckService {
     private WiredEnv env;
 
     @Transactional(rollbackFor = Exception.class)
-    public void createCallback(Vocabdeck vocabdeck){
-        for (VocabGenerator vocabGenerator : VocabGenerator.getGenerators(env.getFileUrl())){
+    public void createCallback(Vocabdeck vocabdeck) {
+        for (VocabGenerator vocabGenerator : VocabGenerator.getGenerators(env.getFileUrl())) {
             Deck deck = deckService.create(vocabGenerator.generateDeck(vocabdeck, null));
             deck.setType(Consts.DECKTYPE__VOCAB);
             deckRepo.save(deck);
@@ -45,8 +44,8 @@ public class VocabdeckService {
     }
 
     @Transactional(rollbackFor = Exception.class)
-    public void updateCallback(Vocabdeck vocabdeck){
-        for (VocabGenerator vocabGenerator : VocabGenerator.getGenerators(env.getFileUrl())){
+    public void updateCallback(Vocabdeck vocabdeck) {
+        for (VocabGenerator vocabGenerator : VocabGenerator.getGenerators(env.getFileUrl())) {
             Deck deck = deckRepo.findByVocabdeckIdAndVocabType(vocabdeck.getId(), vocabGenerator.getVocabType());
             deck.setType(Consts.DECKTYPE__VOCAB);
             deckRepo.save(deck);
@@ -55,8 +54,8 @@ public class VocabdeckService {
     }
 
     @Transactional(rollbackFor = Exception.class)
-    public void deleteCallback(String vocabdeckId){
-        for (Deck deck: deckRepo.findAllByVocabdeckId(vocabdeckId)) {
+    public void deleteCallback(String vocabdeckId) {
+        for (Deck deck : deckRepo.findAllByVocabdeckId(vocabdeckId)) {
             deckService.delete(deck.getId());
         }
     }

@@ -2,9 +2,6 @@ package com.lazylearn.api.indto.article;
 
 import org.hibernate.validator.constraints.NotBlank;
 
-import javax.persistence.Lob;
-import javax.validation.constraints.Pattern;
-
 /**
  * @author McFly the Kid
  */

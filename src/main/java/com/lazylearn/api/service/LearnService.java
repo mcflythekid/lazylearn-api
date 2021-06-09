@@ -30,15 +30,15 @@ public class LearnService {
     @Autowired
     private DeckService deckService;
 
-    private List<Card> findAllCardForReview(String deckId){
+    private List<Card> findAllCardForReview(String deckId) {
         return cardRepo.findAllByDeckIdAndArchived(deckId, Consts.CARDDECK_UNARCHIVED);
     }
 
-    private List<Card> findAllCardForLearn(String deckId){
+    private List<Card> findAllCardForLearn(String deckId) {
         return cardRepo.findAllByDeckIdAndArchivedAndWakeupOnBefore(deckId, Consts.CARDDECK_UNARCHIVED, new Date());
     }
 
-    private List<Card> findAllCardForLearnByUserId(String userId){
+    private List<Card> findAllCardForLearnByUserId(String userId) {
         return cardRepo.findAllByUserIdAndWakeupOnBefore(userId, new Date());
     }
 
@@ -47,7 +47,7 @@ public class LearnService {
         return cardRepo.findAllByUserIdAndWakeupOnBeforeAndLearnedOnBefore(userId, new Date(), DateUtils2.getRemoteTimezoneMidnightDate(user.getTimezone()));
     }
 
-    public LearnOut getByLearnOneUserId(String userId){
+    public LearnOut getByLearnOneUserId(String userId) {
         LearnOut learnOut = new LearnOut();
         learnOut.setDeck(deckService.createOneForAllDeck());
         learnOut.setCards(this.findAllCardForLearnByUserId(userId));
@@ -61,14 +61,14 @@ public class LearnService {
         return learnOut;
     }
 
-    public LearnOut getByLearn(Deck deck){
+    public LearnOut getByLearn(Deck deck) {
         LearnOut learnOut = new LearnOut();
         learnOut.setDeck(deck);
         learnOut.setCards(this.findAllCardForLearn(deck.getId()));
         return learnOut;
     }
 
-    public LearnOut getByReview(Deck deck){
+    public LearnOut getByReview(Deck deck) {
         LearnOut learnOut = new LearnOut();
         learnOut.setDeck(deck);
         learnOut.setCards(this.findAllCardForReview(deck.getId()));

@@ -1,7 +1,6 @@
 package com.lazylearn.api.repo;
 
 import com.lazylearn.api.entity.Article;
-import com.lazylearn.api.entity.Minpair;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

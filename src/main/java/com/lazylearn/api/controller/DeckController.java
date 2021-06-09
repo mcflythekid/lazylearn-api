@@ -18,7 +18,7 @@ import javax.validation.Valid;
  */
 @RestController
 @RequestMapping("/deck")
-public class DeckController extends BaseController{
+public class DeckController extends BaseController {
 
     @Autowired
     private DeckService deckService;
@@ -58,7 +58,7 @@ public class DeckController extends BaseController{
 
     @GetMapping("/get/{deckId}")
     public Deck get(@PathVariable("deckId") String deckId) throws Exception {
-        if (deckId.startsWith(Consts.Deck.LEARN_ALL_DECK_ID_PREFIX)){
+        if (deckId.startsWith(Consts.Deck.LEARN_ALL_DECK_ID_PREFIX)) {
             return deckService.createOneForAllDeck();
         }
 

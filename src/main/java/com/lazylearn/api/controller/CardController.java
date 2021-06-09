@@ -22,7 +22,7 @@ import javax.validation.Valid;
  */
 @RestController
 @RequestMapping("/card")
-public class CardController extends BaseController{
+public class CardController extends BaseController {
 
     @Autowired
     private CardService cardService;
@@ -32,7 +32,7 @@ public class CardController extends BaseController{
 
     @PostMapping("/search")
     public BootstraptableOut searchDeck(@Valid @RequestBody CardSearchIn in) throws Exception {
-        if (in.getDeckId().startsWith(Consts.Deck.LEARN_ALL_DECK_ID_PREFIX)){
+        if (in.getDeckId().startsWith(Consts.Deck.LEARN_ALL_DECK_ID_PREFIX)) {
             throw Consts.Exception.CANNOT_INSPECT_VIRTUAL_DECK;
         }
 
@@ -65,11 +65,11 @@ public class CardController extends BaseController{
     }
 
     @PostMapping("/change-deck")
-    public Card changeDeck(@Valid @RequestBody CardChangeDeckIn in) throws Exception{
+    public Card changeDeck(@Valid @RequestBody CardChangeDeckIn in) throws Exception {
         protectGeneratedCard(authorizeCard(in.getCardId()));
         Deck deck = authorizeDeck(in.getDeckId());
         Card card = authorizeCard(in.getCardId());
-        if (card.getDeckId().equals(deck.getId())){
+        if (card.getDeckId().equals(deck.getId())) {
             throw new AppException(403, "Cannot move to the same deck it self");
         }
         return cardService.changeDeck(in);

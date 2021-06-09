@@ -30,23 +30,23 @@ public class DeckService {
     private CardService cardService;
 
     @Transactional(rollbackFor = Exception.class)
-    public void updateCallback(Deck deck){
+    public void updateCallback(Deck deck) {
         cardRepo.setArchivedAllByDeckId(deck.getArchived(), deck.getId());
     }
 
     @Transactional(rollbackFor = Exception.class)
-    public void deleteCallback(String deckId){
+    public void deleteCallback(String deckId) {
         cardRepo.deleteAllByDeckId(deckId);
     }
 
     @Transactional(rollbackFor = Exception.class)
-    public void update(Deck deck){
+    public void update(Deck deck) {
         deckRepo.save(deck);
         updateCallback(deck);
     }
 
     @Transactional(rollbackFor = Exception.class)
-    public Deck create(Deck deck){
+    public Deck create(Deck deck) {
         return deckRepo.save(deck);
     }
 
@@ -80,7 +80,7 @@ public class DeckService {
     }
 
     @Transactional(rollbackFor = Exception.class)
-    public Deck create(DeckCreateIn in, String userId){
+    public Deck create(DeckCreateIn in, String userId) {
         return create(in.getName(), userId);
     }
 
@@ -88,26 +88,26 @@ public class DeckService {
         return deckRepo.findOne(deckId);
     }
 
-    public BootstraptableOut search(SearchIn in, String userId){
+    public BootstraptableOut search(SearchIn in, String userId) {
         List<Deck> rows = deckRepo.findAllByUserIdAndNameContainingIgnoreCase(userId, in.getSearch(), in.getPageable());
         Long total = deckRepo.countByUserIdAndNameContainingIgnoreCase(userId, in.getSearch());
         return new BootstraptableOut(rows, total);
     }
 
-    public Deck create(String deckName, String userId){
+    public Deck create(String deckName, String userId) {
         Deck deck = new Deck();
         deck.setName(deckName);
         deck.setUserId(userId);
         return deckRepo.save(deck);
     }
 
-    private Deck create(String deckName, String userId, String trackingId){
+    private Deck create(String deckName, String userId, String trackingId) {
         Deck deck = create(deckName, userId);
         deck.setTrackingId(trackingId);
         return deckRepo.save(deck);
     }
 
-    private Deck importDeckFromLines(String deckName, List<String> cardLines, String userId, String trackingId){
+    private Deck importDeckFromLines(String deckName, List<String> cardLines, String userId, String trackingId) {
         Deck deck = create(deckName, userId, trackingId);
         cardService.importCards(cardLines, deck);
         return deck;
@@ -123,7 +123,7 @@ public class DeckService {
         return importDeckFromLines(deckName, lines, userId, trackingId);
     }
 
-    public Deck createOneForAllDeck(){
+    public Deck createOneForAllDeck() {
         Deck deck = new Deck();
         deck.setId(Consts.Deck.LEARN_ALL_DECK_ID);
         deck.setName(Consts.Deck.LEARN_ALL_DECK_NAME);

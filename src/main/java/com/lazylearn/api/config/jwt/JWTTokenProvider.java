@@ -1,19 +1,18 @@
 package com.lazylearn.api.config.jwt;
 
+import com.lazylearn.api.config.Consts;
 import com.lazylearn.api.config.env.WiredEnv;
 import com.lazylearn.api.config.exception.ExpiredJwtVersionException;
 import com.lazylearn.api.entity.Session;
-import com.lazylearn.api.service.AuthorityService;
-import com.lazylearn.api.config.Consts;
 import com.lazylearn.api.indto.ClientData;
 import com.lazylearn.api.repo.SessionRepo;
 import com.lazylearn.api.repo.UserRepo;
+import com.lazylearn.api.service.AuthorityService;
 import io.jsonwebtoken.*;
 import org.apache.commons.lang3.time.DateUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -51,14 +50,14 @@ public class JWTTokenProvider {
         sessionRepo.save(session);
 
         return Jwts.builder()
-            .setSubject(user.getId())
-            .setExpiration(DateUtils.addSeconds(new Date(), Consts.PARAM_JWT_SECONDS))
-            .claim(KEY__AUTHORITIES, authorityService.getUserAuthorities(user.getId()))
-            .claim(KEY__ACCESS_TOKEN_VERSION, user.getSessionKey())
-            .claim("email", user.getEmail())
-            .claim("fullName", user.getFullName())
-            .signWith(SignatureAlgorithm.HS512, env.getJwtSecret())
-            .compact();
+                .setSubject(user.getId())
+                .setExpiration(DateUtils.addSeconds(new Date(), Consts.PARAM_JWT_SECONDS))
+                .claim(KEY__AUTHORITIES, authorityService.getUserAuthorities(user.getId()))
+                .claim(KEY__ACCESS_TOKEN_VERSION, user.getSessionKey())
+                .claim("email", user.getEmail())
+                .claim("fullName", user.getFullName())
+                .signWith(SignatureAlgorithm.HS512, env.getJwtSecret())
+                .compact();
     }
 
     public Authentication getAuthentication(String token) {
@@ -66,7 +65,7 @@ public class JWTTokenProvider {
         String authoritiesString = claims.get(KEY__AUTHORITIES) != null ? claims.get(KEY__AUTHORITIES).toString() : "";
 
         Collection<? extends GrantedAuthority> authorities =
-            Arrays.stream(authoritiesString.split(",")).map(SimpleGrantedAuthority::new).collect(Collectors.toList());
+                Arrays.stream(authoritiesString.split(",")).map(SimpleGrantedAuthority::new).collect(Collectors.toList());
 
         User principal = new User(claims.getSubject(), "", authorities);
         return new UsernamePasswordAuthenticationToken(principal, token, authorities);
@@ -91,7 +90,7 @@ public class JWTTokenProvider {
             log.info("JWT token compact of handler are invalid.", e);
         } catch (ExpiredJwtVersionException e) {
             log.info("Expired JWT token. /by version");
-        } catch (Exception e){
+        } catch (Exception e) {
             log.error(e.getMessage(), e);
         }
         return false;

@@ -19,11 +19,11 @@ import static org.apache.commons.lang3.StringUtils.isBlank;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-public class Minpair extends AbstractEntity implements HasUserId{
+public class Minpair extends AbstractEntity implements HasUserId {
 
     @JsonIgnore
-    public String getDirPath(){
-        if (isBlank(getUserId()) || isBlank(getId())){
+    public String getDirPath() {
+        if (isBlank(getUserId()) || isBlank(getId())) {
             throw new RuntimeException("userid / id is blank, please init them first");
         }
         return String.format("/minpair_file/%s/%s", getUserId(), getId());
@@ -42,15 +42,15 @@ public class Minpair extends AbstractEntity implements HasUserId{
     @JoinColumn(name = "userid")
     private User user;
 
-    public String getUserId(){
+    public String getUserId() {
         return getUser() == null ? null : getUser().getId();
     }
 
-    public void setUserId(String userId){
-        if (getUser() == null){
+    public void setUserId(String userId) {
+        if (getUser() == null) {
             setUser(new User());
         }
-        if (getUser().getId() == null){
+        if (getUser().getId() == null) {
             getUser().setId(userId);
         }
     }

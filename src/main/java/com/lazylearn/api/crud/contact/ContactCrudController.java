@@ -24,18 +24,18 @@ public class ContactCrudController {
 
     @PreAuthorize("hasAuthority('admin')")
     @GetMapping("/list")
-    public List<ContactEntity> list(){
+    public List<ContactEntity> list() {
         return contactRepo.findAll();
     }
 
     @PostMapping("/create")
-    public ContactEntity create(@RequestBody @Valid  ContactCreateDto dto){
+    public ContactEntity create(@RequestBody @Valid ContactCreateDto dto) {
         return contactService.create(dto);
     }
 
     @PreAuthorize("hasAuthority('admin')")
     @PostMapping("/delete/{id}")
-    public JSON delete(@PathVariable String id){
+    public JSON delete(@PathVariable String id) {
         contactRepo.delete(id);
         return JSON.ok("Contact deleted");
     }

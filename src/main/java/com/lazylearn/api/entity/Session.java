@@ -10,9 +10,9 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "session", indexes = {
-    @Index(columnList = "userId")
+        @Index(columnList = "userId")
 })
-public class Session extends AbstractSolidEntity{
+public class Session extends AbstractSolidEntity {
 
     private String userId;
     @Lob

@@ -42,7 +42,7 @@ public class VocabService {
     private WiredEnv env;
 
     private void createCallback(Vocab vocab) throws Exception {
-        for (VocabGenerator vocabGenerator : VocabGenerator.getGenerators(env.getFileUrl())){
+        for (VocabGenerator vocabGenerator : VocabGenerator.getGenerators(env.getFileUrl())) {
             String deckId = deckRepo.findByVocabdeckIdAndVocabType(vocab.getVocabdeckId(), vocabGenerator.getVocabType()).getId();
             cardRepo.save(vocabGenerator.generateCard(vocab, null, deckId));
         }
@@ -50,9 +50,9 @@ public class VocabService {
 
     @Transactional(rollbackFor = Exception.class)
     public void updateCallback(Vocab vocab) throws Exception {
-        for (VocabGenerator vocabGenerator : VocabGenerator.getGenerators(env.getFileUrl())){
+        for (VocabGenerator vocabGenerator : VocabGenerator.getGenerators(env.getFileUrl())) {
             Deck deck = deckRepo.findByVocabdeckIdAndVocabType(vocab.getVocabdeckId(), vocabGenerator.getVocabType());
-            if ( deck == null){
+            if (deck == null) {
                 continue;
             }
             String deckId = deck.getId();
@@ -61,7 +61,7 @@ public class VocabService {
         }
     }
 
-    private void deleteCallback(String vocabId){
+    private void deleteCallback(String vocabId) {
         cardRepo.deleteAllByVocabId(vocabId);
     }
 
@@ -84,16 +84,16 @@ public class VocabService {
     }
 
     @Transactional(rollbackFor = Exception.class)
-    public VocabEditOut edit(VocabEditIn in, String userId) throws Exception{
+    public VocabEditOut edit(VocabEditIn in, String userId) throws Exception {
 
         Vocab vocab = vocabRepo.findOne(in.getVocabId());
         BeanUtils.copyProperties(in, vocab);
 
-        if(in.getEncodedAudio() != null){
+        if (in.getEncodedAudio() != null) {
             vocab.generateAudioPath(in.getEncodedAudio());
             fileService.uploadEncodedFile(vocab.getAudioPath(), in.getEncodedAudio().getContent());
         }
-        if(in.getEncodedImage() != null){
+        if (in.getEncodedImage() != null) {
             vocab.generateImagePath(in.getEncodedImage());
             fileService.uploadEncodedFile(vocab.getImagePath(), in.getEncodedImage().getContent());
         }
@@ -108,12 +108,12 @@ public class VocabService {
     }
 
     @Transactional(rollbackFor = Exception.class)
-    public void delete(String vocabId){
+    public void delete(String vocabId) {
         vocabRepo.delete(vocabId);
         deleteCallback(vocabId);
     }
 
-    public BootstraptableOut search(VocabSearchIn in){
+    public BootstraptableOut search(VocabSearchIn in) {
         List<Vocab> rows = vocabRepo.findAllByVocabdeckIdAndSearch(in.getVocabdeckId(), in.getSearch(), in.getPageable());
         Long total = vocabRepo.countByVocabdeckIdAndSearch(in.getVocabdeckId(), in.getSearch());
         return new BootstraptableOut(rows, total);

@@ -24,9 +24,9 @@ public class AppException extends RuntimeException {
         this.httpStatus = httpStatus;
     }
 
-    public AppException(String message, Throwable e){
+    public AppException(String message, Throwable e) {
         super(message, e);
-        
+
     }
 
     public AppException(String message) {

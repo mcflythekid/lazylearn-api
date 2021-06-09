@@ -43,9 +43,9 @@ public class PostManController {
 
     private static final String TOKEN = "dkmmcc699";
 
-    private void validate(HttpServletRequest request){
+    private void validate(HttpServletRequest request) {
         String token = request.getParameter("token");
-        if (isBlank(token) || !token.equals(TOKEN)){
+        if (isBlank(token) || !token.equals(TOKEN)) {
             throw new AppException(400, "Bad token");
         }
     }

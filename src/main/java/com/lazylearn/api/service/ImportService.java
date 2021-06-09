@@ -28,10 +28,10 @@ public class ImportService {
 
     public JSON importDeck(String userIdentity, String filePath) throws IOException {
         User user = userRepo.findByEmail(userIdentity);
-        if (user == null){
+        if (user == null) {
             user = userRepo.findOne(userIdentity);
         }
-        if (user == null){
+        if (user == null) {
             return JSON.error("User not found");
         }
 

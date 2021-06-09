@@ -1,11 +1,8 @@
 package com.lazylearn.api.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.lazylearn.api.config.Consts;
 
 import javax.persistence.*;
-import java.util.Date;
 
 /**
  * @author McFly the Kid
@@ -15,10 +12,10 @@ import java.util.Date;
         @Index(columnList = "userId")
 })
 @JsonFormat(shape = JsonFormat.Shape.OBJECT)
-public class Article extends AbstractEntity implements HasUserId{
+public class Article extends AbstractEntity implements HasUserId {
 
     @PrePersist
-    public void prePersist(){
+    public void prePersist() {
     }
 
     private String name;
@@ -34,15 +31,15 @@ public class Article extends AbstractEntity implements HasUserId{
     @JoinColumn(name = "userid")
     private User user;
 
-    public String getUserId(){
+    public String getUserId() {
         return getUser() == null ? null : getUser().getId();
     }
 
-    public void setUserId(String userId){
-        if (getUser() == null){
+    public void setUserId(String userId) {
+        if (getUser() == null) {
             setUser(new User());
         }
-        if (getUser().getId() == null){
+        if (getUser().getId() == null) {
             getUser().setId(userId);
         }
     }

@@ -51,13 +51,13 @@ public class TelegramUnit {
         InputStream is = new BufferedInputStream(conn.getInputStream());
     }
 
-    public void sendAsync(String message, String invoker){
-        if (invoker.equalsIgnoreCase("Administrator")){
+    public void sendAsync(String message, String invoker) {
+        if (invoker.equalsIgnoreCase("Administrator")) {
             log.info("Telegram disabled for 'Administrator', stop sending message");
             return;
         }
 
-        if (invoker.equalsIgnoreCase("odopoc@gmail.com")){
+        if (invoker.equalsIgnoreCase("odopoc@gmail.com")) {
             log.info("Telegram disabled for 'odopoc@gmail.com', stop sending message");
             return;
         }
@@ -65,13 +65,13 @@ public class TelegramUnit {
         sendAsync(message);
     }
 
-    public void sendAsync(String message){
-        if (!wiredEnv.isTelegramEnabled()){
+    public void sendAsync(String message) {
+        if (!wiredEnv.isTelegramEnabled()) {
             log.info("Telegram disabled, stop sending message");
             return;
         }
 
-        new Thread(()->{
+        new Thread(() -> {
             try {
                 sendToTelegram(message);
             } catch (IOException e) {

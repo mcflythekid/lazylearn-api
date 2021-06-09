@@ -15,21 +15,21 @@ public class JSON {
         this.status = status;
     }
 
-    public static JSON ok(){
+    public static JSON ok() {
         return new JSON(Consts.RET_OK);
     }
 
-    public static JSON error(){
+    public static JSON error() {
         return new JSON(Consts.RET_ERROR);
     }
 
-    public static JSON ok(String msg){
+    public static JSON ok(String msg) {
         JSON json = ok();
         json.setMsg(msg);
         return json;
     }
 
-    public static JSON error(String msg){
+    public static JSON error(String msg) {
         JSON json = error();
         json.setMsg(msg);
         return json;

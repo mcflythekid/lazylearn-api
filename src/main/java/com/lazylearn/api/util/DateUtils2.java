@@ -10,7 +10,8 @@ import java.util.TimeZone;
  * Date: 2020-05-13
  */
 public final class DateUtils2 {
-    private DateUtils2(){}
+    private DateUtils2() {
+    }
 
     public static Date getRemoteTimezoneMidnightDate(String remoteTimezone) throws ParseException {
         final String fullFormat = "yyyy-MM-dd HH:mm:ss";
@@ -30,13 +31,13 @@ public final class DateUtils2 {
 
     public static void main(String[] args) throws ParseException {
         String format = "yyyy-MM-dd HH:mm:ss";
-        for (int i = 12; i >= 1; i--){
+        for (int i = 12; i >= 1; i--) {
             String gmt = "GMT+" + i;
             Date date = getRemoteTimezoneMidnightDate(gmt);
             String s = new SimpleDateFormat(format).format(date);
             System.out.println(gmt + ": " + s);
         }
-        for (int i = 1; i <= 12; i++){
+        for (int i = 1; i <= 12; i++) {
             String gmt = "GMT-" + i;
             Date date = getRemoteTimezoneMidnightDate(gmt);
             String s = new SimpleDateFormat(format).format(date);

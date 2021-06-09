@@ -27,7 +27,7 @@ public class AppExceptionHandler {
 
     /*----------------------------------------------------------------------------------------*/
     @ExceptionHandler(Exception.class)
-    public JSON exceptionHandler(Exception exception, HttpServletResponse response)  {
+    public JSON exceptionHandler(Exception exception, HttpServletResponse response) {
         response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
         String msg = "Cannot process request. ID:" + UUID.randomUUID().toString();
         logger.error(msg, exception);
@@ -35,7 +35,7 @@ public class AppExceptionHandler {
     }
 
     @ExceptionHandler(AppException.class)
-    public JSON appExceptionHandler(AppException appException, HttpServletResponse response)  {
+    public JSON appExceptionHandler(AppException appException, HttpServletResponse response) {
         response.setStatus(appException.getHttpStatus());
         logger.error(appException.getMessage(), appException);
         return JSON.error(appException.getMessage());
@@ -45,25 +45,26 @@ public class AppExceptionHandler {
 
     /*----------------------------------------------------------------------------------------*/
     @ExceptionHandler(InsufficientAuthenticationException.class)
-    public JSON insufficientAuthenticationExceptionHandler(HttpServletResponse response)  {
+    public JSON insufficientAuthenticationExceptionHandler(HttpServletResponse response) {
         response.setStatus(HttpStatus.UNAUTHORIZED.value());
         return JSON.error(HttpStatus.UNAUTHORIZED.getReasonPhrase());
     }
 
     @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
-    public JSON httpRequestMethodNotSupportedExceptionhandler(HttpServletResponse response)  {
+    public JSON httpRequestMethodNotSupportedExceptionhandler(HttpServletResponse response) {
         response.setStatus(HttpStatus.METHOD_NOT_ALLOWED.value());
         return JSON.error(HttpStatus.METHOD_NOT_ALLOWED.getReasonPhrase());
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public JSON methodArgumentNotValidExceptionHandler(Exception e, HttpServletResponse response)  {
+    public JSON methodArgumentNotValidExceptionHandler(Exception e, HttpServletResponse response) {
         response.setStatus(HttpStatus.BAD_REQUEST.value());
         String msg = HttpStatus.BAD_REQUEST.getReasonPhrase();
-        try{
+        try {
             ObjectError objectError = ((MethodArgumentNotValidException) e).getBindingResult().getAllErrors().get(0);
-            msg =  ReflectionUtils.getField(objectError, "field").toString().toUpperCase() + ": " + objectError.getDefaultMessage();
-        }catch (Exception ex){}
+            msg = ReflectionUtils.getField(objectError, "field").toString().toUpperCase() + ": " + objectError.getDefaultMessage();
+        } catch (Exception ex) {
+        }
         return JSON.error(msg);
     }
     /*----------------------------------------------------------------------------------------*/

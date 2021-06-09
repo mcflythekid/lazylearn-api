@@ -11,7 +11,7 @@ import javax.transaction.Transactional;
  * @author McFly the Kid
  */
 @Repository
-public interface ForgetPasswordRepo extends JpaRepository<Reset, String>{
+public interface ForgetPasswordRepo extends JpaRepository<Reset, String> {
 
     @Modifying
     @Transactional(rollbackOn = Exception.class)

@@ -24,18 +24,18 @@ public class SubscribeCrudController {
 
     @PreAuthorize("hasAuthority('admin')")
     @GetMapping("/list")
-    public List<SubscribeEntity> list(){
+    public List<SubscribeEntity> list() {
         return subscribeRepo.findAll();
     }
 
     @PostMapping("/create")
-    public SubscribeEntity create(@RequestBody @Valid SubscribeCreateDto dto){
+    public SubscribeEntity create(@RequestBody @Valid SubscribeCreateDto dto) {
         return subscribeService.create(dto);
     }
 
     @PreAuthorize("hasAuthority('admin')")
     @PostMapping("/delete/{id}")
-    public JSON delete(@PathVariable String id){
+    public JSON delete(@PathVariable String id) {
         subscribeRepo.delete(id);
         return JSON.ok("Subscribe deleted");
     }

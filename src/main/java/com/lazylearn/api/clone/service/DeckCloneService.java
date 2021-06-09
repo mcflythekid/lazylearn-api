@@ -43,7 +43,7 @@ public class DeckCloneService {
     @Autowired
     private UserRepo userRepo;
 
-    private DeckCreateIn createDeckDto(String oldDeckId){
+    private DeckCreateIn createDeckDto(String oldDeckId) {
         Deck deck = deckRepo.findOne(oldDeckId);
 
         DeckCreateIn deckCreateIn = new DeckCreateIn();
@@ -52,11 +52,11 @@ public class DeckCloneService {
         return deckCreateIn;
     }
 
-    private List<CardCreateIn> createCardDtoList(String oldDeckId, String newDeckId){
+    private List<CardCreateIn> createCardDtoList(String oldDeckId, String newDeckId) {
         List<Card> cards = cardRepo.findAllByDeckId(oldDeckId);
 
         List<CardCreateIn> cardCreateInList = new ArrayList<>();
-        for(Card card : cards){
+        for (Card card : cards) {
             CardCreateIn cardCreateIn = new CardCreateIn();
             cardCreateIn.setFront(card.getFront());
             cardCreateIn.setBack(card.getBack());
@@ -68,12 +68,12 @@ public class DeckCloneService {
     }
 
     @Transactional
-    public void cloneDeck(String oldDeckId, String userId){
+    public void cloneDeck(String oldDeckId, String userId) {
         Deck oldDeck = deckRepo.findOne(oldDeckId);
-        if (isBlank(oldDeck.getCloneableid())){
+        if (isBlank(oldDeck.getCloneableid())) {
             throw new RuntimeException("Cannot clone because this deck does not have cloneableid");
         }
-        if (deckRepo.countByUserIdAndCloneableid(userId, oldDeck.getCloneableid()) > 0){
+        if (deckRepo.countByUserIdAndCloneableid(userId, oldDeck.getCloneableid()) > 0) {
             log.info("Skip because already imported");
             return;
         }
@@ -82,14 +82,14 @@ public class DeckCloneService {
         newDeck.setCloneableid(oldDeck.getCloneableid());
         deckRepo.save(newDeck);
 
-        for (CardCreateIn cardCreateIn : createCardDtoList(oldDeckId, newDeck.getId())){
+        for (CardCreateIn cardCreateIn : createCardDtoList(oldDeckId, newDeck.getId())) {
             cardService.create(cardCreateIn, userId);
         }
     }
 
     @Transactional
-    public void cloneDeck(String oldDeckId){
-        for (User user : userRepo.findAll()){
+    public void cloneDeck(String oldDeckId) {
+        for (User user : userRepo.findAll()) {
             cloneDeck(oldDeckId, user.getUserId());
         }
     }

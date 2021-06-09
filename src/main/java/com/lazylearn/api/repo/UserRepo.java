@@ -8,7 +8,8 @@ import org.springframework.stereotype.Repository;
  * @author McFly the Kid
  */
 @Repository
-public interface UserRepo extends JpaRepository<User, String>{
+public interface UserRepo extends JpaRepository<User, String> {
     User findByEmail(String email);
+
     User findByFacebookId(String facebookId);
 }

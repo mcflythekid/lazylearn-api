@@ -13,11 +13,15 @@ import java.util.List;
 @Repository
 public interface DeckRepo extends JpaRepository<Deck, String> {
     List<Deck> findAllByVocabdeckId(String vocabdeckId);
+
     Deck findByVocabdeckIdAndVocabType(String vocabdeckId, Integer vocabType);
+
     Deck findByMinpairLanguageAndUserId(String minpairLanguage, String userId);
+
     Deck findByTypeAndUserId(String type, String userId);
 
     List<Deck> findAllByUserIdAndNameContainingIgnoreCase(String userId, String name, Pageable pageable);
+
     Long countByUserIdAndNameContainingIgnoreCase(String userId, String name);
 
     Long countByUserIdAndCloneableid(String userId, String cloneableId);

@@ -9,7 +9,7 @@ import org.springframework.data.domain.Sort;
  */
 public class SearchIn {
 
-    public Pageable getPageable(){
+    public Pageable getPageable() {
         int page = offset / limit;
         return new PageRequest(page, limit, Sort.Direction.fromString(order), sort);
     }

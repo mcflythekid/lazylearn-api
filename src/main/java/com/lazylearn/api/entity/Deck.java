@@ -8,16 +8,16 @@ import javax.persistence.*;
  * @author McFly the Kid
  */
 @Entity
-@Table(name="deck", indexes = {
-    @Index(columnList = "userId"),
-    @Index(columnList = "vocabdeckId"),
+@Table(name = "deck", indexes = {
+        @Index(columnList = "userId"),
+        @Index(columnList = "vocabdeckId"),
 }, uniqueConstraints = {
-    @UniqueConstraint(columnNames = {"vocabdeckId", "vocabType"})
+        @UniqueConstraint(columnNames = {"vocabdeckId", "vocabType"})
 })
-public class Deck extends AbstractEntity implements HasUserId{
+public class Deck extends AbstractEntity implements HasUserId {
 
     @PrePersist
-    public void prePersist(){
+    public void prePersist() {
         setType("default");
         setProgramId(Consts.PROGRAM__DEFAULT);
         setArchived(Consts.CARDDECK_UNARCHIVED);

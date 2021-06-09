@@ -6,7 +6,8 @@ import javax.servlet.http.HttpServletRequest;
  * @author McFly the Kid
  */
 public final class HttpServletUtils {
-    private HttpServletUtils(){}
+    private HttpServletUtils() {
+    }
 
     public static String getReferer(HttpServletRequest request) {
         final String referer = request.getHeader("referer");

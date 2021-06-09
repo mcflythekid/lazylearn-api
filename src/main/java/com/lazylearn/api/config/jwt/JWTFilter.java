@@ -34,13 +34,13 @@ public class JWTFilter extends GenericFilterBean {
         filterChain.doFilter(servletRequest, servletResponse);
     }
 
-    private String resolveToken(HttpServletRequest request){
-        try{
+    private String resolveToken(HttpServletRequest request) {
+        try {
             String bearerToken = request.getHeader("Authorization");
             if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")) {
                 return bearerToken.substring(7, bearerToken.length());
             }
-        } catch (Exception e){
+        } catch (Exception e) {
             log.error("Cannot get access token from header", e);
         }
         return null;

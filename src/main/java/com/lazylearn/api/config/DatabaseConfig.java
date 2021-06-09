@@ -24,7 +24,7 @@ import java.util.Properties;
  */
 @Configuration
 @EnableTransactionManagement
-@EnableJpaRepositories(basePackages = { "com.lazylearn.api.repo", "com.lazylearn.api.crud" })
+@EnableJpaRepositories(basePackages = {"com.lazylearn.api.repo", "com.lazylearn.api.crud"})
 public class DatabaseConfig {
 
     @Autowired
@@ -50,14 +50,14 @@ public class DatabaseConfig {
         LocalContainerEntityManagerFactoryBean entityManagerFactory = new LocalContainerEntityManagerFactoryBean();
         entityManagerFactory.setDataSource(dataSource());
         entityManagerFactory.setJpaProperties(hibernateProperties());
-        entityManagerFactory.setPackagesToScan(new String[]{ "com.lazylearn.api.entity", "com.lazylearn.api.crud" });
+        entityManagerFactory.setPackagesToScan(new String[]{"com.lazylearn.api.entity", "com.lazylearn.api.crud"});
         JpaVendorAdapter jpaVendorAdapter = new HibernateJpaVendorAdapter();
         entityManagerFactory.setJpaVendorAdapter(jpaVendorAdapter);
         return entityManagerFactory;
     }
 
     @Bean
-    public PlatformTransactionManager transactionManager(EntityManagerFactory entityManagerFactory){
+    public PlatformTransactionManager transactionManager(EntityManagerFactory entityManagerFactory) {
         JpaTransactionManager transactionManager = new JpaTransactionManager();
         transactionManager.setEntityManagerFactory(entityManagerFactory);
         return transactionManager;

@@ -5,7 +5,10 @@ import com.lazylearn.api.outdto.BootstraptableOut;
 import com.lazylearn.api.outdto.JSON;
 import com.lazylearn.api.service.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * @author McFly the Kid
@@ -18,7 +21,7 @@ public class AdminController extends BaseController {
     private AdminService adminService;
 
     @PostMapping("/search-user")
-    public BootstraptableOut searchUser(@RequestBody SearchIn in){
+    public BootstraptableOut searchUser(@RequestBody SearchIn in) {
         return adminService.search(in);
     }
 

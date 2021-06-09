@@ -19,18 +19,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Map;
-import java.util.TimeZone;
 
 /**
  * @author McFly the Kid
  */
 @RestController
 @RequestMapping("/learn")
-public class LearnController extends BaseController{
+public class LearnController extends BaseController {
 
     @Autowired
     private TelegramUnit telegramUnit;
@@ -67,13 +64,13 @@ public class LearnController extends BaseController{
     public LearnOut get(@RequestParam("deckId") String deckId, @RequestParam("learnType") String learnType) throws Exception {
 
         // All deck
-        if (Consts.Deck.LEARN_ALL_DECK_ID.equals(deckId)){
+        if (Consts.Deck.LEARN_ALL_DECK_ID.equals(deckId)) {
             telegramUnit.sendAsync("Learn one-for-all by " + getUserFullName(), getUserFullName());
             return learnService.getByLearnOneUserId(this.getUserId());
         }
 
         // All deck today
-        if (Consts.Deck.LEARN_ALL_DECK_TODAY_ID.equals(deckId)){
+        if (Consts.Deck.LEARN_ALL_DECK_TODAY_ID.equals(deckId)) {
             telegramUnit.sendAsync("Learn one-for-all-today by " + getUserFullName(), getUserFullName());
             return learnService.getByLearnOneUserIdOnetimeToday(this.getUserId());
         }
@@ -81,9 +78,9 @@ public class LearnController extends BaseController{
         // Normal
         Deck deck = authorizeDeck(deckId);
         telegramUnit.sendAsync("Learn by " + getUserFullName(), getUserFullName());
-        if (learnType.equals(Consts.LEARNTYPE_LEARN)){
+        if (learnType.equals(Consts.LEARNTYPE_LEARN)) {
             return learnService.getByLearn(deck);
-        } else if (learnType.equals(Consts.LEARNTYPE_REVIEW)){
+        } else if (learnType.equals(Consts.LEARNTYPE_REVIEW)) {
             return learnService.getByReview(deck);
         }
 

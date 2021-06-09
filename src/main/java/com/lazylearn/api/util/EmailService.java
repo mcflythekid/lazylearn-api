@@ -20,7 +20,8 @@ public class EmailService {
     @Qualifier(EmailConfig.MAIL_SENDER)
     private JavaMailSender javaMailSender;
 
-    private EmailService(){}
+    private EmailService() {
+    }
 
     public void sendTextEmail(String fromAddress, String fromName, String toAddress, String subject, String body) {
         sendEmail(fromAddress, fromName, toAddress, subject, body, false);
@@ -30,7 +31,7 @@ public class EmailService {
         sendEmail(fromAddress, fromName, toAddress, subject, body, true);
     }
 
-    private void sendEmail(String fromAddress, String fromName, String toAddress, String subject, String body, boolean isHtml){
+    private void sendEmail(String fromAddress, String fromName, String toAddress, String subject, String body, boolean isHtml) {
         try {
             MimeMessage message = javaMailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(message, true);
@@ -39,7 +40,7 @@ public class EmailService {
             helper.setSubject(subject);
             helper.setText(body, isHtml);
             javaMailSender.send(message);
-        } catch (Exception e){
+        } catch (Exception e) {
             throw new AppException("Cannot send email", e);
         }
     }

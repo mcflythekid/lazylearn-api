@@ -18,14 +18,14 @@ public class AuthorityService {
     private UserAuthorityRepo userAuthorityRepo;
 
     @Transactional(rollbackFor = Exception.class)
-    public void createAuthority(String userId, String authority){
+    public void createAuthority(String userId, String authority) {
         UserAuthority userAuthority = new UserAuthority();
         userAuthority.setUserId(userId);
         userAuthority.setAuthority(authority);
         userAuthorityRepo.save(userAuthority);
     }
 
-    public String getUserAuthorities(String userId){
+    public String getUserAuthorities(String userId) {
         return userAuthorityRepo.findAllByUserId(userId)
                 .stream().map(UserAuthority::getAuthority).collect(Collectors.joining(","));
     }

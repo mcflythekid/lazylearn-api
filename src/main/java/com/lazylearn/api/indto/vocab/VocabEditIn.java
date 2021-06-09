@@ -33,16 +33,16 @@ public class VocabEditIn {
     private String audioHint;
 
     @AssertTrue(message = "Must be a valid image file")
-    public boolean getImage(){
-        if (encodedImage == null){
+    public boolean getImage() {
+        if (encodedImage == null) {
             return true;
         }
         return MimeUtils.validateMime(encodedImage.getContent(), "image/.+");
     }
 
     @AssertTrue(message = "Must me a valid audio file")
-    public boolean getAudio(){
-        if (encodedAudio == null){
+    public boolean getAudio() {
+        if (encodedAudio == null) {
             return true;
         }
         return MimeUtils.validateMime(encodedAudio.getContent(), "audio/.+");
@@ -89,7 +89,6 @@ public class VocabEditIn {
         this.phonetic = phonetic;
     }
 
-    
 
     public String getPersonalConnection() {
         return personalConnection;

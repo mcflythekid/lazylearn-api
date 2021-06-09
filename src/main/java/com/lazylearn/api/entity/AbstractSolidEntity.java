@@ -17,7 +17,7 @@ import java.util.Date;
 public abstract class AbstractSolidEntity implements Serializable {
 
     @PrePersist
-    public void parentPrePersist(){
+    public void parentPrePersist() {
         setId(StringUtils2.generateRandomId());
         setCreatedDate(new Date());
     }

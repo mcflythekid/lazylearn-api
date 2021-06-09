@@ -5,7 +5,9 @@ import com.lazylearn.api.indto.EncodedFile;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 
 import static org.apache.commons.lang3.StringUtils.isBlank;
 
@@ -16,15 +18,16 @@ import static org.apache.commons.lang3.StringUtils.isBlank;
 @Table(name = "minpair_file")
 @Getter
 @Setter
-public class MinpairFile extends AbstractEntity implements HasUserId{
+public class MinpairFile extends AbstractEntity implements HasUserId {
 
     /**
      * Should be called after saved entity
+     *
      * @param encodedFile
      */
     @JsonIgnore
-    public void generateAudioPaths(Minpair minpair, EncodedFile encodedFile){
-        if (isBlank(getId())){
+    public void generateAudioPaths(Minpair minpair, EncodedFile encodedFile) {
+        if (isBlank(getId())) {
             throw new RuntimeException("Entity not saved before generate audio path");
         }
         setAudioPath(String.format("%s/%s/%s.%s", minpair.getDirPath(), getSide(), getId(), encodedFile.getExt()));

@@ -47,7 +47,7 @@ public class VocabCloneService {
     private FileService fileService;
 
 
-    private VocabdeckCreateIn createDeckDto(String oldDeckId){
+    private VocabdeckCreateIn createDeckDto(String oldDeckId) {
         Vocabdeck deck = vocabdeckRepo.findOne(oldDeckId);
 
         VocabdeckCreateIn deckCreateIn = new VocabdeckCreateIn();
@@ -60,7 +60,7 @@ public class VocabCloneService {
         List<Vocab> vocabs = vocabRepo.findAllByVocabdeckId(oldDeckId);
 
         List<VocabCreateIn> vocabCreateInList = new ArrayList<>();
-        for(Vocab vocab : vocabs){
+        for (Vocab vocab : vocabs) {
             VocabCreateIn vocabCreateIn = new VocabCreateIn();
 
             vocabCreateIn.setEncodedAudio(fileService.readFileFromPath(vocab.getAudioPath()));
@@ -82,10 +82,10 @@ public class VocabCloneService {
     @Transactional
     public void cloneDeck(String oldDeckId, String userId) throws Exception {
         Vocabdeck oldDeck = vocabdeckRepo.findOne(oldDeckId);
-        if (isBlank(oldDeck.getCloneableid())){
+        if (isBlank(oldDeck.getCloneableid())) {
             throw new RuntimeException("Cannot clone because this vocabdeck does not have cloneableid");
         }
-        if (vocabdeckRepo.countByUserIdAndCloneableid(userId, oldDeck.getCloneableid()) > 0){
+        if (vocabdeckRepo.countByUserIdAndCloneableid(userId, oldDeck.getCloneableid()) > 0) {
             log.info("Skip because already imported");
             return;
         }
@@ -94,17 +94,17 @@ public class VocabCloneService {
         newDeck.setCloneableid(oldDeck.getCloneableid());
         vocabdeckRepo.save(newDeck);
 
-        for (VocabCreateIn vocabCreateIn : createVocabDtoList(oldDeckId, newDeck.getId())){
+        for (VocabCreateIn vocabCreateIn : createVocabDtoList(oldDeckId, newDeck.getId())) {
             vocabService.create(vocabCreateIn, userId);
         }
     }
 
     @Transactional
-    public void cloneDeck(String oldDeckId){
-        for (User user : userRepo.findAll()){
+    public void cloneDeck(String oldDeckId) {
+        for (User user : userRepo.findAll()) {
             try {
                 cloneDeck(oldDeckId, user.getUserId());
-            } catch (Exception e){
+            } catch (Exception e) {
                 log.error("Cannot clone for user: {}", user.getEmail());
                 log.error("Cannot clone for user", e);
             }

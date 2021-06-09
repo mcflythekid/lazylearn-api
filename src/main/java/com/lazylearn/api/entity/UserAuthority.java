@@ -1,13 +1,15 @@
 package com.lazylearn.api.entity;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 
 /**
  * @author McFly the Kid
  */
 @Entity
-@Table( name = "user_authority", uniqueConstraints = {
-    @UniqueConstraint(columnNames = {"userId", "authority"})
+@Table(name = "user_authority", uniqueConstraints = {
+        @UniqueConstraint(columnNames = {"userId", "authority"})
 })
 public class UserAuthority extends AbstractSolidEntity {
 

@@ -21,6 +21,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final JWTTokenProvider jwtTokenProvider;
+
     private JWTSecurityConfigurer jwtSecurityConfigurer() {
         return new JWTSecurityConfigurer(jwtTokenProvider);
     }
@@ -30,7 +31,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
-    public PasswordEncoder passwordEncoder(){
+    public PasswordEncoder passwordEncoder() {
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         return passwordEncoder;
     }
@@ -38,11 +39,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-            .logout().disable().csrf().disable().headers().frameOptions().disable()
-            .and()
+                .logout().disable().csrf().disable().headers().frameOptions().disable()
+                .and()
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-            .and()
+                .and()
                 .authorizeRequests()
                 .antMatchers("/forget-password", "/reset-password", "/register", "/login", "/login-facebook").permitAll()
                 .antMatchers("/admin/**").hasAuthority(Consts.AUTHORITY_ADMIN)
@@ -60,7 +61,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/article/public/**").permitAll() // Customize for Topic
                 .antMatchers("/postman/**").permitAll() // Customize for POSTMAN
                 .anyRequest().hasAuthority(Consts.AUTHORITY_DEFAULT)
-            .and()
+                .and()
                 .apply(jwtSecurityConfigurer());
     }
 }

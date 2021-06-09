@@ -26,7 +26,7 @@ public class OxfordUnit {
     private TelegramUnit telegramUnit;
 
     public static void main(String[] args) throws Exception {
-       System.out.println(new OxfordUnit().crawlSingle("dragon"));
+        System.out.println(new OxfordUnit().crawlSingle("dragon"));
     }
 
     public VocabSampleDto crawlSingle(String rawWord) throws Exception {
@@ -39,17 +39,17 @@ public class OxfordUnit {
 
             Document document = response.parse();
             String url = response.url().toString();
-            log.info("Fetching word '{}' with url: {}",  word, url);
+            log.info("Fetching word '{}' with url: {}", word, url);
 
             // Phonetic & sound
             Element firstMeetElement = document.select(".phons_n_am").first();
             if (firstMeetElement == null) {
                 firstMeetElement = document.select(".phons_br").first();
-                if (firstMeetElement == null){
+                if (firstMeetElement == null) {
                     throw new Exception("Item not found: " + word);
                 }
             }
-            if (firstMeetElement.childrenSize() < 2){
+            if (firstMeetElement.childrenSize() < 2) {
                 throw new Exception("Must have 2 child");
             }
             Element soundElement = firstMeetElement.selectFirst("div.sound");
@@ -64,12 +64,12 @@ public class OxfordUnit {
             return VocabSampleDto.builder().word(word).phonetic(phonetic)
                     .encodedAudioFile(EncodedFile.builder().ext("mp3").content(audio64).build())
                     .audioUrl(audioUrl).phrase(phraseString).audio64(audio64).build();
-        } catch (org.jsoup.HttpStatusException e){
-            if (e.getStatusCode() == 404){
+        } catch (org.jsoup.HttpStatusException e) {
+            if (e.getStatusCode() == 404) {
                 throw new AppException(e.getStatusCode());
             }
             throw e;
-        } catch (Exception e){
+        } catch (Exception e) {
             String message = "Cannot fetch word: " + rawWord;
             telegramUnit.sendAsync(message);
             log.error(message, e);

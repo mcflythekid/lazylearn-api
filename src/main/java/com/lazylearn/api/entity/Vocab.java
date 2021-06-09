@@ -11,19 +11,19 @@ import javax.persistence.Table;
  * @author McFly the Kid
  */
 @Entity
-@Table(name="vocab", indexes = {
-    @Index(columnList = "userId"),
-    @Index(columnList = "vocabdeckId")
+@Table(name = "vocab", indexes = {
+        @Index(columnList = "userId"),
+        @Index(columnList = "vocabdeckId")
 })
-public class Vocab extends AbstractEntity implements HasUserId{
+public class Vocab extends AbstractEntity implements HasUserId {
 
     @JsonIgnore
-    public void generateImagePath(EncodedFile encodedFile){
+    public void generateImagePath(EncodedFile encodedFile) {
         setImagePath("/vocab/" + getUserId() + "/" + getId() + "_image." + encodedFile.getExt());
     }
 
     @JsonIgnore
-    public void generateAudioPath(EncodedFile encodedFile){
+    public void generateAudioPath(EncodedFile encodedFile) {
         setAudioPath("/vocab/" + getUserId() + "/" + getId() + "_audio." + encodedFile.getExt());
     }
 

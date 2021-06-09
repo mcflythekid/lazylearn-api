@@ -41,7 +41,7 @@ public class ArticleService {
     private CardRepo cardRepo;
 
     @Transactional(rollbackFor = Exception.class)
-    public Article create(ArticleCreateIn in, String userId){
+    public Article create(ArticleCreateIn in, String userId) {
         Article article = new Article();
         article.setUserId(userId);
         BeanUtils.copyProperties(in, article);
@@ -58,7 +58,7 @@ public class ArticleService {
     }
 
     @Transactional
-    public void delete(String articleId){
+    public void delete(String articleId) {
         Article article = articleRepo.findOne(articleId);
 
         Deck deck = deckRepo.findByTypeAndUserId(Consts.DECKTYPE__TOPIC, article.getUserId());
@@ -69,7 +69,7 @@ public class ArticleService {
         articleRepo.delete(articleId);
     }
 
-    public BootstraptableOut searchByUserId(SearchIn in, String userId){
+    public BootstraptableOut searchByUserId(SearchIn in, String userId) {
         List<Article> rows = articleRepo.findAllByKeywordAndUserId(in.getSearch(), userId, in.getPageable());
         try {
             System.out.println(new ObjectMapper().writeValueAsString(rows));
@@ -81,7 +81,7 @@ public class ArticleService {
         return new BootstraptableOut(rows, total);
     }
 
-    public BootstraptableOut searchAll(SearchIn in){
+    public BootstraptableOut searchAll(SearchIn in) {
         List<Article> rows = articleRepo.findAllByKeyword(in.getSearch(), in.getPageable());
         try {
             System.out.println(new ObjectMapper().writeValueAsString(rows));

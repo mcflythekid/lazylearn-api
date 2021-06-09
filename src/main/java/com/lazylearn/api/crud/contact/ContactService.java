@@ -18,7 +18,7 @@ public class ContactService {
     @Autowired
     private TelegramUnit telegramUnit;
 
-    public ContactEntity create(ContactCreateDto dto){
+    public ContactEntity create(ContactCreateDto dto) {
         ContactEntity contactEntity = new ContactEntity();
         BeanUtils.copyProperties(dto, contactEntity);
         contactEntity = contactRepo.save(contactEntity);

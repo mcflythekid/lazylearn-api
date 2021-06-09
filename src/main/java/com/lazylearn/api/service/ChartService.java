@@ -22,21 +22,21 @@ public class ChartService {
     @Autowired
     private ProgramService programService;
 
-    public List<ChartRow> deckChart(Deck deck){
+    public List<ChartRow> deckChart(Deck deck) {
         List<ChartRow> out = new ArrayList<>();
-        for (int step = 0; step <= programService.getMaxStepOfDeck(deck.getId()); step++){
+        for (int step = 0; step <= programService.getMaxStepOfDeck(deck.getId()); step++) {
             out.add(new ChartRow(
-                programService.getLabel(step),
-                countCorrectByDeckAndStep(deck.getId(), step),
-                countTimeupByDeckAndStep(deck.getId(), step)
+                    programService.getLabel(step),
+                    countCorrectByDeckAndStep(deck.getId(), step),
+                    countTimeupByDeckAndStep(deck.getId(), step)
             ));
         }
         return out;
     }
 
-    public List<ChartRow> userChart(String userId){
+    public List<ChartRow> userChart(String userId) {
         List<ChartRow> out = new ArrayList<>();
-        for (int step = 0; step <= programService.getMaxStepOfUser(userId); step++){
+        for (int step = 0; step <= programService.getMaxStepOfUser(userId); step++) {
             out.add(new ChartRow(
                     programService.getLabel(step),
                     countCorrectByUserAndStep(userId, step),
@@ -46,19 +46,19 @@ public class ChartService {
         return out;
     }
 
-    private Long countCorrectByUserAndStep(String userId, Integer step){
+    private Long countCorrectByUserAndStep(String userId, Integer step) {
         return cardRepo.countAllByUserIdAndStepAndWakeupOnAfterAndArchived(userId, step, new Date(), Consts.CARDDECK_UNARCHIVED);
     }
 
-    private Long countCorrectByDeckAndStep(String deckId, Integer step){
+    private Long countCorrectByDeckAndStep(String deckId, Integer step) {
         return cardRepo.countAllByDeckIdAndStepAndWakeupOnAfterAndArchived(deckId, step, new Date(), Consts.CARDDECK_UNARCHIVED);
     }
 
-    private Long countTimeupByUserAndStep(String userId, Integer step){
+    private Long countTimeupByUserAndStep(String userId, Integer step) {
         return cardRepo.countAllByUserIdAndStepAndWakeupOnBeforeAndArchived(userId, step, new Date(), Consts.CARDDECK_UNARCHIVED);
     }
 
-    private Long countTimeupByDeckAndStep(String deckId, Integer step){
+    private Long countTimeupByDeckAndStep(String deckId, Integer step) {
         return cardRepo.countAllByDeckIdAndStepAndWakeupOnBeforeAndArchived(deckId, step, new Date(), Consts.CARDDECK_UNARCHIVED);
     }
 }

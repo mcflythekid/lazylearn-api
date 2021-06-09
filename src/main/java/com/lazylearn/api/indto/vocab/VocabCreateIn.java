@@ -36,12 +36,12 @@ public class VocabCreateIn {
     private EncodedFile encodedAudio;
 
     @AssertTrue(message = "Must be a valid image file")
-    public boolean getImage(){
+    public boolean getImage() {
         return MimeUtils.validateMime(encodedImage.getContent(), "image/.+");
     }
 
     @AssertTrue(message = "Must me a valid audio file")
-    public boolean getAudio(){
+    public boolean getAudio() {
         return MimeUtils.validateMime(encodedAudio.getContent(), "audio/.+");
     }
 
@@ -94,7 +94,6 @@ public class VocabCreateIn {
         this.phonetic = phonetic;
     }
 
-    
 
     public String getPersonalConnection() {
         return personalConnection;

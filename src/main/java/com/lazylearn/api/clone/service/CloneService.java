@@ -25,8 +25,8 @@ public class CloneService {
     private NewUserTemplateRepo newUserTemplateRepo;
 
     public void cloneAll(String userId) throws Exception {
-        for (NewUserTemplate template : newUserTemplateRepo.findAll()){
-            switch (template.getType()){
+        for (NewUserTemplate template : newUserTemplateRepo.findAll()) {
+            switch (template.getType()) {
                 case "deck":
                     deckCloneService.cloneDeck(template.getRecordId(), userId);
                     break;
@@ -40,8 +40,8 @@ public class CloneService {
         }
     }
 
-    public void cloneAllAsync(String userId){
-        new Thread(()->{
+    public void cloneAllAsync(String userId) {
+        new Thread(() -> {
             try {
                 cloneAll(userId);
             } catch (Exception exception) {

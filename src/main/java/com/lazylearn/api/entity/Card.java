@@ -5,31 +5,33 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.lazylearn.api.config.Consts;
 import com.lazylearn.api.program.Sm2Program;
 import com.lazylearn.api.util.CustomDateUtils;
-import org.apache.commons.lang3.time.DateUtils;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.Lob;
+import javax.persistence.PrePersist;
+import javax.persistence.Table;
 import java.util.Date;
 
 /**
  * @author McFly the Kid
  */
 @Entity
-@Table(name="card")
+@Table(name = "card")
 public class
-Card extends AbstractEntity implements HasUserId{
+Card extends AbstractEntity implements HasUserId {
 
     @JsonIgnore
-    public boolean isExpired(){
+    public boolean isExpired() {
         return getWakeupOn().before(new Date());
     }
 
     @JsonIgnore
-    public boolean isInBegin(){
+    public boolean isInBegin() {
         return getStep() == Consts.STEP_BEGIN;
     }
 
-    public long getExpiredDays(){
-        if (getWakeupOn().before(new Date())){
+    public long getExpiredDays() {
+        if (getWakeupOn().before(new Date())) {
             return 0;
         }
         return CustomDateUtils.getDifferenceDays(getWakeupOn(), new Date());
@@ -40,7 +42,7 @@ Card extends AbstractEntity implements HasUserId{
     ///////////////////////////////////////
 
     @PrePersist
-    public void prePersist(){
+    public void prePersist() {
         setSm2Ef(Sm2Program.SM2_EF_INIT);
         setWakeupOn(new Date());
         setStep(Consts.STEP_BEGIN);

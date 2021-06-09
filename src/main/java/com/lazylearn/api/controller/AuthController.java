@@ -23,7 +23,7 @@ import java.util.Collection;
  * @author McFly the Kid
  */
 @RestController
-public class AuthController extends BaseController{
+public class AuthController extends BaseController {
 
     @Autowired
     private AuthService authService;
@@ -44,8 +44,8 @@ public class AuthController extends BaseController{
     @PostMapping("/change-email")
     public JSON changeEmail(@RequestBody @Valid ChangeEmailIn payload) throws Exception {
         User duplicatedUser = userRepo.findByEmail(payload.getEmail());
-        if (duplicatedUser != null){
-            if(duplicatedUser.getId().equalsIgnoreCase(getUserId())){
+        if (duplicatedUser != null) {
+            if (duplicatedUser.getId().equalsIgnoreCase(getUserId())) {
                 return JSON.ok("Nothing changed");
             }
             throw new AppException(401, "Email address already in use");
@@ -93,12 +93,12 @@ public class AuthController extends BaseController{
     }
 
     @PostMapping("/login")
-    public LoginOut login(@Valid @RequestBody LoginIn in){
-        return authService.login(in,getClientData());
+    public LoginOut login(@Valid @RequestBody LoginIn in) {
+        return authService.login(in, getClientData());
     }
 
     @PostMapping("/force-login/{userId}")
-    public LoginOut forceLogin(@PathVariable String userId){
+    public LoginOut forceLogin(@PathVariable String userId) {
         return authService.forceLogin(userId, getClientData());
     }
 
@@ -112,7 +112,7 @@ public class AuthController extends BaseController{
     /*************************************************************************************************/
 
     @PostMapping("/get-all-session")
-    public String getAllSession() throws Exception{
+    public String getAllSession() throws Exception {
         return authService.getAllSession(getUserId());
     }
 
@@ -123,7 +123,7 @@ public class AuthController extends BaseController{
 
     @PostMapping("/change-password")
     public JSON changePassword(@Valid @RequestBody ChangePasswordIn in) throws Exception {
-        Collection<SimpleGrantedAuthority> authorities = (Collection<SimpleGrantedAuthority>)    SecurityContextHolder.getContext().getAuthentication().getAuthorities();
+        Collection<SimpleGrantedAuthority> authorities = (Collection<SimpleGrantedAuthority>) SecurityContextHolder.getContext().getAuthentication().getAuthorities();
 
         authService.changePassword(getUserId(), in.getNewRawPassword());
         return JSON.ok("Change password success");

@@ -19,10 +19,10 @@ public class AnswerProcessService {
     @Autowired
     private DeckRepo deckRepo;
 
-    private Program getLearnProgram(Card card){
+    private Program getLearnProgram(Card card) {
         Deck deck = deckRepo.findOne(card.getDeckId());
         Program program = (Program) context.getBean(deck.getProgramId());
-        if (program == null){
+        if (program == null) {
             throw new AppException("Learn program not found: " + deck.getProgramId());
         }
         return program;

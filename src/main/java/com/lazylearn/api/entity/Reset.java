@@ -9,10 +9,10 @@ import java.util.Date;
  * @author McFly the Kid
  */
 @Entity
-@Table(name="reset", indexes = {
+@Table(name = "reset", indexes = {
         @Index(columnList = "userId")
 })
-public class Reset extends AbstractSolidEntity{
+public class Reset extends AbstractSolidEntity {
 
     private String userId;
     private Date expiredDate;

@@ -27,7 +27,7 @@ public class ChartController extends BaseController {
 
     @GetMapping("/get-deck/{deckId}")
     public Object deckChart(@PathVariable("deckId") String deckId) throws Exception {
-        if (deckId.startsWith(Consts.Deck.LEARN_ALL_DECK_ID_PREFIX)){
+        if (deckId.startsWith(Consts.Deck.LEARN_ALL_DECK_ID_PREFIX)) {
             throw Consts.Exception.CANNOT_INSPECT_VIRTUAL_DECK;
         }
 

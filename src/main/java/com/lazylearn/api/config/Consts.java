@@ -1,11 +1,7 @@
 package com.lazylearn.api.config;
 
 import com.lazylearn.api.config.exception.AppException;
-import com.lazylearn.api.util.SecurityUtils;
 import org.apache.commons.lang3.ArrayUtils;
-
-import java.util.HashMap;
-import java.util.Map;
 
 import static com.lazylearn.api.util.SecurityUtils.getCurrentUserLogin;
 
@@ -14,7 +10,7 @@ import static com.lazylearn.api.util.SecurityUtils.getCurrentUserLogin;
  */
 public final class Consts {
 
-    public static class User{
+    public static class User {
         public static final String SYSTEM = "system";
     }
 
@@ -57,7 +53,6 @@ public final class Consts {
     public static final String DO_NOT_CHANGE = "Do not modify this card";
 
 
-
     public static final String VOCABDECK_LANGUAGE = "english";
 
     public static final String DECKTYPE__DEFAULT = "default";
@@ -65,7 +60,7 @@ public final class Consts {
     public static final String DECKTYPE__VOCAB = "vocab";
     public static final String DECKTYPE__MINPAIR = "minpair";
 
-    public static class Deck{
+    public static class Deck {
         public static final String LEARN_ALL_DECK_ID_PREFIX = "all-deck";
         public static final String LEARN_ALL_DECK_TODAY_ID = "all-deck-today";
         public static final String LEARN_ALL_DECK_ID = "all-deck";
@@ -86,12 +81,14 @@ public final class Consts {
         static String[] ADMINS = new String[]{
                 "20180204ndTJOOObNawFuTrrANnzZndoZyjjbK" //odopoc
         };
-        public static boolean isAdmin(){
+
+        public static boolean isAdmin() {
             String username = "";
             try {
                 username = getCurrentUserLogin();
-            } catch (java.lang.Exception exception) {  }
-            if (ArrayUtils.contains(ADMINS, username)){
+            } catch (java.lang.Exception exception) {
+            }
+            if (ArrayUtils.contains(ADMINS, username)) {
                 return true;
             }
             return false;

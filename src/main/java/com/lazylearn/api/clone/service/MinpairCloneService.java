@@ -12,7 +12,6 @@ import com.lazylearn.api.service.FileService;
 import com.lazylearn.api.service.MinpairFileService;
 import com.lazylearn.api.service.MinpairService;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -63,11 +62,11 @@ public class MinpairCloneService {
         List<EncodedFile> files1 = new ArrayList<>();
         List<EncodedFile> files2 = new ArrayList<>();
 
-        for (MinpairFile minpairFile : minpairFiles1){
+        for (MinpairFile minpairFile : minpairFiles1) {
             files1.add(fileService.readFileFromPath(minpairFile.getAudioPath()));
         }
 
-        for (MinpairFile minpairFile : minpairFiles2){
+        for (MinpairFile minpairFile : minpairFiles2) {
             files2.add(fileService.readFileFromPath(minpairFile.getAudioPath()));
         }
 
@@ -80,10 +79,10 @@ public class MinpairCloneService {
     @Transactional
     public void cloneMinpair(String oldMinpairId, String userId) throws Exception {
         Minpair oldMinpair = minpairRepo.findOne(oldMinpairId);
-        if (isBlank(oldMinpair.getCloneableid())){
+        if (isBlank(oldMinpair.getCloneableid())) {
             throw new RuntimeException("Cannot clone because this minpair does not have cloneableid");
         }
-        if (minpairRepo.countByUser_IdAndCloneableid(userId, oldMinpair.getCloneableid()) > 0){
+        if (minpairRepo.countByUser_IdAndCloneableid(userId, oldMinpair.getCloneableid()) > 0) {
             log.info("Skip because already imported");
             return;
         }
@@ -94,11 +93,11 @@ public class MinpairCloneService {
     }
 
     @Transactional
-    public void cloneMinpair(String oldMinpairId){
-        for (User user : userRepo.findAll()){
+    public void cloneMinpair(String oldMinpairId) {
+        for (User user : userRepo.findAll()) {
             try {
                 cloneMinpair(oldMinpairId, user.getUserId());
-            } catch (Exception e){
+            } catch (Exception e) {
                 log.error("Cannot clone for user: {}", user.getEmail());
                 log.error("Cannot clone for user", e);
             }
