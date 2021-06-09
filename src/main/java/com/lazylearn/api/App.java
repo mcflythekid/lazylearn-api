@@ -19,7 +19,6 @@ public class App extends SpringBootServletInitializer {
 
     public static void main(String[] args) throws IOException {
         WIRED_ENV = new ObjectMapper().readValue(new File(args[0]), WiredEnv.class);
-        System.setProperty("LOG_DIR", WIRED_ENV.getLogDir());
 
         SpringApplication.run(App.class, args);
     }
