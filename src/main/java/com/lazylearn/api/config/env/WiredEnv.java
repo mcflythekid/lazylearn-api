@@ -27,5 +27,6 @@ public class WiredEnv {
 
     private boolean telegramEnabled;
 
+    private String logDir;
 
 }

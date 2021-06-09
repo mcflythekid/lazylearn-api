@@ -15,15 +15,17 @@ import java.io.IOException;
  */
 @SpringBootApplication
 public class App extends SpringBootServletInitializer {
-    private static String[] ARGS;
+    private static WiredEnv WIRED_ENV;
 
-    public static void main(String[] args) {
-        ARGS = args;
+    public static void main(String[] args) throws IOException {
+        WIRED_ENV = new ObjectMapper().readValue(new File(args[0]), WiredEnv.class);
+        System.setProperty("LOG_DIR", WIRED_ENV.getLogDir());
+
         SpringApplication.run(App.class, args);
     }
 
     @Bean
-    public WiredEnv wiredEnv() throws IOException {
-        return new ObjectMapper().readValue(new File(ARGS[0]), WiredEnv.class);
+    public WiredEnv wiredEnv() {
+        return WIRED_ENV;
     }
 }

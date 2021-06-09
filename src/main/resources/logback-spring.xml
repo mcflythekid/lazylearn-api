@@ -2,6 +2,8 @@
 <!-- Generated file, do not try to modify -->
 <configuration>
 
+    <property name="LOG_DIR" value="${LOG_DIR}" />
+
     <appender name="Console" class="ch.qos.logback.core.ConsoleAppender">
         <layout class="ch.qos.logback.classic.PatternLayout">
             <Pattern>
