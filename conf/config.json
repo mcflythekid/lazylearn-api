@@ -1,0 +1,16 @@
+{
+  "dbUrl": "jdbc:mysql://localhost:3306/lazy?useSSL=false&useUnicode=yes&characterEncoding=UTF-8",
+  "dbUsername": "root",
+  "dbPassword": "root",
+  "dbShowSql": false,
+  "dbDriver": "com.mysql.jdbc.Driver",
+  "dbDialect": "org.hibernate.dialect.MySQLDialect",
+  "dbPoolSize": 20,
+  "jwtSecret": "354yrf465urte456yterw",
+  "fileUpload": "xxx",
+  "fileUrl": "xxx",
+  "resetPassword": "https://lazylearn.com/auth/reset-password.php?id=%s",
+  "mailServer": "localhost",
+  "mailPort": 25,
+  "telegramEnabled": true
+}
