@@ -24,6 +24,8 @@ public class WiredEnv {
 
     private String mailServer;
     private Integer mailPort;
+    private String mailUsername;
+    private String mailPassword;
 
     private boolean telegramEnabled;
 }
