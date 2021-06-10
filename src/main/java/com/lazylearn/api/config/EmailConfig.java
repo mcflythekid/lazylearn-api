@@ -29,12 +29,14 @@ public class EmailConfig {
         mailSender.setUsername(wiredEnv.getMailUsername());
         mailSender.setPassword(wiredEnv.getMailPassword());
 
-        Properties props = mailSender.getJavaMailProperties();
-        props.put("mail.transport.protocol", "smtp");
-        props.put("mail.smtp.auth", "true");
-        props.put("mail.smtp.starttls.enable", "true");
-        props.put("mail.debug", "true");
-
+        Properties mailProp = mailSender.getJavaMailProperties();
+        mailProp.put("mail.transport.protocol", "smtp");
+        mailProp.put("mail.smtp.auth", "true");
+        mailProp.put("mail.smtp.starttls.enable", "true");
+        mailProp.put("mail.smtp.starttls.required", "true");
+        mailProp.put("mail.debug", "true");
+        mailProp.put("mail.smtp.ssl.enable", "true");
+        mailProp.put("mail.smtp.user", wiredEnv.getMailUsername());
         return mailSender;
     }
 }
